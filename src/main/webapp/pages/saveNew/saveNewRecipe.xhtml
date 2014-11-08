@@ -1,0 +1,41 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"> 
+
+<f:loadBundle basename="messages.byPage.saveNew.messages" var="pageMessages"/>
+
+<h:head>
+	<title>
+		<h:outputText value="#{globalMessages.tabTitle}"/>
+	</title>
+</h:head> 
+<body> 
+<h:form>
+
+	<h2><h:outputText value="#{pageMessages.pageTitle}" /></h2>
+
+	<h:panelGrid id="mainPanelGrid" columns="3">
+	
+		<h:outputText value="#{pageMessages.recipeNameLabel}" />
+		<h:inputText id="recipeName" value="#{saveRecipeController.recipeName}" label="#{pageMessages.recipeNameLabel}">
+			<f:validateRequired />
+		</h:inputText>
+		<h:message for="recipeName"/>
+		
+		<h:outputText value="#{pageMessages.recipeContentsLabel}"/>
+		<h:inputTextarea id="recipeContents" value="#{saveRecipeController.recipeContents}" label="#{pageMessages.recipeContentsLabel}">
+			<f:validateRequired />
+		</h:inputTextarea>
+		<h:message for="recipeContents"/>
+		
+	</h:panelGrid>
+
+	<h:panelGrid id="navigationPanelGrid" columns="2">
+		<h:commandButton action="#{saveRecipeController.navigateHome()}" value="#{globalMessages.homeButtonText}" immediate="true" />
+		<h:commandButton action="#{saveRecipeController.saveRecipeAndNavigateHome()}" value="#{globalMessages.saveButtonText}" />
+	</h:panelGrid>
+</h:form>
+</body> 
+</html>

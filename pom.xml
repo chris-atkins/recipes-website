@@ -1,52 +1,616 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
 
-    <groupId>jbosswildfly</groupId>
-    <artifactId>jbosswildfly</artifactId>
-    <packaging>war</packaging>
-    <version>1.0</version>
-    <name>jbosswildfly</name>
-  
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
-        <maven.compiler.executable>${env.OPENSHIFT_WILDFLY_DIR}usr/lib/jvm/jdk1.8.0_05/bin/javac</maven.compiler.executable>
-        <maven.compiler.fork>true</maven.compiler.fork>
-    </properties>
-    
-    <dependencies>
-        <dependency>
-            <groupId>javax</groupId>
-            <artifactId>javaee-api</artifactId>
-            <version>7.0</version>
-            <scope>provided</scope>
-        </dependency>
-    </dependencies>
+	<groupId>jbosswildfly</groupId>
+	<artifactId>jbosswildfly</artifactId>
+	<packaging>war</packaging>
+	<version>1.0</version>
+	<name>jbosswildfly</name>
 
-<profiles>
-    <profile>
-     <!-- When built in OpenShift the 'openshift' profile will be used when invoking mvn. -->
-     <!-- Use this profile for any OpenShift specific customization your app will need. -->
-     <!-- By default that is to put the resulting archive into the 'deployments' folder. -->
-     <!-- http://maven.apache.org/guides/mini/guide-building-for-different-environments.html -->
-     <id>openshift</id>
-     <build>
-        <finalName>jbosswildfly</finalName>
-        <plugins>
-          <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-war-plugin</artifactId>
-                <version>2.3</version>
-                <configuration>
-                    <failOnMissingWebXml>false</failOnMissingWebXml>
-                    <outputDirectory>deployments</outputDirectory>
-              		  <warName>ROOT</warName>
-                </configuration>
-            </plugin>
-        </plugins>
-      </build>
-    </profile>
-  </profiles>
+	<properties>
+
+		<!-- PUT HERE BY OPENSHIFT -->
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven.compiler.source>1.7</maven.compiler.source> <!-- USED TO BE 1.8 FROM OPENSHIFT -->
+		<maven.compiler.target>1.7</maven.compiler.target> <!-- USED TO BE 1.8 FROM OPENSHIFT -->
+		<!-- <maven.compiler.executable>${env.OPENSHIFT_WILDFLY_DIR}usr/lib/jvm/jdk1.8.0_05/bin/javac</maven.compiler.executable> -->
+		<maven.compiler.fork>true</maven.compiler.fork>
+		
+		<!-- added by me -->
+		<maven-compiler-plugin.version>3.1</maven-compiler-plugin.version>
+
+
+		<!-- Dependency Versions -->
+
+		<jboss-javaee-7.0-with-all.version>8.1.0.Final</jboss-javaee-7.0-with-all.version>
+		<arquillian-bom.version>1.1.5.Final</arquillian-bom.version>
+		<junit.version>4.11</junit.version>
+		<arquillian-weld-ee-embedded-1.1.version>1.0.0.CR8</arquillian-weld-ee-embedded-1.1.version>
+		<weld-core.version>2.2.4.Final</weld-core.version>
+		<h2.version>1.4.180</h2.version>
+		<hibernate-validator-cdi.version>5.1.2.Final</hibernate-validator-cdi.version>
+		<hibernate-validator-annotation-processor.version>5.1.2.Final</hibernate-validator-annotation-processor.version>
+		<slf4j-simple.version>1.7.7</slf4j-simple.version>
+
+		<commons-lang.version>2.6</commons-lang.version>
+		<commons-collections.version>3.2.1</commons-collections.version>
+		<commons-beanutils.version>1.9.2</commons-beanutils.version>
+		<lombok.version>1.14.4</lombok.version>
+
+		<mockito-all.version>1.9.5</mockito-all.version>
+		<hamcrest-library.version>1.3</hamcrest-library.version>
+		<hamcrest-core.version>1.3</hamcrest-core.version>
+		<powermock.version>1.5.5</powermock.version>
+		<cglib.version>2.2.2</cglib.version>
+
+		<!-- Plugin Versions -->
+
+		<maven-surefire-plugin.version>2.17</maven-surefire-plugin.version>
+		<maven-failsafe-plugin.version>2.17</maven-failsafe-plugin.version>
+		<maven-war-plugin.version>2.4</maven-war-plugin.version>
+		<wildfly-maven-plugin.version>1.0.2.Final</wildfly-maven-plugin.version>
+		<jacoco-maven-plugin.version>0.7.1.201405082137</jacoco-maven-plugin.version>
+		<findbugs-maven-plugin.version>3.0.0</findbugs-maven-plugin.version>
+		<maven-checkstyle-plugin.version>2.12.1</maven-checkstyle-plugin.version>
+
+		<!-- path to jdk on local machine - not sure what the behavior will be 
+			in any other environment -->
+
+		<jdk.path>C:\Program Files\Java\jdk1.7.0_67\lib\jconsole.jar</jdk.path>
+		<jboss.home>C:\jboss\wildfly-8.1.0.Final</jboss.home>
+
+		<arquillian.jsfTest.browser>phantomjs</arquillian.jsfTest.browser>
+		<!-- <arquillian.jsfTest.browser>chrome</arquillian.jsfTest.browser> -->
+
+	</properties>
+
+
+	<dependencyManagement>
+		<dependencies>
+
+			<!-- <dependency> <groupId>org.jboss.spec</groupId> <artifactId>jboss-javaee-7.0</artifactId> 
+				<version>1.0.1.Final</version> <type>pom</type> <scope>import</scope> </dependency> -->
+
+			<dependency>
+				<groupId>org.wildfly.bom</groupId>
+				<artifactId>jboss-javaee-7.0-with-all</artifactId>
+				<version>${jboss-javaee-7.0-with-all.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>org.jboss.arquillian</groupId>
+				<artifactId>arquillian-bom</artifactId>
+				<version>${arquillian-bom.version}</version>
+				<scope>import</scope>
+				<type>pom</type>
+			</dependency>
+
+			<dependency>
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+				<scope>test</scope>
+				<version>${junit.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.jboss.arquillian.extension</groupId>
+				<artifactId>arquillian-drone-bom</artifactId>
+				<version>1.3.1.Final</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>org.jboss.arquillian.selenium</groupId>
+				<artifactId>selenium-bom</artifactId>
+				<version>2.42.2</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+
+			<!-- <dependency> <groupId>org.jboss.weld</groupId> <artifactId>weld-core-bom</artifactId> 
+				<version>2.2.4.Final</version> <type>pom</type> <scope>import</scope> </dependency> -->
+
+		</dependencies>
+	</dependencyManagement>
+
+
+	<dependencies>
+
+		<!-- javaee setup -->
+
+		<dependency>
+			<groupId>javax</groupId>
+			<artifactId>javaee-api</artifactId>
+			<version>7.0</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.jboss.spec.javax.ejb</groupId>
+			<artifactId>jboss-ejb-api_3.2_spec</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.hibernate.javax.persistence</groupId>
+			<artifactId>hibernate-jpa-2.1-api</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>javax.enterprise</groupId>
+			<artifactId>cdi-api</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.jboss.spec.javax.annotation</groupId>
+			<artifactId>jboss-annotations-api_1.2_spec</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.jboss.spec.javax.servlet</groupId>
+			<artifactId>jboss-servlet-api_3.1_spec</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.jboss.weld</groupId>
+			<artifactId>weld-core</artifactId>
+			<version>${weld-core.version}</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>javax.validation</groupId>
+			<artifactId>validation-api</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-validator</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-validator-cdi</artifactId>
+			<version>${hibernate-validator-cdi.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-jpamodelgen</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-validator-annotation-processor</artifactId>
+			<scope>compile</scope>
+		</dependency>
+
+		<!-- 3rd party libs -->
+
+		<dependency>
+			<groupId>commons-collections</groupId>
+			<artifactId>commons-collections</artifactId>
+			<version>${commons-collections.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-lang</groupId>
+			<artifactId>commons-lang</artifactId>
+			<version>${commons-lang.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-beanutils</groupId>
+			<artifactId>commons-beanutils</artifactId>
+			<version>${commons-beanutils.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>${lombok.version}</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<!-- Test dependencies -->
+
+		<dependency>
+			<groupId>org.hamcrest</groupId>
+			<artifactId>hamcrest-core</artifactId>
+			<version>${hamcrest-core.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.hamcrest</groupId>
+			<artifactId>hamcrest-library</artifactId>
+			<version>${hamcrest-library.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-all</artifactId>
+			<version>${mockito-all.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.powermock</groupId>
+			<artifactId>powermock-module-junit4</artifactId>
+			<version>${powermock.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.powermock</groupId>
+			<artifactId>powermock-api-mockito</artifactId>
+			<version>${powermock.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- arquillian needs these -->
+
+		<dependency>
+			<groupId>org.jboss.arquillian.junit</groupId>
+			<artifactId>arquillian-junit-container</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-simple</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.jboss.arquillian.graphene</groupId>
+			<artifactId>graphene-webdriver</artifactId>
+			<version>2.0.3.Final</version>
+			<type>pom</type>
+			<scope>test</scope>
+		</dependency>
+
+	</dependencies>
+
+	<build>
+		<plugins>
+
+			<plugin>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>${maven-surefire-plugin.version}</version>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-failsafe-plugin</artifactId>
+				<version>${maven-failsafe-plugin.version}</version>
+				<executions>
+					<execution>
+						<id>integration-test</id>
+						<goals>
+							<goal>integration-test</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>verify</id>
+						<goals>
+							<goal>verify</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+		</plugins>
+	</build>
+
+	<reporting>
+		<plugins>
+
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>findbugs-maven-plugin</artifactId>
+				<version>${findbugs-maven-plugin.version}</version>
+				<configuration>
+					<findbugsXmlOutput>true</findbugsXmlOutput>
+					<findbugsXmlWithMessages>true</findbugsXmlWithMessages>
+					<xmlOutput>true</xmlOutput>
+					<fork>false</fork>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+				<version>${maven-checkstyle-plugin.version}</version>
+				<reportSets>
+					<reportSet>
+						<reports>
+							<report>checkstyle</report>
+						</reports>
+					</reportSet>
+				</reportSets>
+			</plugin>
+
+		</plugins>
+	</reporting>
+
+	<profiles>
+
+		<!-- Used to deploy to localhost - runs all arquillian tests in a CDI container, 
+			but skips persistence tests (Integration Tests). It deploys automatically 
+			to localhost as long as it is running. -->
+		<profile>
+			<id>deploy-local</id>
+
+			<dependencies>
+
+				<!-- CDI container for arquillian during testing phase - but not JPA 
+					container -->
+				<dependency>
+					<groupId>org.jboss.arquillian.container</groupId>
+					<artifactId>arquillian-weld-ee-embedded-1.1</artifactId>
+					<version>${arquillian-weld-ee-embedded-1.1.version}</version>
+					<scope>test</scope>
+				</dependency>
+
+			</dependencies>
+
+			<build>
+				<finalName>recipeconnection</finalName>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-surefire-plugin</artifactId>
+						<version>${maven-surefire-plugin.version}</version>
+						<!-- <configuration> <excludes> - Need to skip any persistence tests 
+							here - no persistence container is available for this profile - <exclude>**/RecipeDAOIT.java</exclude> 
+							</excludes> </configuration> -->
+					</plugin>
+
+					<plugin>
+						<artifactId>maven-war-plugin</artifactId>
+						<version>${maven-war-plugin.version}</version>
+						<configuration>
+							<outputDirectory>${basedir}/target</outputDirectory>
+							<warName>recipeconnection</warName>
+						</configuration>
+					</plugin>
+
+					<plugin>
+						<groupId>org.wildfly.plugins</groupId>
+						<artifactId>wildfly-maven-plugin</artifactId>
+						<version>${wildfly-maven-plugin.version}</version>
+						<executions>
+							<execution>
+								<phase>install</phase>
+								<goals>
+									<goal>deploy</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+
+				</plugins>
+			</build>
+
+		</profile>
+
+		<profile>
+			<id>embedded-wildfly-tests</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<dependencies>
+				<!-- In memory database for testing persistence -->
+				<dependency>
+					<groupId>com.h2database</groupId>
+					<artifactId>h2</artifactId>
+					<version>${h2.version}</version>
+					<scope>test</scope>
+				</dependency>
+
+				<!-- embedded widlfly container - must be installed on system - see arquillian.xml -->
+				<dependency>
+					<groupId>org.wildfly</groupId>
+					<artifactId>wildfly-arquillian-container-embedded</artifactId>
+					<version>8.1.0.Final</version>
+				</dependency>
+				<dependency>
+					<groupId>org.wildfly</groupId>
+					<artifactId>wildfly-embedded</artifactId>
+					<version>8.1.0.Final</version>
+				</dependency>
+
+				<!-- <dependency> <groupId>org.jboss.xnio</groupId> <artifactId>xnio-api</artifactId> 
+					<version>3.2.2.Final</version> </dependency> <dependency> <groupId>org.jboss.xnio</groupId> 
+					<artifactId>xnio-nio</artifactId> <version>3.2.2.Final</version> </dependency> 
+					<dependency> <groupId>io.undertow</groupId> <artifactId>undertow-core</artifactId> 
+					<version>1.0.15.Final</version> </dependency> <dependency> <groupId>org.jboss.weld</groupId> 
+					<artifactId>weld-spi</artifactId> <version>2.1.Final</version> </dependency> -->
+
+
+				<dependency>
+					<groupId>sun.jdk</groupId>
+					<artifactId>jconsole</artifactId>
+					<version>jdk</version>
+					<scope>system</scope>
+					<systemPath>${jdk.path}</systemPath>
+				</dependency>
+			</dependencies>
+
+			<build>
+				<finalName>test</finalName>
+				<testResources>
+					<testResource>
+						<directory>src/test/resources</directory>
+						<filtering>true</filtering>
+					</testResource>
+				</testResources>
+				<plugins>
+
+					<plugin>
+						<artifactId>maven-compiler-plugin</artifactId>
+						<version>${maven-compiler-plugin.version}</version>
+						<configuration>
+							<source>${maven.compiler.source}</source>
+							<target>${maven.compiler.target}</target>
+						</configuration>
+					</plugin>
+
+					<plugin>
+						<artifactId>maven-surefire-plugin</artifactId>
+						<version>${maven-surefire-plugin.version}</version>
+						<configuration>
+							<forkCount>1</forkCount>
+							<reuseForks>true</reuseForks>
+							<systemPropertyVariables>
+								<java.util.logging.manager>org.jboss.logmanager.LogManager</java.util.logging.manager>
+								<jboss.home>${jboss.home}</jboss.home>
+								<module.path>${jboss.home}/modules</module.path>
+							</systemPropertyVariables>
+							<redirectTestOutputToFile>false</redirectTestOutputToFile>
+						</configuration>
+					</plugin>
+
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-failsafe-plugin</artifactId>
+						<version>${maven-failsafe-plugin.version}</version>
+						<configuration>
+							<forkCount>1</forkCount>
+							<reuseForks>false</reuseForks>
+							<systemPropertyVariables>
+								<java.util.logging.manager>org.jboss.logmanager.LogManager</java.util.logging.manager>
+								<jboss.home>${jboss.home}</jboss.home>
+								<module.path>${jboss.home}/modules</module.path>
+							</systemPropertyVariables>
+							<redirectTestOutputToFile>false</redirectTestOutputToFile>
+						</configuration>
+						<executions>
+							<execution>
+								<id>integration-test</id>
+								<goals>
+									<goal>integration-test</goal>
+								</goals>
+							</execution>
+							<execution>
+								<id>verify</id>
+								<goals>
+									<goal>verify</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+
+		<profile>
+			<!-- Used when pushing statistics to sonar - needs to build and test in 
+				order to collect statistics -->
+			<id>sonar</id>
+			<!-- <properties> <maven.compiler.executable>${env.OPENSHIFT_WILDFLY_DIR}usr/lib/jvm/jdk1.8.0_05/bin/javac</maven.compiler.executable> 
+				</properties> TO REACTIVATE JAVA 8 - UNCOMMENT THIS AND RENAME MARKER FILE 
+				LOCATED IN 'C:\Users\Chris\git\recipeconnection\.openshift\marker' FROM 'java7' 
+				to 'java8' (and change the eclipse settings -->
+			<dependencies>
+				<!-- enables CDI for arquillian during testing phase - but not persistence -->
+				<dependency>
+					<groupId>org.jboss.arquillian.container</groupId>
+					<artifactId>arquillian-weld-ee-embedded-1.1</artifactId>
+					<version>${arquillian-weld-ee-embedded-1.1.version}</version>
+					<scope>test</scope>
+				</dependency>
+			</dependencies>
+		</profile>
+
+		<profile>
+			<!-- Used for testing on jenkins - does not perform Integration Tests 
+				(persistence tests) - could not find a solution to get a container working 
+				on jenkins -->
+			<id>jenkins-tests</id>
+			<!-- <properties> <maven.compiler.executable>${env.OPENSHIFT_WILDFLY_DIR}usr/lib/jvm/jdk1.8.0_05/bin/javac</maven.compiler.executable> 
+				</properties> TO REACTIVATE JAVA 8 - UNCOMMENT THIS AND RENAME MARKER FILE 
+				LOCATED IN 'C:\Users\Chris\git\recipeconnection\.openshift\marker' FROM 'java7' 
+				to 'java8' (and change the eclipse settings -->
+			<dependencies>
+				<!-- enables CDI for arquillian during testing phase - but not persistence -->
+				<dependency>
+					<groupId>org.jboss.arquillian.container</groupId>
+					<artifactId>arquillian-weld-ee-embedded-1.1</artifactId>
+					<version>${arquillian-weld-ee-embedded-1.1.version}</version>
+					<scope>test</scope>
+				</dependency>
+			</dependencies>
+
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.jacoco</groupId>
+						<artifactId>jacoco-maven-plugin</artifactId>
+						<version>${jacoco-maven-plugin.version}</version>
+						<executions>
+							<execution>
+								<goals>
+									<goal>prepare-agent</goal>
+								</goals>
+							</execution>
+							<execution>
+								<id>report</id>
+								<phase>prepare-package</phase>
+								<goals>
+									<goal>report</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+
+		</profile>
+
+		<profile>
+			<!-- When built in OpenShift the 'openshift' profile will be used when 
+				invoking mvn. -->
+			<!-- Use this profile for any OpenShift specific customization your app 
+				will need. -->
+			<!-- By default that is to put the resulting archive into the 'deployments' 
+				folder. -->
+			<!-- http://maven.apache.org/guides/mini/guide-building-for-different-environments.html -->
+			<id>openshift</id>
+			<build>
+				<finalName>jbosswildfly</finalName>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-war-plugin</artifactId>
+						<version>2.3</version>
+						<configuration>
+							<failOnMissingWebXml>false</failOnMissingWebXml>
+							<outputDirectory>deployments</outputDirectory>
+							<warName>ROOT</warName>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+
+	</profiles>
+
 </project>

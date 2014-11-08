@@ -1,0 +1,38 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"> 
+
+<f:loadBundle  basename="messages.byPage.browse.messages" var="pageMessages"/>
+
+<h:head>
+	<title>
+		<h:outputText value="#{globalMessages.tabTitle}"/>
+	</title>
+</h:head> 
+
+<body> 
+<h:form id="pageForm">
+	<h2><h:outputText id="PageTitle" value="#{pageMessages.pageTitle}" /></h2>
+	
+	<h:dataTable value="#{browseAllController.allRecipes}" var="recipe">
+		<h:column>
+			<f:facet name="header">
+				<h:outputText value="#{pageMessages.nameHeader}" />
+			</f:facet>
+			<h:outputText value="#{recipe.recipeName}" />
+		</h:column>
+		<h:column>
+			<h:link outcome="viewRecipe" value="#{pageMessages.linkToRecipe}"> 
+				<f:param name="recipeId" value="#{recipe.recipeId}"/>
+			</h:link>
+		</h:column>
+	</h:dataTable>
+	
+	<h:panelGrid id="navigationPanelGrid">
+		<h:commandButton id="gotoHomeButton" action="home" value="#{globalMessages.homeButtonText}" immediate="true" />
+	</h:panelGrid>
+</h:form>
+</body> 
+</html>

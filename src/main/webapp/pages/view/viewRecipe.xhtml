@@ -1,0 +1,37 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<f:metadata>
+	<f:viewParam name="recipeId" value="#{viewRecipeController.currentRecipeId}" />
+</f:metadata>
+
+<h:head>
+	<title>
+		<h:outputText value="#{globalMessages.tabTitle}"/>
+	</title>
+</h:head> 
+
+<body>
+<h:form id="pageForm">
+
+	<h2>
+		<h:outputText id="recipeName" value="#{viewRecipeController.currentRecipe.recipeName}" escape="false"/>
+	</h2>
+	
+	<p>
+		<h:outputText value="#{viewRecipeController.currentRecipe.recipeContent}" escape="false" />
+	</p>
+	
+	
+
+	<h:panelGrid id="navigationPanelGrid" columns="2">
+		<h:commandButton id="gotoHomeButton" action="home" value="#{globalMessages.homeButtonText}" immediate="true" />
+		<h:commandButton id="goBackButton" action="back" value="#{globalMessages.backButtonText}" immediate="true" />
+	</h:panelGrid>
+	
+</h:form>	
+</body>
+</html>

@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<faces-config version="2.2" xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd">
+ 
+ 	<navigation-rule>
+		<from-view-id>/pages/home/index.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>searchRecipe</from-outcome>
+			<to-view-id>/pages/search/searchRecipes.xhtml</to-view-id>
+			<redirect/>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>saveNewRecipe</from-outcome>
+			<to-view-id>/pages/saveNew/saveNewRecipe.xhtml</to-view-id>
+			<redirect/>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>browseAllRecipes</from-outcome>
+			<to-view-id>/pages/browse/browseAllRecipes.xhtml</to-view-id>
+			<redirect/>
+		</navigation-case>
+	</navigation-rule>
+
+ 	<navigation-rule>
+		<from-view-id>/pages/saveNew/saveNewRecipe.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>home</from-outcome>
+			<to-view-id>/pages/home/index.xhtml</to-view-id>
+			<redirect/>
+		</navigation-case>
+	</navigation-rule>
+
+ 	<navigation-rule>
+		<from-view-id>/pages/browse/browseAllRecipes.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>viewRecipe</from-outcome>
+			<to-view-id>/pages/view/viewRecipe.xhtml</to-view-id>
+			<redirect/>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>home</from-outcome>
+			<to-view-id>/pages/home/index.xhtml</to-view-id>
+			<redirect/>
+		</navigation-case>
+	</navigation-rule>
+
+ 	<navigation-rule>
+		<from-view-id>/pages/view/viewRecipe.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>home</from-outcome>
+			<to-view-id>/pages/home/index.xhtml</to-view-id>
+			<redirect/>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>back</from-outcome>
+			<to-view-id>/pages/browse/browseAllRecipes.xhtml</to-view-id>
+			<redirect/>
+		</navigation-case>
+	</navigation-rule>
+
+</faces-config>
