@@ -4,7 +4,7 @@ import java.util.List;
 
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
-import javax.enterprise.context.Dependent;
+import javax.enterprise.context.RequestScoped;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -18,7 +18,8 @@ import com.poorknight.exceptions.DaoException;
 /**
  * Responsible for CRUD operations on the Recipe class.
  */
-@Dependent
+//@Dependent
+@RequestScoped
 public class RecipeDAO {
 
 	@PersistenceContext(unitName = "JPADB")

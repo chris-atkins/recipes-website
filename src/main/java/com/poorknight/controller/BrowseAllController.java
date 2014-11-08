@@ -1,9 +1,10 @@
 package com.poorknight.controller;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
-import javax.faces.bean.ViewScoped;
+import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -16,7 +17,9 @@ import com.poorknight.domain.Recipe;
  */
 @Named("browseAllController")
 @ViewScoped
-public class BrowseAllController {
+public class BrowseAllController implements Serializable {
+
+	private static final long serialVersionUID = 5146000726191558450L;
 
 	private List<Recipe> allRecipes;
 

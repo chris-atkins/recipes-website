@@ -17,7 +17,7 @@
 		<maven.compiler.target>1.7</maven.compiler.target> <!-- USED TO BE 1.8 FROM OPENSHIFT -->
 		<!-- <maven.compiler.executable>${env.OPENSHIFT_WILDFLY_DIR}usr/lib/jvm/jdk1.8.0_05/bin/javac</maven.compiler.executable> -->
 		<maven.compiler.fork>true</maven.compiler.fork>
-		
+
 		<!-- added by me -->
 		<maven-compiler-plugin.version>3.1</maven-compiler-plugin.version>
 
@@ -372,7 +372,7 @@
 			</dependencies>
 
 			<build>
-				<finalName>recipeconnection</finalName>
+				<finalName>recipee7</finalName>
 				<plugins>
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
@@ -388,7 +388,7 @@
 						<version>${maven-war-plugin.version}</version>
 						<configuration>
 							<outputDirectory>${basedir}/target</outputDirectory>
-							<warName>recipeconnection</warName>
+							<warName>recipee7</warName>
 						</configuration>
 					</plugin>
 
