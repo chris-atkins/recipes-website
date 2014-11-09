@@ -55,8 +55,7 @@
 		<findbugs-maven-plugin.version>3.0.0</findbugs-maven-plugin.version>
 		<maven-checkstyle-plugin.version>2.12.1</maven-checkstyle-plugin.version>
 
-		<!-- path to jdk on local machine - not sure what the behavior will be 
-			in any other environment -->
+		<!-- path to jdk on local machine - not sure what the behavior will be in any other environment -->
 
 		<jdk.path>C:\Program Files\Java\jdk1.7.0_67\lib\jconsole.jar</jdk.path>
 		<jboss.home>C:\jboss\wildfly-8.1.0.Final</jboss.home>
@@ -70,8 +69,8 @@
 	<dependencyManagement>
 		<dependencies>
 
-			<!-- <dependency> <groupId>org.jboss.spec</groupId> <artifactId>jboss-javaee-7.0</artifactId> 
-				<version>1.0.1.Final</version> <type>pom</type> <scope>import</scope> </dependency> -->
+			<!-- <dependency> <groupId>org.jboss.spec</groupId> <artifactId>jboss-javaee-7.0</artifactId> <version>1.0.1.Final</version> 
+				<type>pom</type> <scope>import</scope> </dependency> -->
 
 			<dependency>
 				<groupId>org.wildfly.bom</groupId>
@@ -112,8 +111,8 @@
 				<scope>import</scope>
 			</dependency>
 
-			<!-- <dependency> <groupId>org.jboss.weld</groupId> <artifactId>weld-core-bom</artifactId> 
-				<version>2.2.4.Final</version> <type>pom</type> <scope>import</scope> </dependency> -->
+			<!-- <dependency> <groupId>org.jboss.weld</groupId> <artifactId>weld-core-bom</artifactId> <version>2.2.4.Final</version> 
+				<type>pom</type> <scope>import</scope> </dependency> -->
 
 		</dependencies>
 	</dependencyManagement>
@@ -352,16 +351,14 @@
 
 	<profiles>
 
-		<!-- Used to deploy to localhost - runs all arquillian tests in a CDI container, 
-			but skips persistence tests (Integration Tests). It deploys automatically 
-			to localhost as long as it is running. -->
+		<!-- Used to deploy to localhost - runs all arquillian tests in a CDI container, but skips persistence tests (Integration 
+			Tests). It deploys automatically to localhost as long as it is running. -->
 		<profile>
 			<id>deploy-local</id>
 
 			<dependencies>
 
-				<!-- CDI container for arquillian during testing phase - but not JPA 
-					container -->
+				<!-- CDI container for arquillian during testing phase - but not JPA container -->
 				<dependency>
 					<groupId>org.jboss.arquillian.container</groupId>
 					<artifactId>arquillian-weld-ee-embedded-1.1</artifactId>
@@ -378,9 +375,8 @@
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-surefire-plugin</artifactId>
 						<version>${maven-surefire-plugin.version}</version>
-						<!-- <configuration> <excludes> - Need to skip any persistence tests 
-							here - no persistence container is available for this profile - <exclude>**/RecipeDAOIT.java</exclude> 
-							</excludes> </configuration> -->
+						<!-- <configuration> <excludes> - Need to skip any persistence tests here - no persistence container is available for 
+							this profile - <exclude>**/RecipeDAOIT.java</exclude> </excludes> </configuration> -->
 					</plugin>
 
 					<plugin>
@@ -437,12 +433,11 @@
 					<version>8.1.0.Final</version>
 				</dependency>
 
-				<!-- <dependency> <groupId>org.jboss.xnio</groupId> <artifactId>xnio-api</artifactId> 
-					<version>3.2.2.Final</version> </dependency> <dependency> <groupId>org.jboss.xnio</groupId> 
-					<artifactId>xnio-nio</artifactId> <version>3.2.2.Final</version> </dependency> 
-					<dependency> <groupId>io.undertow</groupId> <artifactId>undertow-core</artifactId> 
-					<version>1.0.15.Final</version> </dependency> <dependency> <groupId>org.jboss.weld</groupId> 
-					<artifactId>weld-spi</artifactId> <version>2.1.Final</version> </dependency> -->
+				<!-- <dependency> <groupId>org.jboss.xnio</groupId> <artifactId>xnio-api</artifactId> <version>3.2.2.Final</version> 
+					</dependency> <dependency> <groupId>org.jboss.xnio</groupId> <artifactId>xnio-nio</artifactId> <version>3.2.2.Final</version> 
+					</dependency> <dependency> <groupId>io.undertow</groupId> <artifactId>undertow-core</artifactId> <version>1.0.15.Final</version> 
+					</dependency> <dependency> <groupId>org.jboss.weld</groupId> <artifactId>weld-spi</artifactId> <version>2.1.Final</version> 
+					</dependency> -->
 
 
 				<dependency>
@@ -522,13 +517,11 @@
 		</profile>
 
 		<profile>
-			<!-- Used when pushing statistics to sonar - needs to build and test in 
-				order to collect statistics -->
+			<!-- Used when pushing statistics to sonar - needs to build and test in order to collect statistics -->
 			<id>sonar</id>
 			<!-- <properties> <maven.compiler.executable>${env.OPENSHIFT_WILDFLY_DIR}usr/lib/jvm/jdk1.8.0_05/bin/javac</maven.compiler.executable> 
-				</properties> TO REACTIVATE JAVA 8 - UNCOMMENT THIS AND RENAME MARKER FILE 
-				LOCATED IN 'C:\Users\Chris\git\recipeconnection\.openshift\marker' FROM 'java7' 
-				to 'java8' (and change the eclipse settings -->
+				</properties> TO REACTIVATE JAVA 8 - UNCOMMENT THIS AND RENAME MARKER FILE LOCATED IN 'C:\Users\Chris\git\recipeconnection\.openshift\marker' 
+				FROM 'java7' to 'java8' (and change the eclipse settings -->
 			<dependencies>
 				<!-- enables CDI for arquillian during testing phase - but not persistence -->
 				<dependency>
@@ -541,14 +534,12 @@
 		</profile>
 
 		<profile>
-			<!-- Used for testing on jenkins - does not perform Integration Tests 
-				(persistence tests) - could not find a solution to get a container working 
-				on jenkins -->
+			<!-- Used for testing on jenkins - does not perform Integration Tests (persistence tests) - could not find a solution 
+				to get a container working on jenkins -->
 			<id>jenkins-tests</id>
 			<!-- <properties> <maven.compiler.executable>${env.OPENSHIFT_WILDFLY_DIR}usr/lib/jvm/jdk1.8.0_05/bin/javac</maven.compiler.executable> 
-				</properties> TO REACTIVATE JAVA 8 - UNCOMMENT THIS AND RENAME MARKER FILE 
-				LOCATED IN 'C:\Users\Chris\git\recipeconnection\.openshift\marker' FROM 'java7' 
-				to 'java8' (and change the eclipse settings -->
+				</properties> TO REACTIVATE JAVA 8 - UNCOMMENT THIS AND RENAME MARKER FILE LOCATED IN 'C:\Users\Chris\git\recipeconnection\.openshift\marker' 
+				FROM 'java7' to 'java8' (and change the eclipse settings -->
 			<dependencies>
 				<!-- enables CDI for arquillian during testing phase - but not persistence -->
 				<dependency>
@@ -559,7 +550,7 @@
 				</dependency>
 			</dependencies>
 
-			<build>
+<!-- 			<build>
 				<plugins>
 					<plugin>
 						<groupId>org.jacoco</groupId>
@@ -581,17 +572,14 @@
 						</executions>
 					</plugin>
 				</plugins>
-			</build>
+			</build> -->
 
 		</profile>
 
 		<profile>
-			<!-- When built in OpenShift the 'openshift' profile will be used when 
-				invoking mvn. -->
-			<!-- Use this profile for any OpenShift specific customization your app 
-				will need. -->
-			<!-- By default that is to put the resulting archive into the 'deployments' 
-				folder. -->
+			<!-- When built in OpenShift the 'openshift' profile will be used when invoking mvn. -->
+			<!-- Use this profile for any OpenShift specific customization your app will need. -->
+			<!-- By default that is to put the resulting archive into the 'deployments' folder. -->
 			<!-- http://maven.apache.org/guides/mini/guide-building-for-different-environments.html -->
 			<id>openshift</id>
 			<build>
