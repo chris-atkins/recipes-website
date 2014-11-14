@@ -9,15 +9,19 @@
 	
 		<provider>org.hibernate.ejb.HibernatePersistence</provider>
 		<jta-data-source>java:jboss/datasources/MySQLDS</jta-data-source>
+
+		<mapping-file>META-INF/listeners.xml</mapping-file>
+
 		<!--<class>com.poorknight.domain.Recipe</class> -->
 		<exclude-unlisted-classes>false</exclude-unlisted-classes>
-
+		
 		<properties>
 			<!-- <property name="showSql" value="true" /> -->
 			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" />
 			<property name="hibernate.show_sql" value="true" />
 			<property name="hibernate.format_sql" value="true" />
 		</properties>
+		
 		
 	</persistence-unit>
 

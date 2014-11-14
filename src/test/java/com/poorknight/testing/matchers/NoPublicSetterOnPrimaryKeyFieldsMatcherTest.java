@@ -9,12 +9,12 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 
-import com.poorknight.testing.matchers.utils.ReflectionUtils;
 import com.poorknight.testing.matchers.utils.testclasses.ClassWithNoPrivatePKSetter;
 import com.poorknight.testing.matchers.utils.testclasses.ClassWithPackagePrivatePKSetter;
 import com.poorknight.testing.matchers.utils.testclasses.ClassWithPrivatePKSetter;
 import com.poorknight.testing.matchers.utils.testclasses.ClassWithProtectedPKSetter;
 import com.poorknight.testing.matchers.utils.testclasses.ClassWithPublicPKSetter;
+import com.poorknight.utils.ReflectionUtils;
 
 
 @RunWith(JUnit4.class)

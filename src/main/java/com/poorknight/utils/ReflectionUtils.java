@@ -1,4 +1,4 @@
-package com.poorknight.testing.matchers.utils;
+package com.poorknight.utils;
 
 import java.lang.annotation.Annotation;
 import java.lang.annotation.Retention;
@@ -221,13 +221,13 @@ public class ReflectionUtils {
 	}
 
 
-	public static <T> T getAttributeFromObject(final Object objectToInspect, final String attributeName) {
+	public static <T> T getFieldFromObject(final Object objectToInspect, final String fieldName) {
 		try {
 
-			return getAttributeFromObjectThrowingExceptions(objectToInspect, attributeName);
+			return getFieldFromObjectThrowingExceptions(objectToInspect, fieldName);
 
 		} catch (IllegalArgumentException | IllegalAccessException e) {
-			throw new RuntimeException("Could not find the requested field: " + attributeName + " for this object: " + objectToInspect.toString(), e);
+			throw new RuntimeException("Could not find the requested field: " + fieldName + " for this object: " + objectToInspect.toString(), e);
 		} catch (final ClassCastException e) {
 			throw new RuntimeException(
 					"The call to getAttributeFromObject() returns an object that the caller is expecting by performing a cast on the object in the "
@@ -238,13 +238,13 @@ public class ReflectionUtils {
 
 
 	@SuppressWarnings("unchecked")
-	public static <T> T getAttributeFromObject(final Object objectToInspect, final Field field) {
-		return (T) getAttributeFromObject(objectToInspect, field.getName());
+	public static <T> T getFieldFromObject(final Object objectToInspect, final Field field) {
+		return (T) getFieldFromObject(objectToInspect, field.getName());
 	}
 
 
 	@SuppressWarnings("unchecked")
-	private static <T> T getAttributeFromObjectThrowingExceptions(final Object objectToInspect, final String attributeName)
+	private static <T> T getFieldFromObjectThrowingExceptions(final Object objectToInspect, final String attributeName)
 			throws IllegalArgumentException, IllegalAccessException, ClassCastException {
 
 		final Class<?> classToInspect = objectToInspect.getClass();
@@ -332,6 +332,25 @@ public class ReflectionUtils {
 
 	public static Field findFieldInClassWithNullReturns(final Class<?> classToInspect, final String fieldName) {
 		return findFieldInClassRecursively(classToInspect, fieldName);
+	}
+
+
+	public static void setFieldInClass(final Object objectToAlter, final String fieldName, final Object valueToSetIntoObject) {
+
+		final Field field = findFieldInClass(objectToAlter.getClass(), fieldName);
+		setFieldInClass(objectToAlter, field, valueToSetIntoObject);
+	}
+
+
+	public static void setFieldInClass(final Object objectToAlter, final Field field, final Object valueToSetIntoObject) {
+		try {
+
+			field.setAccessible(true);
+			field.set(objectToAlter, valueToSetIntoObject);
+
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			throw new ReflectionException("In ReflectionUtils.setFieldInClass(), could not set the value into the object.", e);
+		}
 	}
 
 }

@@ -1,4 +1,4 @@
-package com.poorknight.testing.matchers.utils;
+package com.poorknight.utils;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.empty;
@@ -507,7 +507,7 @@ public class ReflectionUtilsTest {
 		@Test
 		public void getAttributeFromObjectTest() {
 			final AttributeFinderTestObject object = new AttributeFinderTestObject();
-			final String result = ReflectionUtils.getAttributeFromObject(object, "findMe");
+			final String result = ReflectionUtils.getFieldFromObject(object, "findMe");
 
 			assertThat(result, is("found"));
 		}
@@ -516,7 +516,7 @@ public class ReflectionUtilsTest {
 		@Test
 		public void worksOkWithNull() {
 			final AttributeFinderTestObject object = new AttributeFinderTestObject();
-			final String result = ReflectionUtils.getAttributeFromObject(object, "nullField");
+			final String result = ReflectionUtils.getFieldFromObject(object, "nullField");
 
 			assertThat(result, nullValue());
 		}
@@ -526,7 +526,7 @@ public class ReflectionUtilsTest {
 		public void getAttributeFromObjectByFieldTest() throws Exception {
 			final ParentOfAttributeFinderTestObject object = new ParentOfAttributeFinderTestObject();
 			final Field field = object.getClass().getDeclaredField("findMe");
-			final String result = ReflectionUtils.getAttributeFromObject(object, field);
+			final String result = ReflectionUtils.getFieldFromObject(object, field);
 
 			assertThat(result, is("found"));
 		}
@@ -536,7 +536,7 @@ public class ReflectionUtilsTest {
 		public void doesNotThrowNullPointerExceptionWhenNonFoundAttribute() throws Exception {
 			try {
 				final AttributeFinderTestObject object = new AttributeFinderTestObject();
-				ReflectionUtils.getAttributeFromObject(object, "cantFindMe");
+				ReflectionUtils.getFieldFromObject(object, "cantFindMe");
 
 			} catch (final NullPointerException e) {
 				fail("Should not get a NullPointerException, but did get one.");
@@ -706,34 +706,109 @@ public class ReflectionUtilsTest {
 
 		@Before
 		public void setup() throws Exception, SecurityException {
-			this.fieldWithAnnotation = ClassWithFieldHavingAnnotations.class.getField("fieldWithAnnotation");
-			this.fieldWithoutAnnotation = ClassWithFieldHavingAnnotations.class.getField("fieldWithoutAnnotation");
+			fieldWithAnnotation = ClassWithFieldHavingAnnotations.class.getField("fieldWithAnnotation");
+			fieldWithoutAnnotation = ClassWithFieldHavingAnnotations.class.getField("fieldWithoutAnnotation");
 		}
 
 
 		@Test
 		public void findsAnnotationIfExists() throws Exception {
-			final boolean result = ReflectionUtils.fieldHasAnnotation(this.fieldWithAnnotation, RuntimeRetention.class);
+			final boolean result = ReflectionUtils.fieldHasAnnotation(fieldWithAnnotation, RuntimeRetention.class);
 			assertThat(result, is(true));
 		}
 
 
 		@Test
 		public void doesNotFindAnnotationIfNotExists() {
-			final boolean result = ReflectionUtils.fieldHasAnnotation(this.fieldWithoutAnnotation, RuntimeRetention.class);
+			final boolean result = ReflectionUtils.fieldHasAnnotation(fieldWithoutAnnotation, RuntimeRetention.class);
 			assertThat(result, is(false));
 		}
 
 
 		@Test(expected = RuntimeException.class)
 		public void throwsExceptionForSourceRetention() {
-			ReflectionUtils.fieldHasAnnotation(this.fieldWithAnnotation, SourceRetention.class);
+			ReflectionUtils.fieldHasAnnotation(fieldWithAnnotation, SourceRetention.class);
 		}
 
 
 		@Test(expected = RuntimeException.class)
 		public void throwsExceptionForClassRetention() {
-			ReflectionUtils.fieldHasAnnotation(this.fieldWithAnnotation, ClassRetention.class);
+			ReflectionUtils.fieldHasAnnotation(fieldWithAnnotation, ClassRetention.class);
+		}
+	}
+
+	@RunWith(JUnit4.class)
+	public static class SetFieldInClassTest {
+
+		private final ClassWithOneOfEachVisibilityFields testObject = new ClassWithOneOfEachVisibilityFields();
+		private final ChildOfClassWithOneOfEachVisibilityFields childTestObject = new ChildOfClassWithOneOfEachVisibilityFields();
+		private final String testFieldName = "privateString";
+		private final String value = "here is the value that should be set in the testObject";
+
+
+		@Test
+		public void correctlySetsFieldInClass() throws Exception {
+			ReflectionUtils.setFieldInClass(testObject, testFieldName, value);
+			final String foundValue = ReflectionUtils.getFieldFromObject(testObject, testFieldName);
+			assertThat(foundValue, equalTo(value));
+		}
+
+
+		@Test
+		public void correctlySetsFieldInSuperClass() throws Exception {
+			ReflectionUtils.setFieldInClass(childTestObject, testFieldName, value);
+			final String foundValue = ReflectionUtils.getFieldFromObject(childTestObject, testFieldName);
+			assertThat(foundValue, equalTo(value));
+		}
+
+
+		@Test(expected = ReflectionException.class)
+		public void reflectionExceptionOnBadMethodName() throws Exception {
+			ReflectionUtils.setFieldInClass(testObject, "badFieldName", value);
+		}
+
+
+		@Test(expected = ReflectionException.class)
+		public void reflectionExceptionOnBadObjectToSetType() throws Exception {
+			ReflectionUtils.setFieldInClass(testObject, testFieldName, -1);
+		}
+	}
+
+	@RunWith(JUnit4.class)
+	public static class SetFieldInClassWithFieldParamTest {
+
+		private final ClassWithOneOfEachVisibilityFields testObject = new ClassWithOneOfEachVisibilityFields();
+		private final ChildOfClassWithOneOfEachVisibilityFields childTestObject = new ChildOfClassWithOneOfEachVisibilityFields();
+		private final Field testField = ReflectionUtils.findFieldInClass(testObject.getClass(), "privateString");
+		private final Field childTestField = ReflectionUtils.findFieldInClass(childTestObject.getClass(), "privateString");
+		private final String value = "here is the value that should be set in the testObject";
+
+
+		@Test
+		public void correctlySetsFieldInClass() throws Exception {
+			ReflectionUtils.setFieldInClass(testObject, testField, value);
+			final String foundValue = ReflectionUtils.getFieldFromObject(testObject, testField);
+			assertThat(foundValue, equalTo(value));
+		}
+
+
+		@Test
+		public void correctlySetsFieldInSuperClass() throws Exception {
+			ReflectionUtils.setFieldInClass(childTestObject, testField, value);
+			final String foundValue = ReflectionUtils.getFieldFromObject(childTestObject, childTestField);
+			assertThat(foundValue, equalTo(value));
+		}
+
+
+		@Test(expected = ReflectionException.class)
+		public void reflectionExceptionOnBadMethodName() throws Exception {
+			ReflectionUtils.setFieldInClass(testObject, "badFieldName", value);
+		}
+
+
+		@Test(expected = ReflectionException.class)
+		public void reflectionExceptionOnBadObjectToSetType() throws Exception {
+			ReflectionUtils.setFieldInClass(testObject, testField, -1);
 		}
 	}
 }

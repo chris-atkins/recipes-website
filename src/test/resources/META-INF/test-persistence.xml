@@ -22,6 +22,9 @@
 	<persistence-unit name="JPADB" transaction-type="JTA">
 		<description>Persistence using a built-in memory-only H2 (Hyperion) database</description>
 		<provider>org.hibernate.ejb.HibernatePersistence</provider>
+
+		<mapping-file>META-INF/test-listeners.xml</mapping-file>
+		
 		<properties>
 			<property name="hibernate.hbm2ddl.auto" value="create-drop" />
 			<property name="javax.persistence.jdbc.url" value="jdbc:h2:mem:test;DB_CLOSE_DELAY=-1" />

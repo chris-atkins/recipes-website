@@ -24,8 +24,8 @@ import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
-import com.poorknight.testing.matchers.utils.ReflectionUtils;
 import com.poorknight.testing.matchers.utils.testclasses.ProperEntityTestClass;
+import com.poorknight.utils.ReflectionUtils;
 
 
 @RunWith(Enclosed.class)
@@ -350,7 +350,7 @@ public class EntityObjectMatcherTest {
 		public void constructorSetsUpAllFields() throws Exception {
 			final EntityObjectMatcher matcher = EntityObjectMatcher.meetsProjectEntityObjectStandards();
 			for (final Field field : ReflectionUtils.findAllFieldsInClass(matcher.getClass())) {
-				assertThat(ReflectionUtils.getAttributeFromObject(matcher, field), notNullValue());
+				assertThat(ReflectionUtils.getFieldFromObject(matcher, field), notNullValue());
 			}
 		}
 	}

@@ -9,7 +9,7 @@ import org.hamcrest.Factory;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeDiagnosingMatcher;
 
-import com.poorknight.testing.matchers.utils.ReflectionUtils;
+import com.poorknight.utils.ReflectionUtils;
 
 
 /**

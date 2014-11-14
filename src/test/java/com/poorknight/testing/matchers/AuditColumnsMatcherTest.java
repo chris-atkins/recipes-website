@@ -19,8 +19,8 @@ import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import com.poorknight.testing.matchers.utils.ReflectionUtils;
 import com.poorknight.testing.matchers.utils.testclasses.AuditTestClasses;
+import com.poorknight.utils.ReflectionUtils;
 
 
 @RunWith(MockitoJUnitRunner.class)

@@ -11,7 +11,7 @@ import org.hamcrest.Factory;
 import org.hamcrest.TypeSafeDiagnosingMatcher;
 
 import com.poorknight.domain.annotations.AuditColumns;
-import com.poorknight.testing.matchers.utils.ReflectionUtils;
+import com.poorknight.utils.ReflectionUtils;
 
 
 public class AuditColumnsMatcher extends TypeSafeDiagnosingMatcher<Class<?>> {

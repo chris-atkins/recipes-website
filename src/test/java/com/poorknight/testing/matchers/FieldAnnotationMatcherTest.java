@@ -18,8 +18,8 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import com.poorknight.testing.matchers.TestAnnotations.RuntimeRetention;
-import com.poorknight.testing.matchers.utils.ReflectionUtils;
 import com.poorknight.testing.matchers.utils.testclasses.ClassWithFieldHavingAnnotations;
+import com.poorknight.utils.ReflectionUtils;
 
 
 @RunWith(Enclosed.class)

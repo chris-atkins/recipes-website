@@ -3,6 +3,9 @@ package com.poorknight.testing.matchers;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
+
 import org.hamcrest.Matcher;
 
 import com.poorknight.testing.matchers.MethodTransactionAnnotationMatcher.TransactionType;
@@ -38,11 +41,20 @@ public class CustomMatchers {
 	}
 
 
+	public static Matcher<Class<?>> hasPreSaveEntityMethod(final String methodName) {
+		return hasAnnotationOnMethod(PrePersist.class, methodName);
+	}
+
+
+	public static Matcher<Class<?>> hasPreUpdateEntityMethod(final String methodName) {
+		return hasAnnotationOnMethod(PreUpdate.class, methodName);
+	}
+
+
 	/*
-	 * For now intended to only be used by other matchers - so is protected. The idea is that other matchers should have
-	 * specific business logic around which annotations belong where. Actual prod code should not be testing 'is this
-	 * annotation that I put there actually there' - it should be more like 'are the annotations that are appropriate
-	 * given the business functionality of the method on it'
+	 * For now intended to only be used by other matchers - so is protected. The idea is that other matchers should have specific business logic
+	 * around which annotations belong where. Actual prod code should not be testing 'is this annotation that I put there actually there' - it should
+	 * be more like 'are the annotations that are appropriate given the business functionality of the method on it'
 	 */
 	protected static Matcher<Class<?>> hasAnnotationOnMethod(final Class<? extends Annotation> annotationClass, final String methodName) {
 		return MethodAnnotationMatcher.hasAnnotationOnMethod(annotationClass, methodName);

@@ -24,7 +24,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 import com.poorknight.domain.annotations.AuditColumns;
-import com.poorknight.testing.matchers.utils.ReflectionUtils;
+import com.poorknight.utils.ReflectionUtils;
 
 
 @RunWith(JUnit4.class)
@@ -134,7 +134,7 @@ public class ClassAnnotationMatcherTest {
 	@Test
 	public void classOnlyFactoryMethodHasEmptyExpectedValues() throws Exception {
 		final ClassAnnotationMatcher matcher = ClassAnnotationMatcher.hasAnnotationOnClass(Retention.class);
-		final Object[] attributeFromObject = ReflectionUtils.getAttributeFromObject(matcher, "expectedValues");
+		final Object[] attributeFromObject = ReflectionUtils.getFieldFromObject(matcher, "expectedValues");
 		assertThat(attributeFromObject.length, equalTo(0));
 	}
 }

@@ -12,8 +12,8 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 import com.poorknight.testing.matchers.SingleAuditFieldMatcher.AuditFieldType;
-import com.poorknight.testing.matchers.utils.ReflectionUtils;
 import com.poorknight.testing.matchers.utils.testclasses.AuditTestClasses;
+import com.poorknight.utils.ReflectionUtils;
 
 
 @RunWith(JUnit4.class)
@@ -28,7 +28,7 @@ public class SingleAuditFieldMatcherTest {
 	@Test
 	public void auditStringColumnFactoryMethodSetsFieldTypeCorrectly() {
 		final SingleAuditFieldMatcher matcher = SingleAuditFieldMatcher.isACorrectUserNameAuditFieldForAnEntity();
-		final AuditFieldType auditFieldType = ReflectionUtils.getAttributeFromObject(matcher, "fieldType");
+		final AuditFieldType auditFieldType = ReflectionUtils.getFieldFromObject(matcher, "fieldType");
 		assertThat(auditFieldType, equalTo(AuditFieldType.STRING_FIELD));
 	}
 
@@ -36,7 +36,7 @@ public class SingleAuditFieldMatcherTest {
 	@Test
 	public void auditTimestampColumnFactoryMethodSetsFieldTypeCorrectly() {
 		final SingleAuditFieldMatcher matcher = SingleAuditFieldMatcher.isACorrectTimestampAuditFieldForAnEntity();
-		final AuditFieldType auditFieldType = ReflectionUtils.getAttributeFromObject(matcher, "fieldType");
+		final AuditFieldType auditFieldType = ReflectionUtils.getFieldFromObject(matcher, "fieldType");
 		assertThat(auditFieldType, equalTo(AuditFieldType.TIMESTAMP_FIELD));
 	}
 

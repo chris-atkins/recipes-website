@@ -13,7 +13,7 @@ import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
-import com.poorknight.testing.matchers.utils.ReflectionUtils;
+import com.poorknight.utils.ReflectionUtils;
 
 
 @RunWith(PowerMockRunner.class)

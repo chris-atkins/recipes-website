@@ -12,7 +12,7 @@ import org.hamcrest.Description;
 import org.hamcrest.Factory;
 import org.hamcrest.TypeSafeDiagnosingMatcher;
 
-import com.poorknight.testing.matchers.utils.ReflectionUtils;
+import com.poorknight.utils.ReflectionUtils;
 
 
 public class FieldAnnotationValueMatcher extends TypeSafeDiagnosingMatcher<Field> {
@@ -81,8 +81,8 @@ public class FieldAnnotationValueMatcher extends TypeSafeDiagnosingMatcher<Field
 	private Object getActualValue(final Field fieldToCheck) {
 		final Annotation proxyAnnotation = fieldToCheck.getAnnotation(this.annotationClass);
 
-		final InvocationHandler annotationHandler = ReflectionUtils.getAttributeFromObject(proxyAnnotation, "h");
-		final Map<String, Object> memberValues = ReflectionUtils.getAttributeFromObject(annotationHandler, "memberValues");
+		final InvocationHandler annotationHandler = ReflectionUtils.getFieldFromObject(proxyAnnotation, "h");
+		final Map<String, Object> memberValues = ReflectionUtils.getFieldFromObject(annotationHandler, "memberValues");
 
 		return memberValues.get(this.annotationFieldName);
 	}

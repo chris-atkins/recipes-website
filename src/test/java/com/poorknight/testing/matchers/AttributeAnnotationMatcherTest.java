@@ -21,7 +21,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 import com.poorknight.testing.matchers.AttributeAnnotationMatcher.Cardinality;
 import com.poorknight.testing.matchers.TestAnnotations.RuntimeRetention;
-import com.poorknight.testing.matchers.utils.ReflectionUtils;
+import com.poorknight.utils.ReflectionUtils;
 
 
 @RunWith(Enclosed.class)

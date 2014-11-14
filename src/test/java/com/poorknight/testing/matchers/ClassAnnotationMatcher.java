@@ -9,7 +9,7 @@ import org.hamcrest.Description;
 import org.hamcrest.Factory;
 import org.hamcrest.TypeSafeDiagnosingMatcher;
 
-import com.poorknight.testing.matchers.utils.ReflectionUtils;
+import com.poorknight.utils.ReflectionUtils;
 
 
 public class ClassAnnotationMatcher extends TypeSafeDiagnosingMatcher<Class<?>> {
@@ -99,8 +99,8 @@ public class ClassAnnotationMatcher extends TypeSafeDiagnosingMatcher<Class<?>> 
 	private Object findActualValue(final Class<?> classToInspect) {
 		final Annotation proxyAnnotation = classToInspect.getAnnotation(this.annotationToCheckFor);
 
-		final InvocationHandler annotationHandler = ReflectionUtils.getAttributeFromObject(proxyAnnotation, "h");
-		final Map<String, Object> memberValues = ReflectionUtils.getAttributeFromObject(annotationHandler, "memberValues");
+		final InvocationHandler annotationHandler = ReflectionUtils.getFieldFromObject(proxyAnnotation, "h");
+		final Map<String, Object> memberValues = ReflectionUtils.getFieldFromObject(annotationHandler, "memberValues");
 
 		return memberValues.get("value");
 	}

@@ -33,10 +33,10 @@ public class RecipeDAOIT {
 	private RecipeDAO dao;
 
 	@PersistenceContext
-	private EntityManager em;  // used for cleanup
+	private EntityManager em;  // used for cleanup between tests
 
 	@Inject
-	private UserTransaction transaction;  // used for cleanup
+	private UserTransaction transaction;  // used for cleanup between tests
 
 
 	@Deployment

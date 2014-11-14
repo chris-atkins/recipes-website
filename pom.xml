@@ -564,41 +564,10 @@
 				</plugins>
 			</build>
 
-<!-- 			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.jacoco</groupId>
-						<artifactId>jacoco-maven-plugin</artifactId>
-						<version>${jacoco-maven-plugin.version}</version>
-						<executions>
-							<execution>
-								<goals>
-									<goal>prepare-agent</goal>
-								</goals>
-							</execution>
-							<execution>
-								<id>report</id>
-								<phase>prepare-package</phase>
-								<goals>
-									<goal>report</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-					
-
-					<plugin>
-						<artifactId>maven-surefire-plugin</artifactId>
-						<version>${maven-surefire-plugin.version}</version>
-						<configuration>
-							<forkCount>1</forkCount>
-							<reuseForks>true</reuseForks>
-							<redirectTestOutputToFile>false</redirectTestOutputToFile>
-						</configuration>
-					</plugin>
-					
-				</plugins>
-			</build> -->
+			<!-- THIS IS USED IN CONJUNCTION WITH THE JACOCO PLUGIN FOR (TEST COVERAGE IN) JENKINS, BUT IT FAILS DUE TO OPENSHIFT 
+				SUCKING <plugin> <groupId>org.jacoco</groupId> <artifactId>jacoco-maven-plugin</artifactId> <version>${jacoco-maven-plugin.version}</version> 
+				<executions> <execution> <goals> <goal>prepare-agent</goal> </goals> </execution> <execution> <id>report</id> <phase>prepare-package</phase> 
+				<goals> <goal>report</goal> </goals> </execution> </executions> </plugin> -->
 
 		</profile>
 
