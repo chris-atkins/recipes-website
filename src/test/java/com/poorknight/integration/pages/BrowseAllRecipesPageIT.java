@@ -1,6 +1,6 @@
 package com.poorknight.integration.pages;
 
-import static com.poorknight.integration.pages.ITConstants.BROWSE_ALL_PAGE;
+import static com.poorknight.integration.constants.ITConstants.BROWSE_ALL_PAGE;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.endsWith;
 import static org.hamcrest.Matchers.notNullValue;
@@ -18,6 +18,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
+import com.poorknight.integration.constants.ITConstants;
 import com.poorknight.integration.utils.ArquillianUtils;
 
 

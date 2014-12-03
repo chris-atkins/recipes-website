@@ -1,6 +1,6 @@
 package com.poorknight.testing.matchers.utils.testclasses;
 
-import com.poorknight.testing.matchers.TestAnnotations.RuntimeRetention;
+import com.poorknight.testing.matchers.utils.testclasses.TestAnnotations.RuntimeRetention;
 
 
 public class PublicRuntimeRetentionTypeClass {

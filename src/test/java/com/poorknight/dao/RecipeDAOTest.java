@@ -28,7 +28,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import com.poorknight.domain.Recipe;
 import com.poorknight.exceptions.DaoException;
-import com.poorknight.testing.matchers.MethodTransactionAnnotationMatcher.TransactionType;
+import com.poorknight.testing.matchers.methods.MethodTransactionAnnotationMatcher.TransactionType;
 
 
 @RunWith(MockitoJUnitRunner.class)

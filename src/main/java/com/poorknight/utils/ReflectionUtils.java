@@ -42,6 +42,20 @@ public class ReflectionUtils {
 	}
 
 
+	public static List<Method> findAllMethodsInClassWithAnnotation(final Class<?> classToInspect,
+			final Class<? extends Annotation> annotationToCheckFor) {
+		final List<Method> results = new LinkedList<>();
+
+		final Collection<Method> foundMethods = getAllMethodsInClassAndSuperClasses(classToInspect);
+		for (final Method method : foundMethods) {
+			if (method.getAnnotation(annotationToCheckFor) != null) {
+				results.add(method);
+			}
+		}
+		return results;
+	}
+
+
 	public static Collection<Method> findPublicMethodsInClassWithAnnotation(final Class<?> classToInspect,
 			final Class<? extends Annotation> annotationToCheckFor) {
 		validateAnnotationHasRuntimeRetentionThrowingExceptionOnFail(annotationToCheckFor);

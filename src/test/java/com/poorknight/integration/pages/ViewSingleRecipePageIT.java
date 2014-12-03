@@ -1,8 +1,8 @@
 package com.poorknight.integration.pages;
 
-import static com.poorknight.integration.pages.ITConstants.BROWSE_ALL_PAGE;
-import static com.poorknight.integration.pages.ITConstants.HOME_PAGE;
-import static com.poorknight.integration.pages.ITConstants.VIEW_SINGLE_RECIPE_PAGE;
+import static com.poorknight.integration.constants.ITConstants.BROWSE_ALL_PAGE;
+import static com.poorknight.integration.constants.ITConstants.HOME_PAGE;
+import static com.poorknight.integration.constants.ITConstants.VIEW_SINGLE_RECIPE_PAGE;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.endsWith;
 import static org.hamcrest.Matchers.notNullValue;

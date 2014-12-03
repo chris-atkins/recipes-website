@@ -54,7 +54,7 @@ public class AuditColumnsListenerTest {
 
 
 	@Test
-	public void modAnnotatedWithPrePersist() throws Exception {
+	public void methodAnnotatedWithPrePersist() throws Exception {
 		assertThat(AuditColumnsListener.class, hasPreSaveEntityMethod(METHOD_NAME));
 	}
 

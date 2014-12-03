@@ -173,13 +173,14 @@ public class AuditTestClasses {
 		}
 
 
-		public void setWithSetter(final String s) {
+		public void setWithSetter(@SuppressWarnings("unused") final String s) {
 			// empty on purpose
 		}
 
 		// ////////////////////////////////////////////////////
 
 		// ////////////////////////////////////////////////////
+		@SuppressWarnings("unused")
 		private String noColumnAnnotation;
 
 

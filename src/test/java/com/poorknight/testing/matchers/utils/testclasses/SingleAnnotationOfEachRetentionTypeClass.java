@@ -1,8 +1,8 @@
 package com.poorknight.testing.matchers.utils.testclasses;
 
-import com.poorknight.testing.matchers.TestAnnotations.ClassRetention;
-import com.poorknight.testing.matchers.TestAnnotations.RuntimeRetention;
-import com.poorknight.testing.matchers.TestAnnotations.SourceRetention;
+import com.poorknight.testing.matchers.utils.testclasses.TestAnnotations.ClassRetention;
+import com.poorknight.testing.matchers.utils.testclasses.TestAnnotations.RuntimeRetention;
+import com.poorknight.testing.matchers.utils.testclasses.TestAnnotations.SourceRetention;
 
 
 /**********************************

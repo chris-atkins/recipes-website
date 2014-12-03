@@ -3,7 +3,7 @@ package com.poorknight.testing.matchers.utils.testclasses;
 import java.util.Arrays;
 import java.util.List;
 
-import com.poorknight.testing.matchers.TestAnnotations.RuntimeRetention;
+import com.poorknight.testing.matchers.utils.testclasses.TestAnnotations.RuntimeRetention;
 
 
 public class AttributeAnnotationFinderTestClass {

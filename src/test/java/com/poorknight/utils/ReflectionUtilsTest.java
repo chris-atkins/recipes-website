@@ -16,6 +16,9 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+import javax.transaction.Transactional;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.experimental.runners.Enclosed;
@@ -23,10 +26,6 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 import com.poorknight.exceptions.ReflectionException;
-import com.poorknight.testing.matchers.TestAnnotations.ClassRetention;
-import com.poorknight.testing.matchers.TestAnnotations.NoRetentionSpecified;
-import com.poorknight.testing.matchers.TestAnnotations.RuntimeRetention;
-import com.poorknight.testing.matchers.TestAnnotations.SourceRetention;
 import com.poorknight.testing.matchers.utils.packageprivatetesting.ExtendsMethodVisibilityInDifferentPackage;
 import com.poorknight.testing.matchers.utils.testclasses.AttributeAnnotationFinderTestClass;
 import com.poorknight.testing.matchers.utils.testclasses.AttributeFinderTestObject;
@@ -34,6 +33,7 @@ import com.poorknight.testing.matchers.utils.testclasses.ChildClassWithMethodsOf
 import com.poorknight.testing.matchers.utils.testclasses.ChildClassWithMethodsOfAllVisibilityAndOverload;
 import com.poorknight.testing.matchers.utils.testclasses.ChildClassWithMethodsOfAllVisibilityAndOverride;
 import com.poorknight.testing.matchers.utils.testclasses.ChildOfClassWithOneOfEachVisibilityFields;
+import com.poorknight.testing.matchers.utils.testclasses.ChildOfMethodAnnotationTestClass;
 import com.poorknight.testing.matchers.utils.testclasses.ClassWithDefaultConstructor;
 import com.poorknight.testing.matchers.utils.testclasses.ClassWithFieldHavingAnnotations;
 import com.poorknight.testing.matchers.utils.testclasses.ClassWithMethodsOfAllVisibility;
@@ -49,6 +49,7 @@ import com.poorknight.testing.matchers.utils.testclasses.ExtendsExtendsMethodVis
 import com.poorknight.testing.matchers.utils.testclasses.ExtendsMethodVisibility;
 import com.poorknight.testing.matchers.utils.testclasses.FinalClass;
 import com.poorknight.testing.matchers.utils.testclasses.InheritedRuntimeRetentionTypeClass;
+import com.poorknight.testing.matchers.utils.testclasses.MethodAnnotationTestClass;
 import com.poorknight.testing.matchers.utils.testclasses.MethodVisibility;
 import com.poorknight.testing.matchers.utils.testclasses.MulitpleWithInheritedRuntimeRetentionTypeClass;
 import com.poorknight.testing.matchers.utils.testclasses.OverloadedRuntimeRetentionTypeClass;
@@ -57,6 +58,10 @@ import com.poorknight.testing.matchers.utils.testclasses.PrivateRuntimeRetention
 import com.poorknight.testing.matchers.utils.testclasses.PublicAndProtectedRuntimeRetentionTypeClass;
 import com.poorknight.testing.matchers.utils.testclasses.PublicRuntimeRetentionTypeClass;
 import com.poorknight.testing.matchers.utils.testclasses.SingleAnnotationOfEachRetentionTypeClass;
+import com.poorknight.testing.matchers.utils.testclasses.TestAnnotations.ClassRetention;
+import com.poorknight.testing.matchers.utils.testclasses.TestAnnotations.NoRetentionSpecified;
+import com.poorknight.testing.matchers.utils.testclasses.TestAnnotations.RuntimeRetention;
+import com.poorknight.testing.matchers.utils.testclasses.TestAnnotations.SourceRetention;
 
 
 @RunWith(Enclosed.class)
@@ -706,34 +711,34 @@ public class ReflectionUtilsTest {
 
 		@Before
 		public void setup() throws Exception, SecurityException {
-			fieldWithAnnotation = ClassWithFieldHavingAnnotations.class.getField("fieldWithAnnotation");
-			fieldWithoutAnnotation = ClassWithFieldHavingAnnotations.class.getField("fieldWithoutAnnotation");
+			this.fieldWithAnnotation = ClassWithFieldHavingAnnotations.class.getField("fieldWithAnnotation");
+			this.fieldWithoutAnnotation = ClassWithFieldHavingAnnotations.class.getField("fieldWithoutAnnotation");
 		}
 
 
 		@Test
 		public void findsAnnotationIfExists() throws Exception {
-			final boolean result = ReflectionUtils.fieldHasAnnotation(fieldWithAnnotation, RuntimeRetention.class);
+			final boolean result = ReflectionUtils.fieldHasAnnotation(this.fieldWithAnnotation, RuntimeRetention.class);
 			assertThat(result, is(true));
 		}
 
 
 		@Test
 		public void doesNotFindAnnotationIfNotExists() {
-			final boolean result = ReflectionUtils.fieldHasAnnotation(fieldWithoutAnnotation, RuntimeRetention.class);
+			final boolean result = ReflectionUtils.fieldHasAnnotation(this.fieldWithoutAnnotation, RuntimeRetention.class);
 			assertThat(result, is(false));
 		}
 
 
 		@Test(expected = RuntimeException.class)
 		public void throwsExceptionForSourceRetention() {
-			ReflectionUtils.fieldHasAnnotation(fieldWithAnnotation, SourceRetention.class);
+			ReflectionUtils.fieldHasAnnotation(this.fieldWithAnnotation, SourceRetention.class);
 		}
 
 
 		@Test(expected = RuntimeException.class)
 		public void throwsExceptionForClassRetention() {
-			ReflectionUtils.fieldHasAnnotation(fieldWithAnnotation, ClassRetention.class);
+			ReflectionUtils.fieldHasAnnotation(this.fieldWithAnnotation, ClassRetention.class);
 		}
 	}
 
@@ -748,29 +753,29 @@ public class ReflectionUtilsTest {
 
 		@Test
 		public void correctlySetsFieldInClass() throws Exception {
-			ReflectionUtils.setFieldInClass(testObject, testFieldName, value);
-			final String foundValue = ReflectionUtils.getFieldFromObject(testObject, testFieldName);
-			assertThat(foundValue, equalTo(value));
+			ReflectionUtils.setFieldInClass(this.testObject, this.testFieldName, this.value);
+			final String foundValue = ReflectionUtils.getFieldFromObject(this.testObject, this.testFieldName);
+			assertThat(foundValue, equalTo(this.value));
 		}
 
 
 		@Test
 		public void correctlySetsFieldInSuperClass() throws Exception {
-			ReflectionUtils.setFieldInClass(childTestObject, testFieldName, value);
-			final String foundValue = ReflectionUtils.getFieldFromObject(childTestObject, testFieldName);
-			assertThat(foundValue, equalTo(value));
+			ReflectionUtils.setFieldInClass(this.childTestObject, this.testFieldName, this.value);
+			final String foundValue = ReflectionUtils.getFieldFromObject(this.childTestObject, this.testFieldName);
+			assertThat(foundValue, equalTo(this.value));
 		}
 
 
 		@Test(expected = ReflectionException.class)
 		public void reflectionExceptionOnBadMethodName() throws Exception {
-			ReflectionUtils.setFieldInClass(testObject, "badFieldName", value);
+			ReflectionUtils.setFieldInClass(this.testObject, "badFieldName", this.value);
 		}
 
 
 		@Test(expected = ReflectionException.class)
 		public void reflectionExceptionOnBadObjectToSetType() throws Exception {
-			ReflectionUtils.setFieldInClass(testObject, testFieldName, -1);
+			ReflectionUtils.setFieldInClass(this.testObject, this.testFieldName, -1);
 		}
 	}
 
@@ -779,36 +784,64 @@ public class ReflectionUtilsTest {
 
 		private final ClassWithOneOfEachVisibilityFields testObject = new ClassWithOneOfEachVisibilityFields();
 		private final ChildOfClassWithOneOfEachVisibilityFields childTestObject = new ChildOfClassWithOneOfEachVisibilityFields();
-		private final Field testField = ReflectionUtils.findFieldInClass(testObject.getClass(), "privateString");
-		private final Field childTestField = ReflectionUtils.findFieldInClass(childTestObject.getClass(), "privateString");
+		private final Field testField = ReflectionUtils.findFieldInClass(this.testObject.getClass(), "privateString");
+		private final Field childTestField = ReflectionUtils.findFieldInClass(this.childTestObject.getClass(), "privateString");
 		private final String value = "here is the value that should be set in the testObject";
 
 
 		@Test
 		public void correctlySetsFieldInClass() throws Exception {
-			ReflectionUtils.setFieldInClass(testObject, testField, value);
-			final String foundValue = ReflectionUtils.getFieldFromObject(testObject, testField);
-			assertThat(foundValue, equalTo(value));
+			ReflectionUtils.setFieldInClass(this.testObject, this.testField, this.value);
+			final String foundValue = ReflectionUtils.getFieldFromObject(this.testObject, this.testField);
+			assertThat(foundValue, equalTo(this.value));
 		}
 
 
 		@Test
 		public void correctlySetsFieldInSuperClass() throws Exception {
-			ReflectionUtils.setFieldInClass(childTestObject, testField, value);
-			final String foundValue = ReflectionUtils.getFieldFromObject(childTestObject, childTestField);
-			assertThat(foundValue, equalTo(value));
+			ReflectionUtils.setFieldInClass(this.childTestObject, this.testField, this.value);
+			final String foundValue = ReflectionUtils.getFieldFromObject(this.childTestObject, this.childTestField);
+			assertThat(foundValue, equalTo(this.value));
 		}
 
 
 		@Test(expected = ReflectionException.class)
 		public void reflectionExceptionOnBadMethodName() throws Exception {
-			ReflectionUtils.setFieldInClass(testObject, "badFieldName", value);
+			ReflectionUtils.setFieldInClass(this.testObject, "badFieldName", this.value);
 		}
 
 
 		@Test(expected = ReflectionException.class)
 		public void reflectionExceptionOnBadObjectToSetType() throws Exception {
-			ReflectionUtils.setFieldInClass(testObject, testField, -1);
+			ReflectionUtils.setFieldInClass(this.testObject, this.testField, -1);
 		}
+	}
+
+	@RunWith(JUnit4.class)
+	public static class FindAllMethodsInClassWithAnnotationTests {
+
+		@Test
+		public void findsAllMethods_RegardlessOfVisibility() throws Exception {
+			final Collection<Method> foundMethods = ReflectionUtils.findAllMethodsInClassWithAnnotation(MethodAnnotationTestClass.class,
+					Transactional.class);
+			assertThat(foundMethods.size(), equalTo(4));
+		}
+
+
+		@Test
+		public void findsAllMethodsInSuperClass_RegardlessOfVisibility() throws Exception {
+			final Collection<Method> foundMethods = ReflectionUtils.findAllMethodsInClassWithAnnotation(ChildOfMethodAnnotationTestClass.class,
+					Transactional.class);
+			assertThat(foundMethods.size(), equalTo(4));
+		}
+
+
+		@Test
+		public void findsOverloadedMethods() throws Exception {
+			final Collection<Method> foundMethods = ReflectionUtils.findAllMethodsInClassWithAnnotation(ChildOfMethodAnnotationTestClass.class,
+					PostConstruct.class);
+			assertThat(foundMethods.size(), equalTo(2));
+		}
+
 	}
 }

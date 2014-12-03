@@ -1,7 +1,7 @@
 package com.poorknight.integration.pages;
 
-import static com.poorknight.integration.pages.ITConstants.HOME_PAGE;
-import static com.poorknight.integration.pages.ITConstants.SEARCH_PAGE;
+import static com.poorknight.integration.constants.ITConstants.HOME_PAGE;
+import static com.poorknight.integration.constants.ITConstants.SEARCH_PAGE;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.endsWith;
 

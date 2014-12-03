@@ -8,7 +8,17 @@ import javax.persistence.PreUpdate;
 
 import org.hamcrest.Matcher;
 
-import com.poorknight.testing.matchers.MethodTransactionAnnotationMatcher.TransactionType;
+import com.poorknight.testing.matchers.classes.ClassAnnotationMatcher;
+import com.poorknight.testing.matchers.classes.EntityObjectMatcher;
+import com.poorknight.testing.matchers.fields.FieldAnnotationMatcher;
+import com.poorknight.testing.matchers.fields.FieldAnnotationValueMatcher;
+import com.poorknight.testing.matchers.fields.FieldTypeMatcher;
+import com.poorknight.testing.matchers.matchers.FactoryMethodMatcher;
+import com.poorknight.testing.matchers.methods.AnnotatedMethodsMatcher;
+import com.poorknight.testing.matchers.methods.MethodAnnotationMatcher;
+import com.poorknight.testing.matchers.methods.MethodTransactionAnnotationMatcher;
+import com.poorknight.testing.matchers.methods.MethodTransactionAnnotationMatcher.TransactionType;
+import com.poorknight.testing.matchers.methods.TransactionalMethodMatcher;
 
 
 /**
@@ -51,27 +61,23 @@ public class CustomMatchers {
 	}
 
 
+	public static Matcher<Class<?>> hasAPostConstructMethod() {
+		return AnnotatedMethodsMatcher.hasAPostConstructMethod();
+	}
+
+
+	public static Matcher<Class<? extends Matcher<?>>> hasFactoryMethod() {
+		return FactoryMethodMatcher.hasFactoryMethod();
+	}
+
+
 	/*
 	 * For now intended to only be used by other matchers - so is protected. The idea is that other matchers should have specific business logic
 	 * around which annotations belong where. Actual prod code should not be testing 'is this annotation that I put there actually there' - it should
 	 * be more like 'are the annotations that are appropriate given the business functionality of the method on it'
 	 */
 	protected static Matcher<Class<?>> hasAnnotationOnMethod(final Class<? extends Annotation> annotationClass, final String methodName) {
-		return MethodAnnotationMatcher.hasAnnotationOnMethod(annotationClass, methodName);
-	}
-
-
-	protected static Matcher<Class<? extends Matcher<?>>> hasFactoryMethod() {
-		return FactoryMethodMatcher.hasFactoryMethod();
-	}
-
-
-	@SafeVarargs
-	protected static AttributeAnnotationMatcher hasAnnotationOnExactlyOneAttribute(final Class<? extends Annotation> annotationClass,
-			final Matcher<Field>... furtherMatchersToApplyToAnnotatedAttributes) {
-
-		return AttributeAnnotationMatcher.hasAnnotationOnAttribute(annotationClass, AttributeAnnotationMatcher.Cardinality.EXACTLY_ONE,
-				furtherMatchersToApplyToAnnotatedAttributes);
+		return MethodAnnotationMatcher.hasAnnotationOnPublicMethod(annotationClass, methodName);
 	}
 
 
@@ -81,7 +87,7 @@ public class CustomMatchers {
 
 
 	protected static Matcher<Field> hasAnnotationOnField(final Class<? extends Annotation> annotationToCheckFor) {
-		return FieldAnnotationMatcher.hasAnnotation(annotationToCheckFor);
+		return FieldAnnotationMatcher.hasAnnotationOnField(annotationToCheckFor);
 	}
 
 
