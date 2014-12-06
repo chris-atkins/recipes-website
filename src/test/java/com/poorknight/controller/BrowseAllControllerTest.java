@@ -1,5 +1,6 @@
 package com.poorknight.controller;
 
+import static com.poorknight.testing.matchers.CustomMatchers.hasAReadOnlyField;
 import static org.apache.commons.lang3.RandomStringUtils.random;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertThat;
@@ -31,14 +32,15 @@ public class BrowseAllControllerTest {
 
 
 	@Test
-	public void isAProperViewScopedController() throws Exception {
+	public void properViewScopedController() throws Exception {
 		// has correct ViewScoped annotation (faces, not beans)
 		// implements serializable
 		// has the @Named annotation (maybe check for same name as the class with lowercase first letter)
 
 		// would be great to have an integration test that starts the container and checks that the controller is truly serializable after everything
 		// is injected into it
-		// fail("Implement me");
+
+		// assertThat(BrowseAllController.class, CustomMatchers.isAProperViewScopedController());
 	}
 
 
@@ -61,6 +63,6 @@ public class BrowseAllControllerTest {
 
 	@Test
 	public void theAllRecipesField_IsReadOnly() throws Exception {
-		// assertThat(BrowseAllController.class, CustomMatchers.hasAReadOnlyField("allRecipes"));
+		assertThat(BrowseAllController.class, hasAReadOnlyField("allRecipes"));
 	}
 }

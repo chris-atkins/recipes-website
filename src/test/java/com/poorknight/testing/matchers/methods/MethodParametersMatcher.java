@@ -54,7 +54,7 @@ public class MethodParametersMatcher extends TypeSafeDiagnosingMatcher<Method> {
 
 
 	private void appendMismatchArgumentsMessage(final Description mismatchDescription) {
-		mismatchDescription.appendText("expected parameters").appendText(this.expectedParameterTypes.toString())
+		mismatchDescription.appendText("expected parameters").appendText(Arrays.toString(this.expectedParameterTypes))
 				.appendText(", but the parameter types did not match.");
 	}
 }

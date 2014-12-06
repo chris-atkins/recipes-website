@@ -18,7 +18,6 @@ import com.poorknight.exceptions.DaoException;
 /**
  * Responsible for CRUD operations on the Recipe class.
  */
-//@Dependent
 @RequestScoped
 public class RecipeDAO {
 

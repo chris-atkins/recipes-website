@@ -24,7 +24,10 @@ public class BrowseAllController implements Serializable {
 	private List<Recipe> allRecipes;
 
 	@Inject
-	RecipeDAO recipeDAO;
+	private RecipeDAO recipeDAO;  // TODO - this is not serializable - should be marked as transient (it is a request scoped bean) - but how will it
+									// behave on the server? other option would be to make it serializable - but is entity manager serializable? OR
+									// will CDI take care of this for me and always inject a new one and I don't need to worry about it (and I can
+									// mark it as transient)? Need an integration test
 
 
 	@PostConstruct
@@ -37,8 +40,4 @@ public class BrowseAllController implements Serializable {
 		return this.allRecipes;
 	}
 
-
-	public void setAllRecipes(final List<Recipe> allRecipes) {
-		this.allRecipes = allRecipes;
-	}
 }
