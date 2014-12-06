@@ -13,9 +13,8 @@ import com.poorknight.utils.ReflectionUtils;
 
 
 /**
- * Responsible for checking that a Matcher class appropriately implements an @Factory method. This means that there are
- * no public constructors, and that there is at least one @Factory method that is public and returns an object of the
- * correct type that is not null.
+ * Responsible for checking that a Matcher class appropriately implements an @Factory method. This means that there are no public constructors, and
+ * that there is at least one @Factory method that is public and returns an object of the correct type that is not null.
  */
 public class FactoryMethodMatcher extends TypeSafeDiagnosingMatcher<Class<? extends Matcher<?>>> {
 
@@ -32,7 +31,8 @@ public class FactoryMethodMatcher extends TypeSafeDiagnosingMatcher<Class<? exte
 
 	@Override
 	public void describeTo(final Description description) {
-		description.appendText("has a static @Factory method that returns non-null, and has no public constructors");
+		description.appendText("has a static @Factory method with a return type of ").appendText(this.getClass().getSimpleName())
+				.appendText(", and has no public constructors");
 	}
 
 

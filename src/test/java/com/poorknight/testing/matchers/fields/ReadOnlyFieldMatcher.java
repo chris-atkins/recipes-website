@@ -28,6 +28,7 @@ public class ReadOnlyFieldMatcher extends TypeSafeDiagnosingMatcher<Class<?>> {
 
 
 	private ReadOnlyFieldMatcher(final String fieldName) {
+		super();
 		this.fieldName = fieldName;
 	}
 
