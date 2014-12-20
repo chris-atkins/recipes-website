@@ -1,4 +1,4 @@
-package com.poorknight.integration.constants;
+package com.poorknight.constants;
 
 
 

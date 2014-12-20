@@ -1,4 +1,4 @@
-package com.poorknight.integration.dao;
+package com.poorknight.dao;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -41,9 +41,8 @@ public class RecipeDAOIT {
 
 	@Deployment
 	public static Archive<?> createDeployment() {
-		return ShrinkWrap.create(JavaArchive.class, "test.jar").addClass(RecipeDAO.class).addClass(DaoException.class)
-				.addPackage(Recipe.class.getPackage()).addAsManifestResource("META-INF/test-persistence.xml", "persistence.xml")
-				.addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
+		return ShrinkWrap.create(JavaArchive.class, "test.jar").addClass(RecipeDAO.class).addClass(DaoException.class).addClass(Recipe.class)
+				.addAsManifestResource("META-INF/test-persistence.xml", "persistence.xml").addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
 	}
 
 

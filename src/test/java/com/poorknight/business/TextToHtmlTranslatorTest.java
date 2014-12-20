@@ -4,37 +4,15 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
-import javax.inject.Inject;
-import javax.validation.ConstraintViolationException;
-
-import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.asset.EmptyAsset;
-import org.jboss.shrinkwrap.api.spec.JavaArchive;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
+import org.junit.runners.JUnit4;
 
 
-@RunWith(Arquillian.class)
+@RunWith(JUnit4.class)
 public class TextToHtmlTranslatorTest {
 
-	@Inject
-	private TextToHtmlTranslator textToHtmlTranslator;
-
-	@Rule
-	public ExpectedException thrown = ExpectedException.none();
-
-
-	@Deployment
-	public static JavaArchive createDeployment() {
-
-		// Maybe need to have a beans.xml that enables the interceptor
-		return ShrinkWrap.create(JavaArchive.class).addClass(TextToHtmlTranslator.class)
-				.addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
-	}
+	private final TextToHtmlTranslator textToHtmlTranslator = new TextToHtmlTranslator();
 
 
 	@Test
@@ -66,10 +44,4 @@ public class TextToHtmlTranslatorTest {
 		assertThat(translatedText, is(equalTo(expectedTranslatedText)));
 	}
 
-
-	@Test
-	public void testValidateForNonNullInput() {
-		this.thrown.expect(ConstraintViolationException.class);
-		this.textToHtmlTranslator.translate(null);
-	}
 }

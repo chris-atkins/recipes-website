@@ -1,4 +1,4 @@
-package com.poorknight.integration.listeners;
+package com.poorknight.listeners;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -24,6 +24,8 @@ import com.poorknight.domain.Recipe;
 import com.poorknight.domain.annotations.AuditColumns;
 import com.poorknight.domain.entitylisteners.AuditColumnsListener;
 import com.poorknight.exceptions.DaoException;
+import com.poorknight.exceptions.ReflectionException;
+import com.poorknight.utils.ReflectionUtils;
 import com.poorknight.utils.TimestampGenerator;
 
 
@@ -39,10 +41,10 @@ public class AuditColumnsListenerIT {
 
 	@Deployment
 	public static Archive<?> createDeployment() {
-		return ShrinkWrap.create(JavaArchive.class, "test.jar").addClass(RecipeDAO.class).addPackage(DaoException.class.getPackage())
-				.addPackage(Recipe.class.getPackage()).addAsManifestResource("META-INF/test-persistence.xml", "persistence.xml")
-				.addAsManifestResource("META-INF/test-listeners.xml", "META-INF/listeners.xml").addPackage(AuditColumnsListener.class.getPackage())
-				.addPackage(AuditColumns.class.getPackage()).addPackage(TimestampGenerator.class.getPackage())
+		return ShrinkWrap.create(JavaArchive.class, "test.jar").addClass(RecipeDAO.class).addClass(DaoException.class).addClass(Recipe.class)
+				.addClass(ReflectionException.class).addClass(ReflectionUtils.class).addClass(AuditColumns.class).addClass(TimestampGenerator.class)
+				.addClass(AuditColumnsListener.class).addAsManifestResource("META-INF/test-persistence.xml", "persistence.xml")
+				.addAsManifestResource("META-INF/test-listeners.xml", "META-INF/listeners.xml")
 				.addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
 	}
 

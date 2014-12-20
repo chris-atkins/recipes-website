@@ -1,4 +1,4 @@
-package com.poorknight.integration.utils;
+package com.poorknight.utils;
 
 import java.io.File;
 

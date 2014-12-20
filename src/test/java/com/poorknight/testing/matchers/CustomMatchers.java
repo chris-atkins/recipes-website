@@ -21,6 +21,7 @@ import com.poorknight.testing.matchers.methods.MethodAnnotationMatcher;
 import com.poorknight.testing.matchers.methods.MethodTransactionAnnotationMatcher;
 import com.poorknight.testing.matchers.methods.MethodTransactionAnnotationMatcher.TransactionType;
 import com.poorknight.testing.matchers.methods.TransactionalMethodMatcher;
+import com.poorknight.testing.matchers.objects.IsSerializableMatcher;
 
 
 /**
@@ -75,6 +76,11 @@ public class CustomMatchers {
 
 	public static Matcher<Class<?>> hasAReadOnlyField(final String fieldName) {
 		return ReadOnlyFieldMatcher.hasAReadOnlyField(fieldName);
+	}
+
+
+	public static Matcher<Object> isSerializable() {
+		return IsSerializableMatcher.isSerializable();
 	}
 
 

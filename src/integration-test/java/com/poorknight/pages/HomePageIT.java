@@ -1,7 +1,7 @@
-package com.poorknight.integration.pages;
+package com.poorknight.pages;
 
-import static com.poorknight.integration.constants.ITConstants.HOME_PAGE;
-import static com.poorknight.integration.constants.ITConstants.SEARCH_PAGE;
+import static com.poorknight.constants.ITConstants.HOME_PAGE;
+import static com.poorknight.constants.ITConstants.SEARCH_PAGE;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.endsWith;
 
@@ -18,7 +18,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-import com.poorknight.integration.utils.ArquillianUtils;
+import com.poorknight.utils.ArquillianUtils;
 
 
 @RunWith(Arquillian.class)
