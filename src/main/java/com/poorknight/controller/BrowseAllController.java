@@ -23,11 +23,10 @@ public class BrowseAllController implements Serializable {
 
 	private List<Recipe> allRecipes;
 
+	// This (RecipeDAO) is not serializable - but the container will handle the serialization of the class without serializing injected resources
+	// http://docs.jboss.org/weld/reference/latest/en-US/html_single/ see '4.9. Client proxies' proxies section
 	@Inject
-	private RecipeDAO recipeDAO;  // TODO - this is not serializable - should be marked as transient (it is a request scoped bean) - but how will it
-									// behave on the server? other option would be to make it serializable - but is entity manager serializable? OR
-									// will CDI take care of this for me and always inject a new one and I don't need to worry about it (and I can
-									// mark it as transient)? Need an integration test
+	private RecipeDAO recipeDAO;
 
 
 	@PostConstruct

@@ -24,7 +24,7 @@ public class AuditColumnsListener {
 
 	static final String DEFAULT_USER = "Anonymous";
 
-	// can't use @Inject in an EntityListener (until jboss fixes this... this note written on v8.1.0Final
+	// can't use @Inject in an EntityListener (until jboss fixes this... this note written on v8.1.0.Final
 	private TimestampGenerator timestampGenerator = null;
 
 
