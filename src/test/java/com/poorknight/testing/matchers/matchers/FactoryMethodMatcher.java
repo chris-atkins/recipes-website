@@ -31,8 +31,7 @@ public class FactoryMethodMatcher extends TypeSafeDiagnosingMatcher<Class<? exte
 
 	@Override
 	public void describeTo(final Description description) {
-		description.appendText("has a static @Factory method with a return type of ").appendText(this.getClass().getSimpleName())
-				.appendText(", and has no public constructors");
+		description.appendText("has a static @Factory method with a return type of the class being tested, and has no public constructors");
 	}
 
 

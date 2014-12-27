@@ -60,7 +60,7 @@ public class BrowseAllControllerIT {
 
 
 	@Test
-	public void testSControllerIsSerializableInContainer() throws Exception {
+	public void controllerIsSerializableInContainer() throws Exception {
 		Warp.initiate(new Activity() {
 
 			@Override
