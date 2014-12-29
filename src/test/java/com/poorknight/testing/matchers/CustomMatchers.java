@@ -11,6 +11,7 @@ import org.hamcrest.Matcher;
 import com.poorknight.testing.matchers.classes.ClassAnnotationMatcher;
 import com.poorknight.testing.matchers.classes.EntityObjectMatcher;
 import com.poorknight.testing.matchers.classes.RequestScopedControllerMatcher;
+import com.poorknight.testing.matchers.classes.SingletonMatcher;
 import com.poorknight.testing.matchers.classes.ViewScopedControllerMatcher;
 import com.poorknight.testing.matchers.fields.FieldAnnotationMatcher;
 import com.poorknight.testing.matchers.fields.FieldAnnotationValueMatcher;
@@ -93,6 +94,11 @@ public class CustomMatchers {
 
 	public static Matcher<Class<?>> isAProperRequestScopedController() {
 		return RequestScopedControllerMatcher.isAProperRequestScopedController();
+	}
+
+
+	public static Matcher<Class<?>> isAProperSingleton() {
+		return SingletonMatcher.isAProperSingleton();
 	}
 
 
