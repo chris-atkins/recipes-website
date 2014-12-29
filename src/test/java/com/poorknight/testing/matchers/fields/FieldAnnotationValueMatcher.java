@@ -2,8 +2,6 @@ package com.poorknight.testing.matchers.fields;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationHandler;
-import java.util.Map;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -92,11 +90,7 @@ public class FieldAnnotationValueMatcher extends TypeSafeDiagnosingMatcher<Field
 
 
 	private Object getActualValue(final Field fieldToCheck) {
-		final Annotation proxyAnnotation = fieldToCheck.getAnnotation(this.annotationClass);
-
-		final InvocationHandler annotationHandler = ReflectionUtils.getFieldFromObject(proxyAnnotation, "h");
-		final Map<String, Object> memberValues = ReflectionUtils.getFieldFromObject(annotationHandler, "memberValues");
-
-		return memberValues.get(this.annotationFieldName);
+		final Annotation annotation = fieldToCheck.getAnnotation(this.annotationClass);
+		return ReflectionUtils.getFieldValueFromAnnotation(annotation, this.annotationFieldName);
 	}
 }

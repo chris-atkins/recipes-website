@@ -4,6 +4,7 @@ import java.lang.annotation.Annotation;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
@@ -12,6 +13,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import com.poorknight.exceptions.ReflectionException;
@@ -367,4 +369,22 @@ public class ReflectionUtils {
 		}
 	}
 
+
+	@SuppressWarnings("unchecked")
+	public static <T> T getFieldValueFromAnnotation(final Annotation annotation, final String fieldName) {
+		final Map<String, Object> memberValues = retrieveMemberValuesFromAnnotation(annotation);
+		return (T) memberValues.get(fieldName);
+	}
+
+
+	public static void setFieldInAnnotation(final Annotation annotation, final String fieldName, final Object valueToSetIntoAnnotation) {
+		final Map<String, Object> memberValues = retrieveMemberValuesFromAnnotation(annotation);
+		memberValues.put(fieldName, valueToSetIntoAnnotation);
+	}
+
+
+	private static Map<String, Object> retrieveMemberValuesFromAnnotation(final Annotation annotation) {
+		final InvocationHandler annotationHandler = ReflectionUtils.getFieldFromObject(annotation, "h");
+		return ReflectionUtils.getFieldFromObject(annotationHandler, "memberValues");
+	}
 }

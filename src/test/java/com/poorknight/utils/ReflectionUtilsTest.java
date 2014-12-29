@@ -10,6 +10,7 @@ import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.fail;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Collection;
@@ -17,8 +18,10 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.inject.Named;
 import javax.transaction.Transactional;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.experimental.runners.Enclosed;
@@ -27,6 +30,7 @@ import org.junit.runners.JUnit4;
 
 import com.poorknight.exceptions.ReflectionException;
 import com.poorknight.testing.matchers.utils.packageprivatetesting.ExtendsMethodVisibilityInDifferentPackage;
+import com.poorknight.testing.matchers.utils.testclasses.AnnotationTestClass;
 import com.poorknight.testing.matchers.utils.testclasses.AttributeAnnotationFinderTestClass;
 import com.poorknight.testing.matchers.utils.testclasses.AttributeFinderTestObject;
 import com.poorknight.testing.matchers.utils.testclasses.ChildClassWithMethodsOfAllVisibility;
@@ -843,5 +847,41 @@ public class ReflectionUtilsTest {
 			assertThat(foundMethods.size(), equalTo(2));
 		}
 
+	}
+
+	@RunWith(JUnit4.class)
+	public static class GetFieldValueFromAnnotationTest {
+
+		@Test
+		public void correctlyFindsFieldValueInAnnotation() throws Exception {
+			final Annotation annotation = AnnotationTestClass.class.getAnnotation(Named.class);
+			final String value = ReflectionUtils.getFieldValueFromAnnotation(annotation, "value");
+			assertThat(value, equalTo("hi"));
+		}
+	}
+
+	@RunWith(JUnit4.class)
+	public static class SetFieldInAnnotationTest {
+
+		@Test
+		public void correctlySetsFieldValueInAnnotation() throws Exception {
+			final Annotation annotation = AnnotationTestClass.class.getAnnotation(Named.class);
+			String value = ReflectionUtils.getFieldValueFromAnnotation(annotation, "value");
+			assertThat(value, equalTo("hi"));
+
+			ReflectionUtils.setFieldInAnnotation(annotation, "value", "see ya");
+
+			value = ReflectionUtils.getFieldValueFromAnnotation(annotation, "value");
+			assertThat(value, equalTo("see ya"));
+		}
+
+
+		@After
+		public void undoReflectionChanges() {
+			final Annotation annotation = AnnotationTestClass.class.getAnnotation(Named.class);
+			ReflectionUtils.setFieldInAnnotation(annotation, "value", "hi");
+			final String value = ReflectionUtils.getFieldValueFromAnnotation(annotation, "value");
+			assertThat(value, equalTo("hi"));
+		}
 	}
 }

@@ -1,9 +1,7 @@
 package com.poorknight.testing.matchers.classes;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.InvocationHandler;
 import java.util.Arrays;
-import java.util.Map;
 
 import org.hamcrest.Description;
 import org.hamcrest.Factory;
@@ -15,6 +13,7 @@ import com.poorknight.utils.ReflectionUtils;
 public class ClassAnnotationMatcher extends TypeSafeDiagnosingMatcher<Class<?>> {
 
 	private final Class<? extends Annotation> annotationToCheckFor;
+	private final String annotationFieldName = "value";
 	private final Object[] expectedValues;
 
 
@@ -110,12 +109,8 @@ public class ClassAnnotationMatcher extends TypeSafeDiagnosingMatcher<Class<?>> 
 
 
 	private Object findActualValue(final Class<?> classToInspect) {
-		final Annotation proxyAnnotation = classToInspect.getAnnotation(this.annotationToCheckFor);
-
-		final InvocationHandler annotationHandler = ReflectionUtils.getFieldFromObject(proxyAnnotation, "h");
-		final Map<String, Object> memberValues = ReflectionUtils.getFieldFromObject(annotationHandler, "memberValues");
-
-		return memberValues.get("value");
+		final Annotation annotation = classToInspect.getAnnotation(this.annotationToCheckFor);
+		return ReflectionUtils.getFieldValueFromAnnotation(annotation, this.annotationFieldName);
 	}
 
 
