@@ -1,11 +1,10 @@
 package com.poorknight.controller;
 
 import javax.enterprise.context.RequestScoped;
-import javax.faces.FacesException;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import org.apache.commons.lang.StringUtils;
+import org.hibernate.validator.constraints.NotBlank;
 
 import com.poorknight.business.saverecipe.SaveRecipeService;
 import com.poorknight.constants.NavigationConstants;
@@ -19,7 +18,10 @@ import com.poorknight.domain.Recipe;
 @RequestScoped
 public class SaveRecipeController {
 
+	@NotBlank
 	private String recipeName;
+
+	@NotBlank
 	private String recipeContents;
 
 	@Inject
@@ -27,7 +29,6 @@ public class SaveRecipeController {
 
 
 	public String saveRecipeAndNavigateHome() {
-		validateUserInputThrowingExceptions();
 		saveRecipe();
 		return navigateHome();
 	}
@@ -38,34 +39,9 @@ public class SaveRecipeController {
 	}
 
 
-	private void validateUserInputThrowingExceptions() {
-		validateName();
-		validateContents();
-	}
-
-
 	private void saveRecipe() {
 		final Recipe recipe = new Recipe(this.recipeName, this.recipeContents);
 		this.saveRecipeService.saveNewRecipe(recipe);
-	}
-
-
-	private void validateName() {
-		if (hasNoContent(this.recipeName)) {
-			throw new FacesException("Recipe name must not be empty.");
-		}
-	}
-
-
-	private void validateContents() {
-		if (hasNoContent(this.recipeContents)) {
-			throw new FacesException("Recipe contents must not be empty.");
-		}
-	}
-
-
-	private boolean hasNoContent(final String valueToCheck) {
-		return StringUtils.isEmpty(valueToCheck) || StringUtils.isWhitespace(valueToCheck);
 	}
 
 

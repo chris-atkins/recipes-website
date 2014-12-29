@@ -1,11 +1,11 @@
 package com.poorknight.controller;
 
+import static com.poorknight.testing.matchers.CustomMatchers.failsValidation;
 import static com.poorknight.testing.matchers.CustomMatchers.isAProperRequestScopedController;
+import static com.poorknight.testing.matchers.CustomMatchers.passesValidation;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-
-import javax.faces.FacesException;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -72,42 +72,52 @@ public class SaveRecipeControllerTest {
 	}
 
 
-	@Test(expected = FacesException.class)
-	public void whiteSpaceOnlyRecipeNameThrowsException() throws Exception {
+	@Test
+	public void controllerWithNameAndContent_PassesValidation() throws Exception {
+
+		this.saveRecipeController.setRecipeName(RECIPE_NAME);
+		this.saveRecipeController.setRecipeContents(RECIPE_CONTENTS);
+
+		assertThat(this.saveRecipeController, passesValidation());
+	}
+
+
+	@Test
+	public void whiteSpaceOnlyRecipeNameFailsValidation() throws Exception {
 
 		this.saveRecipeController.setRecipeName("\t ");
 		this.saveRecipeController.setRecipeContents(RECIPE_CONTENTS);
 
-		this.saveRecipeController.saveRecipeAndNavigateHome();
+		assertThat(this.saveRecipeController, failsValidation());
 	}
 
 
-	@Test(expected = FacesException.class)
-	public void nullRecipeNameThrowsException() throws Exception {
+	@Test
+	public void nullRecipeNameFailsValidation() throws Exception {
 
 		this.saveRecipeController.setRecipeName(null);
 		this.saveRecipeController.setRecipeContents(RECIPE_CONTENTS);
 
-		this.saveRecipeController.saveRecipeAndNavigateHome();
+		assertThat(this.saveRecipeController, failsValidation());
 	}
 
 
-	@Test(expected = FacesException.class)
-	public void whiteSpaceOnlyRecipeContentThrowsException() throws Exception {
+	@Test
+	public void whiteSpaceOnlyRecipeContentFailsValidation() throws Exception {
 
 		this.saveRecipeController.setRecipeName(RECIPE_NAME);
 		this.saveRecipeController.setRecipeContents("\t ");
 
-		this.saveRecipeController.saveRecipeAndNavigateHome();
+		assertThat(this.saveRecipeController, failsValidation());
 	}
 
 
-	@Test(expected = FacesException.class)
-	public void nullRecipeContentThrowsException() throws Exception {
+	@Test
+	public void nullRecipeContentFailsValidation() throws Exception {
 
 		this.saveRecipeController.setRecipeName(RECIPE_NAME);
 		this.saveRecipeController.setRecipeContents(null);
 
-		this.saveRecipeController.saveRecipeAndNavigateHome();
+		assertThat(this.saveRecipeController, failsValidation());
 	}
 }

@@ -19,15 +19,11 @@
 	<h:panelGrid id="mainPanelGrid" columns="3">
 	
 		<h:outputText value="#{pageMessages.recipeNameLabel}" />
-		<h:inputText id="recipeName" value="#{saveRecipeController.recipeName}" label="#{pageMessages.recipeNameLabel}">
-			<f:validateRequired />
-		</h:inputText>
+		<h:inputText id="recipeName" value="#{saveRecipeController.recipeName}" label="#{pageMessages.recipeNameLabel}" />
 		<h:message for="recipeName"/>
 		
 		<h:outputText value="#{pageMessages.recipeContentsLabel}"/>
-		<h:inputTextarea id="recipeContents" value="#{saveRecipeController.recipeContents}" label="#{pageMessages.recipeContentsLabel}">
-			<f:validateRequired />
-		</h:inputTextarea>
+		<h:inputTextarea id="recipeContents" value="#{saveRecipeController.recipeContents}" label="#{pageMessages.recipeContentsLabel}" />
 		<h:message for="recipeContents"/>
 		
 	</h:panelGrid>
