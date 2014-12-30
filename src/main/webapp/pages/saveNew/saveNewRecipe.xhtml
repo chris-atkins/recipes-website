@@ -12,7 +12,7 @@
 	</title>
 </h:head> 
 <body> 
-<h:form>
+<h:form id="pageForm">
 
 	<h2><h:outputText value="#{pageMessages.pageTitle}" /></h2>
 
@@ -20,18 +20,19 @@
 	
 		<h:outputText value="#{pageMessages.recipeNameLabel}" />
 		<h:inputText id="recipeName" value="#{saveRecipeController.recipeName}" label="#{pageMessages.recipeNameLabel}" />
-		<h:message for="recipeName"/>
+		<h:message id="messageForRecipeName" for="recipeName"/>
 		
 		<h:outputText value="#{pageMessages.recipeContentsLabel}"/>
 		<h:inputTextarea id="recipeContents" value="#{saveRecipeController.recipeContents}" label="#{pageMessages.recipeContentsLabel}" />
-		<h:message for="recipeContents"/>
+		<h:message id="messageForRecipeContents" for="recipeContents"/>
 		
 	</h:panelGrid>
 
 	<h:panelGrid id="navigationPanelGrid" columns="2">
-		<h:commandButton action="#{saveRecipeController.navigateHome()}" value="#{globalMessages.homeButtonText}" immediate="true" />
-		<h:commandButton action="#{saveRecipeController.saveRecipeAndNavigateHome()}" value="#{globalMessages.saveButtonText}" />
+		<h:commandButton id="gotoHomeButton" action="#{saveRecipeController.navigateHome()}" value="#{globalMessages.homeButtonText}" immediate="true" />
+		<h:commandButton id="saveAndGotoHomeButton" action="#{saveRecipeController.saveRecipeAndNavigateHome()}" value="#{globalMessages.saveButtonText}" />
 	</h:panelGrid>
+	
 </h:form>
 </body> 
 </html>

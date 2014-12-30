@@ -1,6 +1,7 @@
 package com.poorknight.pages;
 
 import static com.poorknight.constants.ITConstants.BROWSE_ALL_PAGE;
+import static com.poorknight.constants.ITConstants.HOME_PAGE;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.endsWith;
 import static org.hamcrest.Matchers.notNullValue;
@@ -12,13 +13,13 @@ import org.jboss.arquillian.drone.api.annotation.Drone;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.test.api.ArquillianResource;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-import com.poorknight.constants.ITConstants;
 import com.poorknight.utils.ArquillianUtils;
 
 
@@ -43,18 +44,22 @@ public class BrowseAllRecipesPageIT {
 	}
 
 
+	@Before
+	public void navigateToStartPage() {
+		this.browser.get(getStartPage());
+	}
+
+
 	@Test
 	public void testHomePageButtonExists() {
-		this.browser.get(getStartPage());
 		assertThat(this.homeButton, notNullValue());
 	}
 
 
 	@Test
 	public void testHomePageNavigation() {
-		this.browser.get(getStartPage());
 		this.homeButton.click();
-		assertThat(this.browser.getCurrentUrl(), endsWith(ITConstants.HOME_PAGE));
+		assertThat(this.browser.getCurrentUrl(), endsWith(HOME_PAGE));
 	}
 
 

@@ -1,7 +1,5 @@
 package com.poorknight.constants;
 
-
-
 public class ITConstants {
 
 	private ITConstants() {
@@ -15,4 +13,6 @@ public class ITConstants {
 	public static final String SEARCH_PAGE = "pages/search/searchRecipes.jsf";
 
 	public static final String VIEW_SINGLE_RECIPE_PAGE = "pages/view/viewRecipe.jsf";
+
+	public static final String SAVE_RECIPE_PAGE = "pages/saveNew/saveNewRecipe.jsf";
 }

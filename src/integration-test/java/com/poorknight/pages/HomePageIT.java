@@ -1,5 +1,6 @@
 package com.poorknight.pages;
 
+import static com.poorknight.constants.ITConstants.BROWSE_ALL_PAGE;
 import static com.poorknight.constants.ITConstants.HOME_PAGE;
 import static com.poorknight.constants.ITConstants.SEARCH_PAGE;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -57,7 +58,7 @@ public class HomePageIT {
 		button.click();
 
 		final String newUrl = this.browser.getCurrentUrl();
-		assertThat(newUrl, endsWith("browse/browseAllRecipes.jsf"));
+		assertThat(newUrl, endsWith(BROWSE_ALL_PAGE));
 	}
 
 
