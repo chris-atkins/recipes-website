@@ -3,6 +3,8 @@ package com.poorknight.testing.matchers.classes;
 import java.lang.annotation.Annotation;
 import java.util.Arrays;
 
+import javax.enterprise.context.RequestScoped;
+
 import org.hamcrest.Description;
 import org.hamcrest.Factory;
 import org.hamcrest.TypeSafeDiagnosingMatcher;
@@ -39,6 +41,12 @@ public class ClassAnnotationMatcher extends TypeSafeDiagnosingMatcher<Class<?>> 
 	@Factory
 	public static ClassAnnotationMatcher hasAnnotationOnClass(final Class<? extends Annotation> annotationToCheckFor) {
 		return new ClassAnnotationMatcher(annotationToCheckFor);
+	}
+
+
+	@Factory
+	public static ClassAnnotationMatcher isRequestScoped() {
+		return new ClassAnnotationMatcher(RequestScoped.class);
 	}
 
 

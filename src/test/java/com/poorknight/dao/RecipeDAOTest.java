@@ -28,6 +28,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import com.poorknight.domain.Recipe;
 import com.poorknight.exceptions.DaoException;
+import com.poorknight.testing.matchers.CustomMatchers;
 import com.poorknight.testing.matchers.methods.MethodTransactionAnnotationMatcher.TransactionType;
 
 
@@ -57,31 +58,37 @@ public class RecipeDAOTest {
 
 
 	@Test
-	public void testCorrectTransactionLevelForSaveNewRecipe() {
+	public void requestScoped() {
+		assertThat(RecipeDAO.class, CustomMatchers.isRequestScoped());
+	}
+
+
+	@Test
+	public void correctTransactionLevel_ForSaveNewRecipe() {
 		assertThat(RecipeDAO.class, hasCorrectTransactionLevelOnMethod("saveNewRecipe", TransactionType.INSERT));
 	}
 
 
 	@Test
-	public void testCorrectTransactionLevelForQueryAllRecipes() {
+	public void correctTransactionLevel_ForQueryAllRecipes() {
 		assertThat(RecipeDAO.class, hasCorrectTransactionLevelOnMethod("queryAllRecipes", TransactionType.QUERY));
 	}
 
 
 	@Test
-	public void testCorrectTransactionLevelForQueryRecipeById() {
+	public void correctTransactionLevel_ForQueryRecipeById() {
 		assertThat(RecipeDAO.class, hasCorrectTransactionLevelOnMethod("queryRecipeById", TransactionType.QUERY));
 	}
 
 
 	@Test
-	public void testCorrectTransactionLevelForUpdateRecipeContents() {
+	public void correctTransactionLevel_ForUpdateRecipeContents() {
 		assertThat(RecipeDAO.class, hasCorrectTransactionLevelOnMethod("updateRecipeContents", TransactionType.UPDATE));
 	}
 
 
 	@Test
-	public void testEntityManagerCalledWithTheSameObjectOnSave() {
+	public void entityManagerCalledWithTheSameObjectOnSave() {
 		final Recipe recipe = new Recipe();
 		this.recipeDAO.saveNewRecipe(recipe);
 		verify(this.em).persist(recipe);
@@ -89,7 +96,7 @@ public class RecipeDAOTest {
 
 
 	@Test
-	public void testQuerySetupForQueryAllRecipes() {
+	public void testQuerySetup_ForQueryAllRecipes() {
 
 		final CriteriaBuilder criteriaBuilder = mock(CriteriaBuilder.class);
 		when(this.em.getCriteriaBuilder()).thenReturn(criteriaBuilder);
@@ -109,22 +116,13 @@ public class RecipeDAOTest {
 
 
 	@Test
-	public void testQueryRecipeByIDUsesFindByPKOnEntityManager() {
+	public void queryRecipeByID_UsesFindByPKOnEntityManager() {
 		final Long recipeId = RandomUtils.nextLong();
 
 		this.recipeDAO.queryRecipeById(recipeId);
 
 		verify(this.em).find(Recipe.class, recipeId);
 		verifyNoMoreInteractions(this.em);
-	}
-
-
-	@Test
-	public void testEntityManagerCallFindCorrectly() {
-		final Long id = Long.valueOf(RandomUtils.nextLong());
-
-		this.recipeDAO.queryRecipeById(id);
-		verify(this.em).find(Recipe.class, id);
 	}
 
 
@@ -143,7 +141,7 @@ public class RecipeDAOTest {
 
 
 	@Test
-	public void saveIsNotAttemptedIfRecipeIdAlreadyExists() throws Exception {
+	public void saveIsNotAttempted_IfRecipeIdAlreadyExists() throws Exception {
 		final Recipe testRecipe = new Recipe("testName", "testContent");
 		injectRandomRecipeId(testRecipe);
 

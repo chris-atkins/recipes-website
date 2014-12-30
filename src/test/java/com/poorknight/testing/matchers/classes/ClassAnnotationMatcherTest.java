@@ -137,4 +137,20 @@ public class ClassAnnotationMatcherTest {
 		final Object[] attributeFromObject = ReflectionUtils.getFieldFromObject(matcher, "expectedValues");
 		assertThat(attributeFromObject.length, equalTo(0));
 	}
+
+
+	@Test
+	public void requestScopedFactoryMethodSetsAnnotationCorrectly() throws Exception {
+		final ClassAnnotationMatcher matcher = ClassAnnotationMatcher.isRequestScoped();
+		final Class<?> annotationFromMatcher = ReflectionUtils.getFieldFromObject(matcher, "annotationToCheckFor");
+		assertThat(annotationFromMatcher.getName(), equalTo("javax.enterprise.context.RequestScoped"));
+	}
+
+
+	@Test
+	public void requestScopedFactoryMethodHasEmptyExpectedValues() throws Exception {
+		final ClassAnnotationMatcher matcher = ClassAnnotationMatcher.isRequestScoped();
+		final Object[] attributeFromObject = ReflectionUtils.getFieldFromObject(matcher, "expectedValues");
+		assertThat(attributeFromObject.length, equalTo(0));
+	}
 }

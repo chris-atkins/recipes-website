@@ -8,6 +8,7 @@ import javax.persistence.PreUpdate;
 
 import org.hamcrest.Matcher;
 
+import com.poorknight.dao.RecipeDAO;
 import com.poorknight.testing.matchers.classes.ClassAnnotationMatcher;
 import com.poorknight.testing.matchers.classes.EntityObjectMatcher;
 import com.poorknight.testing.matchers.classes.RequestScopedControllerMatcher;
@@ -94,6 +95,11 @@ public class CustomMatchers {
 
 	public static Matcher<Class<?>> isAProperRequestScopedController() {
 		return RequestScopedControllerMatcher.isAProperRequestScopedController();
+	}
+
+
+	public static Matcher<? super Class<RecipeDAO>> isRequestScoped() {
+		return ClassAnnotationMatcher.isRequestScoped();
 	}
 
 
