@@ -113,14 +113,20 @@ public class BeanValidationMatcher extends TypeSafeDiagnosingMatcher<Object> {
 
 
 	private void removeELNotationsFromSingleConstraint(final ConstraintDescriptor<?> constraint) {
-		final Map<String, Object> newAttributes = buildNewConstraintAttributeMap(constraint);
-		replaceErrorMessage(newAttributes);
-		ReflectionUtils.setFieldInClass(constraint, "attributes", newAttributes);
+		final Map<String, Object> newAttributes = buildNewConstraintAttributeMapWithNoELNotation(constraint);
+		replaceAttributesInConstraint(constraint, newAttributes);
+		removeELNotationsFromSubConstraints(constraint);
 	}
 
 
-	private Map<String, Object> buildNewConstraintAttributeMap(final ConstraintDescriptor<?> constraint) {
-		final Map<String, Object> attributes = constraint.getAttributes();
+	private Map<String, Object> buildNewConstraintAttributeMapWithNoELNotation(final ConstraintDescriptor<?> constraint) {
+		final Map<String, Object> newAttributes = copyOriginalAttributesMap(constraint.getAttributes());
+		replaceErrorMessageWithNoELNotation(newAttributes);
+		return newAttributes;
+	}
+
+
+	private Map<String, Object> copyOriginalAttributesMap(final Map<String, Object> attributes) {
 		final Map<String, Object> newAttributes = new HashMap<>();
 		for (final Entry<String, Object> entry : attributes.entrySet()) {
 			newAttributes.put(entry.getKey(), entry.getValue());
@@ -129,8 +135,20 @@ public class BeanValidationMatcher extends TypeSafeDiagnosingMatcher<Object> {
 	}
 
 
-	private void replaceErrorMessage(final Map<String, Object> newAttributes) {
+	private void replaceErrorMessageWithNoELNotation(final Map<String, Object> newAttributes) {
 		newAttributes.put("message", "temp hacked message - see BeanValidationMatcher.removeELNotationsFromValidations()");
+	}
+
+
+	private void replaceAttributesInConstraint(final ConstraintDescriptor<?> constraint, final Map<String, Object> newAttributes) {
+		ReflectionUtils.setFieldInClass(constraint, "attributes", newAttributes);
+	}
+
+
+	private void removeELNotationsFromSubConstraints(final ConstraintDescriptor<?> constraint) {
+		for (final ConstraintDescriptor<?> subConstraint : constraint.getComposingConstraints()) {
+			removeELNotationsFromSingleConstraint(subConstraint);
+		}
 	}
 
 

@@ -10,6 +10,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 import com.poorknight.testing.matchers.utils.testclasses.BeanValidationTestClass;
+import com.poorknight.testing.matchers.utils.testclasses.BeanValidationTestClassWithNotEmpty;
 
 
 @RunWith(Enclosed.class)
@@ -35,6 +36,17 @@ public class BeanValidationMatcherTest {
 			final boolean result = matcher.matches(objectToTest);
 
 			assertThat(result, equalTo(true));
+		}
+
+
+		@Test
+		public void doesntThrowException_WithNotEmpty() throws Exception {
+			final BeanValidationMatcher matcher = BeanValidationMatcher.failsValidation();
+			final BeanValidationTestClassWithNotEmpty objectToTest = new BeanValidationTestClassWithNotEmpty("");
+
+			final boolean result = matcher.matches(objectToTest);
+
+			assertThat(result, equalTo(true)); // expecting no exception
 		}
 
 	}
