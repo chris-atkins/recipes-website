@@ -8,7 +8,7 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import com.poorknight.dao.RecipeDAO;
+import com.poorknight.business.searchrecipe.SearchRecipeService;
 import com.poorknight.domain.Recipe;
 
 
@@ -26,12 +26,12 @@ public class BrowseAllController implements Serializable {
 	// This (RecipeDAO) is not serializable - but the container will handle the serialization of the class without serializing injected resources
 	// http://docs.jboss.org/weld/reference/latest/en-US/html_single/ see '4.9. Client proxies' proxies section
 	@Inject
-	private RecipeDAO recipeDAO;
+	private SearchRecipeService service;
 
 
 	@PostConstruct
 	public void initializeAllRecipes() {
-		this.allRecipes = this.recipeDAO.queryAllRecipes();
+		this.allRecipes = this.service.findAllRecipes();
 	}
 
 

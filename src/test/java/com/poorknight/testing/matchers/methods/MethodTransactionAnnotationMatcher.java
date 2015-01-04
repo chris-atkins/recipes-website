@@ -53,7 +53,7 @@ public class MethodTransactionAnnotationMatcher extends TypeSafeDiagnosingMatche
 	@Override
 	public void describeTo(final Description description) {
 		description.appendText("has the correct @TransactionAttribute annotation on the ").appendText(this.methodName)
-				.appendText(" for the type of transaction that if is performing:").appendText(this.transactionType.name());
+				.appendText("() method for the type of transaction that if is performing:  ").appendText(this.transactionType.name());
 	}
 
 
@@ -105,13 +105,17 @@ public class MethodTransactionAnnotationMatcher extends TypeSafeDiagnosingMatche
 
 	private void appendNoPublicMethodExistsWithGivenNameMessage(final Description mismatchDescription) {
 		mismatchDescription.appendText("No public method with name ").appendText(this.methodName)
-				.appendText(" and @TransactionType annotation exists.  This class does not check non-public methods.");
+				.appendText(" and @TransactionAttribute annotation exists.  This class does not check non-public methods.");
 	}
 
 
 	private void appendNotAllMethodsHaveCorrectTransactionAttributeTypeMessage(final Description mismatchDescription) {
-		mismatchDescription.appendText("Not all methods with the name ").appendText(this.methodName)
-				.appendText(" have the correct TransactionAttributeType in the @TransactionAttribute annotation.");
+		mismatchDescription
+				.appendText("Not all methods with the name ")
+				.appendText(this.methodName)
+				.appendText(
+						" have the correct TransactionAttributeType in the @TransactionAttribute annotation.  Expecting type of "
+								+ getCorrectTransactionAttributeType());
 	}
 
 }

@@ -46,6 +46,12 @@ public class MethodModifiersMatcher extends TypeSafeDiagnosingMatcher<Method> {
 	}
 
 
+	@Factory
+	public static MethodModifiersMatcher isPackageScoped() {
+		return new MethodModifiersMatcher(new Modifiers[] { Modifiers.PACKAGE }, EMPTY);
+	}
+
+
 	@Override
 	public void describeTo(final Description description) {
 		description.appendText("Checks method modifiers to ensure it does or does not have the expected modifiers:\n\tExpected: ")

@@ -2,7 +2,7 @@ package com.poorknight.pages;
 
 import static com.poorknight.constants.ITConstants.BROWSE_ALL_PAGE;
 import static com.poorknight.constants.ITConstants.HOME_PAGE;
-import static com.poorknight.constants.ITConstants.SEARCH_PAGE;
+import static com.poorknight.constants.ITConstants.SEARCH_RECIPES_PAGE;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.endsWith;
 
@@ -46,7 +46,7 @@ public class HomePageIT {
 		button.click();
 
 		final String newUrl = this.browser.getCurrentUrl();
-		assertThat(newUrl, endsWith(SEARCH_PAGE));
+		assertThat(newUrl, endsWith(SEARCH_RECIPES_PAGE));
 	}
 
 

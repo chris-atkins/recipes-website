@@ -5,8 +5,8 @@ import javax.inject.Inject;
 import javax.transaction.Transactional;
 
 import com.poorknight.business.TextToHtmlTranslator;
-import com.poorknight.dao.RecipeDAO;
 import com.poorknight.domain.Recipe;
+import com.poorknight.domain.RecipeDAO;
 
 
 @RequestScoped

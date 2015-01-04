@@ -19,8 +19,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import com.poorknight.dao.RecipeDAO;
 import com.poorknight.domain.Recipe;
+import com.poorknight.domain.RecipeDAO;
 import com.poorknight.domain.annotations.AuditColumns;
 import com.poorknight.domain.entitylisteners.AuditColumnsListener;
 import com.poorknight.exceptions.DaoException;

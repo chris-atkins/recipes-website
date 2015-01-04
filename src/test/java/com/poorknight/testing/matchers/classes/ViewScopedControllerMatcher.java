@@ -26,9 +26,9 @@ public class ViewScopedControllerMatcher extends TypeSafeDiagnosingMatcher<Class
 	@Override
 	public void describeTo(final Description description) {
 		description.appendText("meets the project criteria for an @ViewScoped controller:  \n")//
-				.appendText("\tuses javax.faces.view.ViewScoped, not javax.faces.bean.ViewScoped\n") //
-				.appendText("\timplements Serializable\n")//
-				.appendText("\thas the @Named annotation.");
+				.appendText("----uses javax.faces.view.ViewScoped, not javax.faces.bean.ViewScoped\n") //
+				.appendText("----has the @Named annotation\n")//
+				.appendText("----implements Serializable");
 	}
 
 

@@ -7,6 +7,7 @@ import org.jboss.shrinkwrap.api.GenericArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.importer.ExplodedImporter;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
+import org.jboss.shrinkwrap.resolver.api.maven.Maven;
 
 
 public class ArquillianUtils {
@@ -36,6 +37,11 @@ public class ArquillianUtils {
 
 				// messages
 				.addAsResource(new File(MESSAGES_ROOT));
+	}
+
+
+	public static File buildLibraryFromPom(final String groupId, final String artifactId, final String version) {
+		return Maven.resolver().resolve(groupId + ":" + artifactId + ":" + version).withTransitivity().asSingleFile();
 	}
 
 

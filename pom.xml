@@ -30,6 +30,7 @@
 		<arquillian-weld-ee-embedded-1.1.version>1.0.0.CR8</arquillian-weld-ee-embedded-1.1.version>
 		<arquillian-warp.version>1.0.0.Alpha7</arquillian-warp.version>
 		<arquillian-drone-bom.version>1.3.1.Final</arquillian-drone-bom.version>
+		<arquillian-persistence-integration-tests.version>1.0.0.Alpha7</arquillian-persistence-integration-tests.version>
 		<selenium-bom.version>2.42.2</selenium-bom.version>
 		<weld-core.version>2.2.4.Final</weld-core.version>
 		<h2.version>1.4.180</h2.version>
@@ -66,6 +67,8 @@
 
 		<arquillian.jsfTest.browser>phantomjs</arquillian.jsfTest.browser>
 		<!-- <arquillian.jsfTest.browser>chrome</arquillian.jsfTest.browser> -->
+		<!-- <arquillian.jsfTest.browser>internetExplorer</arquillian.jsfTest.browser> -->
+		<!-- <arquillian.jsfTest.browser>firefox</arquillian.jsfTest.browser> -->
 
 	</properties>
 
@@ -301,6 +304,11 @@
 			<scope>test</scope>
 		</dependency>
 
+		<dependency>
+			<groupId>org.jboss.shrinkwrap.resolver</groupId>
+			<artifactId>shrinkwrap-resolver-impl-maven</artifactId>
+			<scope>test</scope>
+		</dependency>
 
 	</dependencies>
 
@@ -314,6 +322,19 @@
 				<executions>
 
 					<!-- Add a new source directory to our build -->
+					<execution>
+						<id>add-source</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>add-source</goal>
+						</goals>
+						<configuration>
+							<sources>
+								<source>src/main/generated</source>
+							</sources>
+						</configuration>
+					</execution>
+
 					<execution>
 						<id>add-integration-test-sources</id>
 						<phase>generate-test-sources</phase>
@@ -329,21 +350,9 @@
 					</execution>
 
 					<!-- Add a new resource directory to our build -->
-<!-- 					<execution>
-						<id>add-integration-test-resources</id>
-						<phase>generate-test-resources</phase>
-						<goals>
-							<goal>add-test-resource</goal>
-						</goals>
-						<configuration>
-							<resources>
-								<resource>
-									??<filtering>true</filtering>??
-									<directory>src/integration-test/resources</directory>
-								</resource>
-							</resources>
-						</configuration>
-					</execution> -->
+					<!-- <execution> <id>add-integration-test-resources</id> <phase>generate-test-resources</phase> <goals> <goal>add-test-resource</goal> 
+						</goals> <configuration> <resources> <resource> ??<filtering>true</filtering>?? <directory>src/integration-test/resources</directory> 
+						</resource> </resources> </configuration> </execution> -->
 				</executions>
 			</plugin>
 
@@ -371,6 +380,11 @@
 					</execution>
 				</executions>
 			</plugin>
+
+			<!-- <plugin> <groupId>org.bsc.maven</groupId> <artifactId>maven-processor-plugin</artifactId> <executions> <execution> 
+				<id>process</id> <goals> <goal>process</goal> </goals> <phase>generate-sources</phase> <configuration> <processors> <processor>org.hibernate.jpamodelgen.JPAMetaModelEntityProcessor</processor> 
+				</processors> </configuration> </execution> </executions> <dependencies> <dependency> <groupId>org.hibernate</groupId> <artifactId>hibernate-jpamodelgen</artifactId> 
+				<version>4.3.4.Final</version> </dependency> </dependencies> </plugin> -->
 
 		</plugins>
 	</build>
@@ -504,6 +518,14 @@
 					<scope>system</scope>
 					<systemPath>${jdk.path}</systemPath>
 				</dependency>
+
+				<dependency>
+					<groupId>org.jboss.arquillian.extension</groupId>
+					<artifactId>arquillian-persistence-integration-tests</artifactId>
+					<version>${arquillian-persistence-integration-tests.version}</version>
+					<scope>test</scope>
+				</dependency>
+
 			</dependencies>
 
 			<build>

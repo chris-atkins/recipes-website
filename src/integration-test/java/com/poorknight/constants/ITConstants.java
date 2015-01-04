@@ -10,7 +10,7 @@ public class ITConstants {
 
 	public static final String BROWSE_ALL_PAGE = "pages/browse/browseAllRecipes.jsf";
 
-	public static final String SEARCH_PAGE = "pages/search/searchRecipes.jsf";
+	public static final String SEARCH_RECIPES_PAGE = "pages/search/searchRecipes.jsf";
 
 	public static final String VIEW_SINGLE_RECIPE_PAGE = "pages/view/viewRecipe.jsf";
 

@@ -1,7 +1,8 @@
-package com.poorknight.dao;
+package com.poorknight.domain;
 
 import static com.poorknight.testing.matchers.CustomMatchers.hasCorrectTransactionLevelOnMethod;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
@@ -19,6 +20,8 @@ import org.codehaus.plexus.util.ReflectionUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.InOrder;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -26,7 +29,6 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import com.poorknight.domain.Recipe;
 import com.poorknight.exceptions.DaoException;
 import com.poorknight.testing.matchers.CustomMatchers;
 import com.poorknight.testing.matchers.methods.MethodTransactionAnnotationMatcher.TransactionType;
@@ -34,6 +36,11 @@ import com.poorknight.testing.matchers.methods.MethodTransactionAnnotationMatche
 
 @RunWith(MockitoJUnitRunner.class)
 public class RecipeDAOTest {
+
+	private static final String MIXED_CASE_RECIPE_NAME = "Test Recipe Name";
+	private static final String MIXED_CASE_RECIPE_CONTENT = "Test Contents";
+	private static final String EXPECTED_SEARCHABLE_TEXT = "test recipe nametest contents";
+	private static final String NEW_CONTENT = MIXED_CASE_RECIPE_CONTENT;
 
 	@InjectMocks
 	private RecipeDAO recipeDAO;
@@ -49,6 +56,9 @@ public class RecipeDAOTest {
 
 	@Mock
 	private TypedQuery<Recipe> typedQuery;
+
+	@Captor
+	private ArgumentCaptor<Recipe> recipeCaptor;
 
 
 	@Before
@@ -88,8 +98,14 @@ public class RecipeDAOTest {
 
 
 	@Test
+	public void correctTransactionLevel_ForFindRecipesContainingAnyOf() throws Exception {
+		assertThat(RecipeDAO.class, hasCorrectTransactionLevelOnMethod("findRecipesContainingAnyOf", TransactionType.QUERY));
+	}
+
+
+	@Test
 	public void entityManagerCalledWithTheSameObjectOnSave() {
-		final Recipe recipe = new Recipe();
+		final Recipe recipe = new Recipe("test", "recipe");
 		this.recipeDAO.saveNewRecipe(recipe);
 		verify(this.em).persist(recipe);
 	}
@@ -162,17 +178,50 @@ public class RecipeDAOTest {
 
 	@Test
 	public void testUpdateRecipeContents() {
-		final Recipe mockRecipe = mock(Recipe.class);
+		final Recipe mockRecipe = setUpMockRecipe();
 		final long mockId = RandomUtils.nextLong();
 		when(this.em.find(Recipe.class, mockId)).thenReturn(mockRecipe);
 
-		this.recipeDAO.updateRecipeContents(mockId, "newContent");
+		this.recipeDAO.updateRecipeContents(mockId, NEW_CONTENT);
 
 		final InOrder inOrder = Mockito.inOrder(this.em, mockRecipe);
 		inOrder.verify(this.em).find(Recipe.class, mockId);
 		inOrder.verify(this.em).persist(mockRecipe);
-		inOrder.verify(mockRecipe).setRecipeContent("newContent");
+		inOrder.verify(mockRecipe).setRecipeContent(NEW_CONTENT);
+		inOrder.verify(mockRecipe).getRecipeName();
+		inOrder.verify(mockRecipe).setSearchableRecipeText(EXPECTED_SEARCHABLE_TEXT);
 
 		verifyNoMoreInteractions(this.em, mockRecipe);
+	}
+
+
+	private Recipe setUpMockRecipe() {
+		final Recipe mock = mock(Recipe.class);
+		when(mock.getRecipeName()).thenReturn(MIXED_CASE_RECIPE_NAME);
+		when(mock.getRecipeContent()).thenReturn(MIXED_CASE_RECIPE_CONTENT);
+		return mock;
+	}
+
+
+	@Test
+	public void saveSetsTheSearchableTextFieldCorrectly() throws Exception {
+		final Recipe testRecipe = new Recipe(MIXED_CASE_RECIPE_NAME, MIXED_CASE_RECIPE_CONTENT);
+
+		this.recipeDAO.saveNewRecipe(testRecipe);
+
+		verify(this.em).persist(this.recipeCaptor.capture());
+		assertThat(this.recipeCaptor.getValue().getSearchableRecipeText(), equalTo(EXPECTED_SEARCHABLE_TEXT));
+	}
+
+
+	@Test
+	public void updateUpdatesTheSearchableTextFieldCorrectly() throws Exception {
+		final Long recipeId = RandomUtils.nextLong();
+		final Recipe testRecipe = new Recipe(MIXED_CASE_RECIPE_NAME, "to be overwritten");
+		when(this.em.find(Recipe.class, recipeId)).thenReturn(testRecipe);
+
+		final Recipe result = this.recipeDAO.updateRecipeContents(recipeId, MIXED_CASE_RECIPE_CONTENT);
+
+		assertThat(result.getSearchableRecipeText(), equalTo(EXPECTED_SEARCHABLE_TEXT));
 	}
 }

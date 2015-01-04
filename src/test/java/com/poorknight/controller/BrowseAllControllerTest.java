@@ -15,7 +15,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import com.google.common.collect.ImmutableList;
-import com.poorknight.dao.RecipeDAO;
+import com.poorknight.business.searchrecipe.SearchRecipeService;
 import com.poorknight.domain.Recipe;
 import com.poorknight.testing.matchers.CustomMatchers;
 import com.poorknight.utils.UnitTestUtils;
@@ -28,7 +28,7 @@ public class BrowseAllControllerTest {
 	private BrowseAllController controller;
 
 	@Mock
-	private RecipeDAO recipeDAO;
+	private SearchRecipeService service;
 
 
 	@Test
@@ -46,7 +46,7 @@ public class BrowseAllControllerTest {
 	@Test
 	public void thePostConstructMethod_InitalizesAllRecipes() throws Exception {
 		final List<Recipe> expectedList = ImmutableList.of(new Recipe(random(10), random(10)), new Recipe(random(10), random(10)));
-		when(this.recipeDAO.queryAllRecipes()).thenReturn(expectedList);
+		when(this.service.findAllRecipes()).thenReturn(expectedList);
 
 		UnitTestUtils.callPostConstructMethod(this.controller);
 

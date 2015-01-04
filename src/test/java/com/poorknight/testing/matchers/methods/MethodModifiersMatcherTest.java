@@ -50,6 +50,14 @@ public class MethodModifiersMatcherTest {
 
 
 		@Test
+		public void isPackageScoped_SetsFieldsCorrectly() {
+			final MethodModifiersMatcher matcher = MethodModifiersMatcher.isPackageScoped();
+			final Modifiers[] fromMatcher = ReflectionUtils.getFieldFromObject(matcher, "havingModifiers");
+			assertThat(fromMatcher, arrayContaining(Modifiers.PACKAGE));
+		}
+
+
+		@Test
 		public void passesWithTwoHavingModifiers() throws Exception {
 			final MethodModifiersMatcher matcher = MethodModifiersMatcher.havingModifiers(Modifiers.PUBLIC, Modifiers.FINAL);
 			final boolean result = matcher.matchesSafely(getMethod("finalMethod"), Description.NONE);

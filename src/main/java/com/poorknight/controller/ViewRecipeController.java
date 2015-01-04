@@ -5,8 +5,8 @@ import javax.faces.FacesException;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import com.poorknight.dao.RecipeDAO;
 import com.poorknight.domain.Recipe;
+import com.poorknight.domain.RecipeDAO;
 
 
 /**

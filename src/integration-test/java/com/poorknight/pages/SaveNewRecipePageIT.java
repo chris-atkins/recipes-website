@@ -25,8 +25,8 @@ import org.openqa.selenium.support.FindBy;
 import com.poorknight.business.TextToHtmlTranslator;
 import com.poorknight.business.saverecipe.SaveRecipeService;
 import com.poorknight.controller.SaveRecipeController;
-import com.poorknight.dao.RecipeDAO;
 import com.poorknight.domain.Recipe;
+import com.poorknight.domain.RecipeDAO;
 import com.poorknight.exceptions.DaoException;
 import com.poorknight.utils.ArquillianUtils;
 

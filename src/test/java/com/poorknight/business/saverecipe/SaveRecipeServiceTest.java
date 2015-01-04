@@ -1,6 +1,7 @@
 package com.poorknight.business.saverecipe;
 
 import static com.poorknight.testing.matchers.CustomMatchers.createsTransactionBoundaryOnMethod;
+import static com.poorknight.testing.matchers.CustomMatchers.isRequestScoped;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.when;
@@ -14,8 +15,8 @@ import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import com.poorknight.business.TextToHtmlTranslator;
-import com.poorknight.dao.RecipeDAO;
 import com.poorknight.domain.Recipe;
+import com.poorknight.domain.RecipeDAO;
 
 
 @RunWith(MockitoJUnitRunner.class)
@@ -33,6 +34,12 @@ public class SaveRecipeServiceTest {
 
 	@Mock
 	TextToHtmlTranslator mockTextToHtmlTranslator;
+
+
+	@Test
+	public void requestScoped() {
+		assertThat(SaveRecipeService.class, isRequestScoped());
+	}
 
 
 	@Test

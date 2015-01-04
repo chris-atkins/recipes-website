@@ -2,13 +2,13 @@ package com.poorknight.testing.matchers;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 
 import org.hamcrest.Matcher;
 
-import com.poorknight.dao.RecipeDAO;
 import com.poorknight.testing.matchers.classes.ClassAnnotationMatcher;
 import com.poorknight.testing.matchers.classes.EntityObjectMatcher;
 import com.poorknight.testing.matchers.classes.RequestScopedControllerMatcher;
@@ -21,6 +21,7 @@ import com.poorknight.testing.matchers.fields.ReadOnlyFieldMatcher;
 import com.poorknight.testing.matchers.matchers.FactoryMethodMatcher;
 import com.poorknight.testing.matchers.methods.AnnotatedMethodsMatcher;
 import com.poorknight.testing.matchers.methods.MethodAnnotationMatcher;
+import com.poorknight.testing.matchers.methods.MethodModifiersMatcher;
 import com.poorknight.testing.matchers.methods.MethodTransactionAnnotationMatcher;
 import com.poorknight.testing.matchers.methods.MethodTransactionAnnotationMatcher.TransactionType;
 import com.poorknight.testing.matchers.methods.TransactionalMethodMatcher;
@@ -98,7 +99,7 @@ public class CustomMatchers {
 	}
 
 
-	public static Matcher<? super Class<RecipeDAO>> isRequestScoped() {
+	public static Matcher<Class<?>> isRequestScoped() {
 		return ClassAnnotationMatcher.isRequestScoped();
 	}
 
@@ -115,6 +116,11 @@ public class CustomMatchers {
 
 	public static Matcher<Object> failsValidation() {
 		return BeanValidationMatcher.failsValidation();
+	}
+
+
+	public static Matcher<Method> isPackageScoped() {
+		return MethodModifiersMatcher.isPackageScoped();
 	}
 
 

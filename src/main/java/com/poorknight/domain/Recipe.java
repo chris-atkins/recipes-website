@@ -43,6 +43,10 @@ public class Recipe implements Serializable {
 	@Column(name = "C01_RECIPE_CONTENT")
 	private String recipeContent;
 
+	@Column(name = "C01_SEARCHABLE_TEXT")
+	@Setter(value = AccessLevel.PACKAGE)
+	private String searchableRecipeText;
+
 	@Setter(AccessLevel.NONE)
 	@Column(name = "C01_CREATED_ON")
 	private Timestamp createdOn;
