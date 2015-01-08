@@ -18,4 +18,9 @@
     <extension qualifier="webdriver">
     	<property name="browser">${arquillian.jsfTest.browser}</property>
     </extension>
+    
+    <extension qualifier="persistence">
+    	<property name="defaultDataSource">java:jboss/datasources/ExampleDS</property>
+    </extension>
+    
 </arquillian>

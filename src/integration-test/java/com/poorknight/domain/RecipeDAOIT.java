@@ -216,4 +216,9 @@ public class RecipeDAOIT {
 		this.dao.saveNewRecipe(neverFoundRecipe);
 	}
 
+	// @Test
+	// @UsingDataSet("SearchRecipesPageITData.yml")
+	// public void hasResultsOnScreen_ForEveryFoundRecipe() throws Exception {
+	// System.out.println("\n\n" + this.dao.queryAllRecipes() + "\n\n");
+	// }
 }

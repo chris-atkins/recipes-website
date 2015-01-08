@@ -30,7 +30,8 @@
 		<arquillian-weld-ee-embedded-1.1.version>1.0.0.CR8</arquillian-weld-ee-embedded-1.1.version>
 		<arquillian-warp.version>1.0.0.Alpha7</arquillian-warp.version>
 		<arquillian-drone-bom.version>1.3.1.Final</arquillian-drone-bom.version>
-		<arquillian-persistence-integration-tests.version>1.0.0.Alpha7</arquillian-persistence-integration-tests.version>
+		<!-- <arquillian-persistence-integration-tests.version>1.0.0.Alpha7</arquillian-persistence-integration-tests.version> -->
+		<arquillian-persistence.version>1.0.0.Alpha6</arquillian-persistence.version>
 		<selenium-bom.version>2.42.2</selenium-bom.version>
 		<weld-core.version>2.2.4.Final</weld-core.version>
 		<h2.version>1.4.180</h2.version>
@@ -335,20 +336,6 @@
 						</configuration>
 					</execution>
 
-					<execution>
-						<id>add-integration-test-sources</id>
-						<phase>generate-test-sources</phase>
-						<goals>
-							<goal>add-test-source</goal>
-						</goals>
-						<configuration>
-							<!-- Configures the source directory of our integration tests -->
-							<sources>
-								<source>src/integration-test/java</source>
-							</sources>
-						</configuration>
-					</execution>
-
 					<!-- Add a new resource directory to our build -->
 					<!-- <execution> <id>add-integration-test-resources</id> <phase>generate-test-resources</phase> <goals> <goal>add-test-resource</goal> 
 						</goals> <configuration> <resources> <resource> ??<filtering>true</filtering>?? <directory>src/integration-test/resources</directory> 
@@ -361,7 +348,7 @@
 				<version>${maven-surefire-plugin.version}</version>
 			</plugin>
 
-			<plugin>
+<!-- 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-failsafe-plugin</artifactId>
 				<version>${maven-failsafe-plugin.version}</version>
@@ -379,7 +366,7 @@
 						</goals>
 					</execution>
 				</executions>
-			</plugin>
+			</plugin> -->
 
 			<!-- <plugin> <groupId>org.bsc.maven</groupId> <artifactId>maven-processor-plugin</artifactId> <executions> <execution> 
 				<id>process</id> <goals> <goal>process</goal> </goals> <phase>generate-sources</phase> <configuration> <processors> <processor>org.hibernate.jpamodelgen.JPAMetaModelEntityProcessor</processor> 
@@ -389,7 +376,7 @@
 		</plugins>
 	</build>
 
-	<reporting>
+	<!-- <reporting>
 		<plugins>
 
 			<plugin>
@@ -419,7 +406,7 @@
 
 		</plugins>
 	</reporting>
-
+ -->
 	<profiles>
 
 		<!-- Used to deploy to localhost - runs all arquillian tests in a CDI container, but skips persistence tests (Integration 
@@ -519,10 +506,18 @@
 					<systemPath>${jdk.path}</systemPath>
 				</dependency>
 
+				<!-- <dependency> <groupId>org.jboss.arquillian.extension</groupId> <artifactId>arquillian-persistence-integration-tests</artifactId> 
+					<version>${arquillian-persistence-integration-tests.version}</version> <scope>test</scope> </dependency> -->
 				<dependency>
 					<groupId>org.jboss.arquillian.extension</groupId>
-					<artifactId>arquillian-persistence-integration-tests</artifactId>
-					<version>${arquillian-persistence-integration-tests.version}</version>
+					<artifactId>arquillian-persistence-api</artifactId>
+					<version>${arquillian-persistence.version}</version>
+					<scope>test</scope>
+				</dependency>
+				<dependency>
+					<groupId>org.jboss.arquillian.extension</groupId>
+					<artifactId>arquillian-persistence-impl</artifactId>
+					<version>${arquillian-persistence.version}</version>
 					<scope>test</scope>
 				</dependency>
 
@@ -592,6 +587,48 @@
 							</execution>
 						</executions>
 					</plugin>
+					
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>build-helper-maven-plugin</artifactId>
+						<version>${build-helper-maven-plugin.version}</version>
+						<executions>
+		
+							<!-- Add a new source directory to our build -->
+							<execution>
+								<id>add-source</id>
+								<phase>generate-sources</phase>
+								<goals>
+									<goal>add-source</goal>
+								</goals>
+								<configuration>
+									<sources>
+										<source>src/main/generated</source>
+									</sources>
+								</configuration>
+							</execution>
+		
+							<execution>
+								<id>add-integration-test-sources</id>
+								<phase>generate-test-sources</phase>
+								<goals>
+									<goal>add-test-source</goal>
+								</goals>
+								<configuration>
+									<!-- Configures the source directory of our integration tests -->
+									<sources>
+										<source>src/integration-test/java</source>
+									</sources>
+								</configuration>
+							</execution>
+		
+							<!-- Add a new resource directory to our build -->
+							<!-- <execution> <id>add-integration-test-resources</id> <phase>generate-test-resources</phase> <goals> <goal>add-test-resource</goal> 
+								</goals> <configuration> <resources> <resource> ??<filtering>true</filtering>?? <directory>src/integration-test/resources</directory> 
+								</resource> </resources> </configuration> </execution> -->
+						</executions>
+					</plugin>
+					
 				</plugins>
 			</build>
 		</profile>

@@ -117,15 +117,16 @@ public class SearchRecipesPageIT {
 
 
 	@Test(expected = NoSuchElementException.class)
-	public void noEmptyResultsMessageExists_OnPageLoad() throws Exception {
-		this.noResultsMessage.getText();  // call the web element - there will be no exception if it exists
+	public void emptyResultsMessage_DoesNotExistOnPageLoad() throws Exception {
+		this.noResultsMessage.getText();  // call the web element - there will not be an exception if it exists, so the test would fail in that case
 	}
 
 
 	@Test
-	public void noResultsMessageExists_OnNoResultSearch() throws Exception {
+	public void emptyResultsMessage_ExistsOnNoResultSearch() throws Exception {
 		this.searchText.sendKeys("ohai");
 		Graphene.guardAjax(this.searchButton).click();
 		assertThat(this.noResultsMessage.getText(), not(isEmptyString()));
 	}
+
 }

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PROCESS model-entity="JSFProcess">
+ <PROCESS-ITEM NAME="rules:#pages#home#index.xhtml"
+  PATH="/pages/home/index.xhtml" SHAPE="272,33,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#pages#home#index.xhtml:0" NAME="item"
+   PATH="/pages/home/index.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT
+    ID="searchRecipe::#pages#search#searchPlaceholder.xhtml"
+    NAME="output" PATH="/pages/search/searchPlaceholder.xhtml"
+    TARGET="rules:#pages#search#searchPlaceholder.xhtml"
+    TITLE="searchRecipe" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="saveNewRecipe::#pages#saveNew#saveNewRecipe.xhtml"
+    NAME="output1" PATH="/pages/saveNew/saveNewRecipe.xhtml"
+    TARGET="rules:#pages#saveNew#saveNewRecipe.xhtml"
+    TITLE="saveNewRecipe" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT
+    ID="browseAllRecipes::#pages#browse#browseAllRecipes.xhtml"
+    NAME="output2" PATH="/pages/browse/browseAllRecipes.xhtml"
+    TARGET="rules:#pages#browse#browseAllRecipes.xhtml"
+    TITLE="browseAllRecipes" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#pages#saveNew#saveNewRecipe.xhtml"
+  PATH="/pages/saveNew/saveNewRecipe.xhtml" SHAPE="32,17,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#pages#saveNew#saveNewRecipe.xhtml:0"
+   NAME="item" PATH="/pages/saveNew/saveNewRecipe.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="home::#pages#home#index.xhtml" NAME="output"
+    PATH="/pages/home/index.xhtml"
+    TARGET="rules:#pages#home#index.xhtml" TITLE="home" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#pages#browse#browseAllRecipes.xhtml"
+  PATH="/pages/browse/browseAllRecipes.xhtml" SHAPE="512,193,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#pages#browse#browseAllRecipes.xhtml:0"
+   NAME="item" PATH="/pages/browse/browseAllRecipes.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="viewRecipe::#pages#view#viewRecipe.xhtml"
+    NAME="output" PATH="/pages/view/viewRecipe.xhtml"
+    TARGET="rules:#pages#view#viewRecipe.xhtml" TITLE="viewRecipe" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="home::#pages#home#index.xhtml"
+    NAME="output1" PATH="/pages/home/index.xhtml"
+    TARGET="rules:#pages#home#index.xhtml" TITLE="home" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#pages#view#viewRecipe.xhtml"
+  PATH="/pages/view/viewRecipe.xhtml" SHAPE="32,193,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#pages#view#viewRecipe.xhtml:0" NAME="item"
+   PATH="/pages/view/viewRecipe.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="home::#pages#home#index.xhtml" NAME="output"
+    PATH="/pages/home/index.xhtml"
+    TARGET="rules:#pages#home#index.xhtml" TITLE="home" model-entity="JSFProcessItemOutput"/>
+   <PROCESS-ITEM-OUTPUT ID="back::#pages#browse#browseAllRecipes.xhtml"
+    NAME="output1" PATH="/pages/browse/browseAllRecipes.xhtml"
+    TARGET="rules:#pages#browse#browseAllRecipes.xhtml" TITLE="back" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#pages#search#searchPlaceholder.xhtml"
+  PATH="/pages/search/searchPlaceholder.xhtml" SHAPE="512,17,0,0" model-entity="JSFProcessGroup"/>
+</PROCESS>
