@@ -91,27 +91,24 @@ public class SearchRecipesPageIT {
 
 	@Test
 	public void errorMessageOccursOnEmptySearchText() throws Exception {
-		Graphene.guardAjax(this.searchButton).click();
+		search("");
 		assertThat(this.errorMessage.getText(), not(isEmptyString()));
 	}
 
 
 	@Test
 	public void errorMessageOnWhitespaceSearchText() throws Exception {
-		this.searchText.sendKeys("    ");
-		Graphene.guardAjax(this.searchButton).click();
+		search("    ");
 		assertThat(this.errorMessage.getText(), not(isEmptyString()));
 	}
 
 
 	@Test
 	public void errorMessageGoesAwayAfterGoodSearch() throws Exception {
-		this.searchText.sendKeys("    ");
-		Graphene.guardAjax(this.searchButton).click();
+		search("    ");
 		assertThat(this.errorMessage.getText(), not(isEmptyString()));
 
-		this.searchText.sendKeys("ohai");
-		Graphene.guardAjax(this.searchButton).click();
+		search("ohai");
 		assertThat(this.errorMessage.getText(), isEmptyString());
 	}
 
@@ -124,9 +121,13 @@ public class SearchRecipesPageIT {
 
 	@Test
 	public void emptyResultsMessage_ExistsOnNoResultSearch() throws Exception {
-		this.searchText.sendKeys("ohai");
-		Graphene.guardAjax(this.searchButton).click();
+		search("ohai");
 		assertThat(this.noResultsMessage.getText(), not(isEmptyString()));
 	}
 
+
+	private void search(final String searchString) {
+		this.searchText.sendKeys(searchString);
+		Graphene.guardAjax(this.searchButton).click();
+	}
 }
