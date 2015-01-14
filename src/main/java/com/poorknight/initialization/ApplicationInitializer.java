@@ -5,6 +5,7 @@ import java.io.Serializable;
 import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
+import javax.inject.Inject;
 
 
 /**
@@ -16,9 +17,14 @@ public class ApplicationInitializer implements Serializable {
 
 	private static final long serialVersionUID = 3104579660773177596L;
 
+	@Inject
+	private InitializationProcessesFactory factory;
+
 
 	@PostConstruct
 	public void initializeApplication() {
-		// empty on purpose
+		for (final InitializationProcess initProcess : this.factory.getInitializationProcesses()) {
+			initProcess.execute();
+		}
 	}
 }

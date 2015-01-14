@@ -42,6 +42,7 @@
 		<commons-lang.version>2.6</commons-lang.version>
 		<commons-collections.version>3.2.1</commons-collections.version>
 		<commons-beanutils.version>1.9.2</commons-beanutils.version>
+		<guava.version>18.0</guava.version>
 		<lombok.version>1.14.4</lombok.version>
 
 		<mockito-all.version>1.9.5</mockito-all.version>
@@ -219,6 +220,13 @@
 			<artifactId>commons-beanutils</artifactId>
 			<version>${commons-beanutils.version}</version>
 		</dependency>
+	
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>${guava.version}</version>
+		</dependency>
+		
 
 		<dependency>
 			<groupId>org.projectlombok</groupId>
