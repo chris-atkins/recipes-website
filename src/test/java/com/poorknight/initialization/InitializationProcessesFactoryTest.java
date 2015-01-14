@@ -1,6 +1,7 @@
 package com.poorknight.initialization;
 
 import static com.poorknight.testing.matchers.CustomMatchers.isRequestScoped;
+import static org.hamcrest.Matchers.emptyCollectionOf;
 import static org.junit.Assert.assertThat;
 
 import org.junit.Test;
@@ -19,9 +20,10 @@ public class InitializationProcessesFactoryTest {
 		assertThat(InitializationProcessesFactory.class, isRequestScoped());
 	}
 
-	// @Test
-	// public void returnsEmptyList() {
-	// assertThat(this.factory.getInitializationProcesses(), emptyCollectionOf(InitializationProcess.class));
-	// }
+
+	@Test
+	public void returnsEmptyList() {
+		assertThat(this.factory.getInitializationProcesses(), emptyCollectionOf(InitializationProcess.class));
+	}
 
 }
