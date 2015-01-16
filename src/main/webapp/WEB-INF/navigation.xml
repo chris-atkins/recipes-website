@@ -2,6 +2,16 @@
 <faces-config version="2.2" xmlns="http://xmlns.jcp.org/xml/ns/javaee"
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd">
  
+ 	<!-- GLOBAL NAVIGATION RULES -->
+ 	<navigation-rule>
+		<navigation-case>
+			<from-outcome>home</from-outcome>
+			<to-view-id>/pages/home/index.xhtml</to-view-id>
+			<redirect/>
+		</navigation-case>
+	</navigation-rule>
+ 
+ 	<!-- HOME PAGE -->
  	<navigation-rule>
 		<from-view-id>/pages/home/index.xhtml</from-view-id>
 		<navigation-case>
@@ -22,15 +32,8 @@
 		</navigation-case>
 	</navigation-rule>
 
- 	<navigation-rule>
-		<from-view-id>/pages/saveNew/saveNewRecipe.xhtml</from-view-id>
-		<navigation-case>
-			<from-outcome>home</from-outcome>
-			<to-view-id>/pages/home/index.xhtml</to-view-id>
-			<redirect/>
-		</navigation-case>
-	</navigation-rule>
 
+	<!-- BROWSE ALL RECIPES PAGE -->
  	<navigation-rule>
 		<from-view-id>/pages/browse/browseAllRecipes.xhtml</from-view-id>
 		<navigation-case>
@@ -38,20 +41,11 @@
 			<to-view-id>/pages/view/viewRecipe.xhtml</to-view-id>
 			<redirect/>
 		</navigation-case>
-		<navigation-case>
-			<from-outcome>home</from-outcome>
-			<to-view-id>/pages/home/index.xhtml</to-view-id>
-			<redirect/>
-		</navigation-case>
 	</navigation-rule>
 
+	<!-- VIEW SINGLE RECIPE PAGE -->
  	<navigation-rule>
 		<from-view-id>/pages/view/viewRecipe.xhtml</from-view-id>
-		<navigation-case>
-			<from-outcome>home</from-outcome>
-			<to-view-id>/pages/home/index.xhtml</to-view-id>
-			<redirect/>
-		</navigation-case>
 		<navigation-case>
 			<from-outcome>back</from-outcome>
 			<to-view-id>/pages/browse/browseAllRecipes.xhtml</to-view-id>

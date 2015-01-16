@@ -26,7 +26,7 @@
 	</h:panelGrid>
 	
 	<h:panelGroup id="searchResultsHolder" layout="block">
-		<h:dataTable id="searchResults" value="#{searchRecipesController.foundRecipes}" var="recipe"  rendered="#{searchRecipesController.shouldDisplaySearchResults}">
+		<h:dataTable id="searchResults" value="#{searchRecipesController.foundRecipes}" var="recipe" rendered="#{searchRecipesController.shouldDisplaySearchResults}">
 			<h:column>
 				<f:facet name="header">
 					<h:outputText value="#{pageMessages.nameHeader}" />
