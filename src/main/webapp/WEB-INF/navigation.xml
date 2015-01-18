@@ -4,9 +4,15 @@
  
  	<!-- GLOBAL NAVIGATION RULES -->
  	<navigation-rule>
+ 		<from-view-id />
 		<navigation-case>
 			<from-outcome>home</from-outcome>
 			<to-view-id>/pages/home/index.xhtml</to-view-id>
+			<redirect/>
+		</navigation-case>		
+		<navigation-case>
+			<from-outcome>viewRecipe</from-outcome>
+			<to-view-id>/pages/view/viewRecipe.xhtml</to-view-id>
 			<redirect/>
 		</navigation-case>
 	</navigation-rule>
@@ -32,16 +38,6 @@
 		</navigation-case>
 	</navigation-rule>
 
-
-	<!-- BROWSE ALL RECIPES PAGE -->
- 	<navigation-rule>
-		<from-view-id>/pages/browse/browseAllRecipes.xhtml</from-view-id>
-		<navigation-case>
-			<from-outcome>viewRecipe</from-outcome>
-			<to-view-id>/pages/view/viewRecipe.xhtml</to-view-id>
-			<redirect/>
-		</navigation-case>
-	</navigation-rule>
 
 	<!-- VIEW SINGLE RECIPE PAGE -->
  	<navigation-rule>

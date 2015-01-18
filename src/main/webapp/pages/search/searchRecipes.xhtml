@@ -34,10 +34,9 @@
 				<h:outputText value="#{recipe.recipeName}" />
 			</h:column>
 			<h:column>
-<!-- 				<h:link outcome="viewRecipe" value="#{pageMessages.linkToRecipe}"> 
+				<h:link outcome="viewRecipe" value="#{pageMessages.linkToRecipe}"> 
 					<f:param name="recipeId" value="#{recipe.recipeId}"/>
-				</h:link> reput this in and delete next line-->
-				<h:outputText value="#{pageMessages.linkToRecipe}" />
+				</h:link>
 			</h:column>
 		</h:dataTable>
 		<h:outputText id="noResultsMessage" value="#{pageMessages.noResultsFound}" rendered="#{searchRecipesController.shouldDisplayNoResultsMessage}" />
