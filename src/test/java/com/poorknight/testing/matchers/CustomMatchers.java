@@ -9,9 +9,11 @@ import javax.persistence.PreUpdate;
 
 import org.hamcrest.Matcher;
 
+import com.poorknight.navigation.NavigationTracker;
 import com.poorknight.testing.matchers.classes.ClassAnnotationMatcher;
 import com.poorknight.testing.matchers.classes.EntityObjectMatcher;
 import com.poorknight.testing.matchers.classes.RequestScopedControllerMatcher;
+import com.poorknight.testing.matchers.classes.SessionScopedControllerMatcher;
 import com.poorknight.testing.matchers.classes.SingletonMatcher;
 import com.poorknight.testing.matchers.classes.ViewScopedControllerMatcher;
 import com.poorknight.testing.matchers.fields.FieldAnnotationMatcher;
@@ -89,13 +91,18 @@ public class CustomMatchers {
 	}
 
 
+	public static Matcher<Class<?>> isAProperRequestScopedController() {
+		return RequestScopedControllerMatcher.isAProperRequestScopedController();
+	}
+
+
 	public static Matcher<Class<?>> isAProperViewScopedController() {
 		return ViewScopedControllerMatcher.isAProperViewScopedController();
 	}
 
 
-	public static Matcher<Class<?>> isAProperRequestScopedController() {
-		return RequestScopedControllerMatcher.isAProperRequestScopedController();
+	public static Matcher<? super Class<NavigationTracker>> isAProperSessionScopedController() {
+		return SessionScopedControllerMatcher.isAProperSessionScopedController();
 	}
 
 

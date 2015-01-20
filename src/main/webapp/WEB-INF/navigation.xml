@@ -7,44 +7,27 @@
  		<from-view-id />
 		<navigation-case>
 			<from-outcome>home</from-outcome>
-			<to-view-id>/pages/home/index.xhtml</to-view-id>
+			<to-view-id>/pages/home/index.jsf</to-view-id>
 			<redirect/>
 		</navigation-case>		
 		<navigation-case>
 			<from-outcome>viewRecipe</from-outcome>
-			<to-view-id>/pages/view/viewRecipe.xhtml</to-view-id>
+			<to-view-id>/pages/view/viewRecipe.jsf</to-view-id>
 			<redirect/>
 		</navigation-case>
-	</navigation-rule>
- 
- 	<!-- HOME PAGE -->
- 	<navigation-rule>
-		<from-view-id>/pages/home/index.xhtml</from-view-id>
 		<navigation-case>
 			<from-outcome>searchRecipe</from-outcome>
-			<!-- <to-view-id>/pages/search/searchRecipes.xhtml</to-view-id> -->
-			<to-view-id>/pages/search/searchPlaceholder.xhtml</to-view-id>
+			<to-view-id>/pages/search/searchRecipes.jsf</to-view-id>
 			<redirect/>
 		</navigation-case>
 		<navigation-case>
 			<from-outcome>saveNewRecipe</from-outcome>
-			<to-view-id>/pages/saveNew/saveNewRecipe.xhtml</to-view-id>
+			<to-view-id>/pages/saveNew/saveNewRecipe.jsf</to-view-id>
 			<redirect/>
 		</navigation-case>
 		<navigation-case>
 			<from-outcome>browseAllRecipes</from-outcome>
-			<to-view-id>/pages/browse/browseAllRecipes.xhtml</to-view-id>
-			<redirect/>
-		</navigation-case>
-	</navigation-rule>
-
-
-	<!-- VIEW SINGLE RECIPE PAGE -->
- 	<navigation-rule>
-		<from-view-id>/pages/view/viewRecipe.xhtml</from-view-id>
-		<navigation-case>
-			<from-outcome>back</from-outcome>
-			<to-view-id>/pages/browse/browseAllRecipes.xhtml</to-view-id>
+			<to-view-id>/pages/browse/browseAllRecipes.jsf</to-view-id>
 			<redirect/>
 		</navigation-case>
 	</navigation-rule>

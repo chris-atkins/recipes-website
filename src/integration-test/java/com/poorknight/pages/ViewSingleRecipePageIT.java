@@ -1,6 +1,5 @@
 package com.poorknight.pages;
 
-import static com.poorknight.constants.ITConstants.BROWSE_ALL_PAGE;
 import static com.poorknight.constants.ITConstants.HOME_PAGE;
 import static com.poorknight.constants.ITConstants.VIEW_SINGLE_RECIPE_PAGE;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -35,7 +34,7 @@ public class ViewSingleRecipePageIT {
 
 	@Deployment(testable = false)
 	public static WebArchive createDeployment() {
-		return ArquillianUtils.createBasicPageTestDeployment("ViewSinglePageIT");
+		return ArquillianUtils.createPageTestDeploymentWithBackNavigation();
 	}
 
 
@@ -68,16 +67,22 @@ public class ViewSingleRecipePageIT {
 
 
 	@Test
-	public void backButtonNavigatesToViewAllPage() {
+	public void backButtonNavigatesToLastPage() {
+		this.browser.get(homePage());
 		this.browser.get(viewSingleRecipePage());
 		final WebElement homeButton = this.browser.findElement(By.id("pageForm:goBackButton"));
 		homeButton.click();
 
-		assertThat(this.browser.getCurrentUrl(), endsWith(BROWSE_ALL_PAGE));
+		assertThat(this.browser.getCurrentUrl(), endsWith(HOME_PAGE));
 	}
 
 
 	private String viewSingleRecipePage() {
 		return this.deploymentURL.toExternalForm() + VIEW_SINGLE_RECIPE_PAGE;
+	}
+
+
+	private String homePage() {
+		return this.deploymentURL.toExternalForm() + HOME_PAGE;
 	}
 }

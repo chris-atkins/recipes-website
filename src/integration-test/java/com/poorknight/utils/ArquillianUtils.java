@@ -9,9 +9,15 @@ import org.jboss.shrinkwrap.api.importer.ExplodedImporter;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.shrinkwrap.resolver.api.maven.Maven;
 
+import com.poorknight.listeners.servlet.HttpRequestListener;
+import com.poorknight.navigation.Location;
+import com.poorknight.navigation.NavigationRequestListener;
+import com.poorknight.navigation.NavigationTracker;
+
 
 public class ArquillianUtils {
 
+	private static final String MANDATORY_WAR_NAME_FOR_NAV_TO_WORK_LOCALHOST_PREFIX = "recipee7";
 	private static final String PAGES_ROOT = "src/main/webapp";
 	private static final String CONFIG_ROOT = "src/main/webapp";
 	private static final String MESSAGES_ROOT = "src/main/resources/messages";
@@ -37,6 +43,12 @@ public class ArquillianUtils {
 
 				// messages
 				.addAsResource(new File(MESSAGES_ROOT));
+	}
+
+
+	public static WebArchive createPageTestDeploymentWithBackNavigation(final Class<?>... classes) {
+		return createBasicPageTestDeployment(MANDATORY_WAR_NAME_FOR_NAV_TO_WORK_LOCALHOST_PREFIX, classes).addClasses(
+				NavigationRequestListener.class, NavigationTracker.class, Location.class, HttpRequestListener.class);
 	}
 
 
