@@ -1,4 +1,4 @@
-package com.poorknight.pages;
+package com.poorknight.pages.view;
 
 import static com.poorknight.constants.ITConstants.HOME_PAGE;
 import static com.poorknight.constants.ITConstants.VIEW_SINGLE_RECIPE_PAGE;

@@ -1,4 +1,4 @@
-package com.poorknight.pages;
+package com.poorknight.pages.savenew;
 
 import static com.poorknight.constants.ITConstants.HOME_PAGE;
 import static com.poorknight.constants.ITConstants.SAVE_RECIPE_PAGE;

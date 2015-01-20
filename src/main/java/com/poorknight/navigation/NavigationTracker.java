@@ -7,6 +7,9 @@ import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 
 
+/**
+ * Responsible for keeping track of page navigation (as long as it is informed of the navigation), and returning to the last page when requested.
+ */
 @SessionScoped
 @Named("navigationTracker")
 public class NavigationTracker implements Serializable {

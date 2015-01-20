@@ -1,4 +1,4 @@
-package com.poorknight.pages;
+package com.poorknight.pages.search;
 
 import static com.poorknight.utils.ArquillianUtils.buildLibraryFromPom;
 import static com.poorknight.utils.ArquillianUtils.createBasicPageTestDeployment;

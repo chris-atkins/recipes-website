@@ -1,4 +1,4 @@
-package com.poorknight.pages;
+package com.poorknight.pages.browse;
 
 import static com.poorknight.constants.ITConstants.BROWSE_ALL_PAGE;
 import static com.poorknight.constants.ITConstants.HOME_PAGE;
@@ -35,7 +35,7 @@ public class BrowseAllRecipesPageIT {
 	private URL deploymentUrl;
 
 	@FindBy(id = HOME_BUTTON_ID)
-	WebElement homeButton;
+	private WebElement homeButton;
 
 
 	@Deployment(testable = false)

@@ -1,4 +1,4 @@
-package com.poorknight.pages;
+package com.poorknight.pages.savenew;
 
 import static com.poorknight.constants.ITConstants.SAVE_RECIPE_PAGE;
 import static org.hamcrest.MatcherAssert.assertThat;

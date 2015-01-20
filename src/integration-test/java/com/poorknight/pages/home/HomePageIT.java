@@ -1,4 +1,4 @@
-package com.poorknight.pages;
+package com.poorknight.pages.home;
 
 import static com.poorknight.constants.ITConstants.BROWSE_ALL_PAGE;
 import static com.poorknight.constants.ITConstants.HOME_PAGE;
