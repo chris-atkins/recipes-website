@@ -25,7 +25,6 @@ import org.junit.runner.RunWith;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
 
 import com.poorknight.constants.ITConstants;
 import com.poorknight.controller.SearchRecipesController;
@@ -46,8 +45,6 @@ public class SearchRecipesPageNavigationIT {
 
 	private WebElement searchTextfield;
 	private WebElement searchButton;
-
-	@FindBy(linkText = VIEW_RECIPE_LINK_TEXT)
 	private List<WebElement> viewRecipeLink;
 
 

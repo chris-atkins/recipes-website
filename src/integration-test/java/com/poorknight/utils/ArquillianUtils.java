@@ -22,6 +22,7 @@ import com.poorknight.exceptions.DaoException;
 import com.poorknight.listeners.servlet.HttpRequestListener;
 import com.poorknight.navigation.Location;
 import com.poorknight.navigation.NavigationRequestListener;
+import com.poorknight.navigation.NavigationStack;
 import com.poorknight.navigation.NavigationTracker;
 
 
@@ -58,12 +59,11 @@ public class ArquillianUtils {
 
 	public static WebArchive createPageTestDeploymentWithBackNavigation(final Class<?>... classes) {
 		return createBasicPageTestDeployment(MANDATORY_WAR_NAME_FOR_NAV_TO_WORK_LOCALHOST_PREFIX, classes).addClasses(
-				NavigationRequestListener.class, NavigationTracker.class, Location.class, HttpRequestListener.class);
+				NavigationRequestListener.class, NavigationTracker.class, NavigationStack.class, Location.class, HttpRequestListener.class);
 	}
 
 
 	public static WebArchive createRecipePersistenceEnabledPageTestWithNavigation(final Class<?>... classes) {
-
 		return createPageTestDeploymentWithBackNavigation(classes)
 				.addClasses(SearchRecipeService.class, SaveRecipeService.class, RecipeDAO.class, Recipe.class, DaoException.class,
 						CollectionUtils.class, Recipe_.class, WebDriver.class, SearchContext.class, WebElement.class)//

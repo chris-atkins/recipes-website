@@ -1,0 +1,12 @@
+C01_RECIPE: 
+  - C01_RECIPE_NAME: "Recipe1 Name"
+    C01_RECIPE_CONTENT: "Recipe1 Content"
+    C01_SEARCHABLE_TEXT: "recipe1 namerecipe1 content"
+    
+  - C01_RECIPE_NAME: "Recipe2 Name"
+    C01_RECIPE_CONTENT: "Recipe2 Content"
+    C01_SEARCHABLE_TEXT: "recipe2 namerecipe2 content"
+    
+  - C01_RECIPE_NAME: "Recipe3 Name"
+    C01_RECIPE_CONTENT: "Recipe3 Content"
+    C01_SEARCHABLE_TEXT: "recipe3 namerecipe3 content"

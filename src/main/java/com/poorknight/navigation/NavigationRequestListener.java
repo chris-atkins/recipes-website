@@ -11,12 +11,12 @@ import com.poorknight.listeners.servlet.HttpRequestListener;
 public class NavigationRequestListener extends HttpRequestListener {
 
 	@Inject
-	private NavigationTracker navigator;
+	private NavigationTracker navTracker;
 
 
 	@Override
 	protected void onRequestInitialized(final HttpServletRequest request) {
-		this.navigator.registerNavigationTo(request.getRequestURI(), request.getQueryString());
+		this.navTracker.registerNavigationTo(request.getRequestURI(), request.getQueryString());
 	}
 
 

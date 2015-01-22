@@ -3,6 +3,10 @@ package com.poorknight.navigation;
 import lombok.Data;
 
 
+/**
+ * Responsible for managing the quirks of the URLs for this project. When given a path and query string (parameters - like 'recipeId=1'), it can
+ * regenerate the location with the query string into a url that the system can navigate to.
+ */
 @Data
 public class Location {
 
@@ -14,7 +18,7 @@ public class Location {
 	final static private String WITH_PARAM_SUFFIX = "&faces-redirect=true";
 
 
-	public Location(final String path, final String parameterString) {
+	Location(final String path, final String parameterString) {
 		if (path.startsWith(PREFIX)) {
 			this.path = path.substring(PREFIX.length());
 		} else {
@@ -24,12 +28,12 @@ public class Location {
 	}
 
 
-	public boolean isSimilarTo(final Location other) {
+	boolean isSimilarTo(final Location other) {
 		return this.path.equals(other.getPath());
 	}
 
 
-	public String toUrl() {
+	String toUrl() {
 		if (this.parameterString == null) {
 			return this.path + NO_PARAM_SUFFIX;
 		}
