@@ -61,10 +61,12 @@ public class BrowseAllRecipesPageWithDatasetIT {
 	@InSequence(2)
 	@RunAsClient
 	@Cleanup(phase = TestExecutionPhase.NONE)
-	public void testTheCorrectNumberOfLinksExistOnScreen(@ArquillianResource final URL deploymentURL, @Drone final WebDriver browser)
-			throws Exception {
+	public void testTheCorrectLinksExistOnScreen(@ArquillianResource final URL deploymentURL, @Drone final WebDriver browser) throws Exception {
 		initPage(deploymentURL, browser);
 		assertThat(this.viewRecipeLinks.size(), equalTo(3));
+		assertThat(browser.getPageSource(), containsString("Recipe1 Name"));
+		assertThat(browser.getPageSource(), containsString("Recipe2 Name"));
+		assertThat(browser.getPageSource(), containsString("Recipe3 Name"));
 	}
 
 
