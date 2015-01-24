@@ -16,13 +16,13 @@ import org.openqa.selenium.WebElement;
 import com.poorknight.business.saverecipe.SaveRecipeService;
 import com.poorknight.business.searchrecipe.SearchRecipeService;
 import com.poorknight.domain.Recipe;
-import com.poorknight.domain.Recipe_;
 import com.poorknight.domain.RecipeDAO;
+import com.poorknight.domain.Recipe_;
 import com.poorknight.exceptions.DaoException;
 import com.poorknight.listeners.servlet.HttpRequestListener;
 import com.poorknight.navigation.Location;
 import com.poorknight.navigation.NavigationRequestListener;
-import com.poorknight.navigation.NavigationStack;
+import com.poorknight.navigation.PageNavigationStack;
 import com.poorknight.navigation.NavigationTracker;
 
 
@@ -59,7 +59,7 @@ public class ArquillianUtils {
 
 	public static WebArchive createPageTestDeploymentWithBackNavigation(final Class<?>... classes) {
 		return createBasicPageTestDeployment(MANDATORY_WAR_NAME_FOR_NAV_TO_WORK_LOCALHOST_PREFIX, classes).addClasses(
-				NavigationRequestListener.class, NavigationTracker.class, NavigationStack.class, Location.class, HttpRequestListener.class);
+				NavigationRequestListener.class, NavigationTracker.class, PageNavigationStack.class, Location.class, HttpRequestListener.class);
 	}
 
 
@@ -68,7 +68,26 @@ public class ArquillianUtils {
 				.addClasses(SearchRecipeService.class, SaveRecipeService.class, RecipeDAO.class, Recipe.class, DaoException.class,
 						CollectionUtils.class, Recipe_.class, WebDriver.class, SearchContext.class, WebElement.class)//
 				.addAsWebInfResource("META-INF/test-persistence.xml", "classes/META-INF/persistence.xml")//
-				.addAsLibrary(buildLibraryFromPom("commons-collections", "commons-collections", "3.2.1"));
+				.addAsLibrary(commonsCollections());
+	}
+
+
+	private static File commonsCollections() {
+		return buildLibraryFromPom("commons-collections", "commons-collections", "3.2.1");
+	}
+
+
+	public static File commonsLang() {
+		return buildLibraryFromPom("commons-lang", "commons-lang", "2.6");
+	}
+
+
+	public static WebArchive createRecipePersistenceEnabledPageTestDeployment(final String webArchiveName, final Class<?>... classes) {
+		return createBasicPageTestDeployment(webArchiveName, classes)
+				.addClasses(SearchRecipeService.class, SaveRecipeService.class, RecipeDAO.class, Recipe.class, DaoException.class,
+						CollectionUtils.class, Recipe_.class, WebDriver.class, SearchContext.class, WebElement.class)//
+				.addAsWebInfResource("META-INF/test-persistence.xml", "classes/META-INF/persistence.xml")//
+				.addAsLibrary(commonsCollections());
 	}
 
 

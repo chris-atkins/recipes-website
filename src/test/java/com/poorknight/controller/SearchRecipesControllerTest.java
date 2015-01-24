@@ -1,6 +1,7 @@
 package com.poorknight.controller;
 
 import static com.poorknight.testing.matchers.CustomMatchers.failsValidation;
+import static com.poorknight.testing.matchers.CustomMatchers.hasAPostConstructMethod;
 import static com.poorknight.testing.matchers.CustomMatchers.hasAReadOnlyField;
 import static com.poorknight.testing.matchers.CustomMatchers.isAProperViewScopedController;
 import static com.poorknight.testing.matchers.CustomMatchers.passesValidation;
@@ -8,13 +9,17 @@ import static org.apache.commons.lang.RandomStringUtils.random;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.nullValue;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.lang.RandomStringUtils;
+import org.apache.commons.lang.math.RandomUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.experimental.runners.Enclosed;
@@ -27,6 +32,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import com.google.common.collect.ImmutableList;
 import com.poorknight.business.searchrecipe.SearchRecipeService;
 import com.poorknight.domain.Recipe;
+import com.poorknight.utils.UnitTestUtils;
 
 
 @RunWith(Enclosed.class)
@@ -45,6 +51,13 @@ public class SearchRecipesControllerTest {
 		public void foundRecipesIsReadOnly() throws Exception {
 			assertThat(SearchRecipesController.class, hasAReadOnlyField("foundRecipes"));
 		}
+
+
+		@Test
+		public void postConstructMethod() throws Exception {
+			assertThat(SearchRecipesController.class, hasAPostConstructMethod());
+		}
+
 	}
 
 	@RunWith(MockitoJUnitRunner.class)
@@ -55,6 +68,9 @@ public class SearchRecipesControllerTest {
 
 		@Mock
 		private SearchRecipeService service;
+
+		@Mock
+		private LatestSearch latestSearch;
 
 		private final String searchString = random(10);
 		private final List<Recipe> expectedResults = new ImmutableList.Builder<Recipe>()//
@@ -82,6 +98,22 @@ public class SearchRecipesControllerTest {
 			assertThat(this.controller.getFoundRecipes(), contains(this.expectedResults.toArray()));
 			assertThat(this.controller.getFoundRecipes().size(), equalTo(this.expectedResults.size()));
 		}
+
+
+		@Test
+		public void searchPopulatesTheLatestSearch_AfterSuccessfulSearch() throws Exception {
+			this.controller.search();
+			verify(this.latestSearch).setLatestSearch(this.searchString);
+		}
+
+
+		@Test
+		public void searchDoesNotPopulatesTheLatestSearch_AfterEmptySearch() throws Exception {
+			when(this.service.searchBy(this.searchString)).thenReturn(new ArrayList<Recipe>());
+
+			this.controller.search();
+			verifyNoMoreInteractions(this.latestSearch);
+		}
 	}
 
 	@RunWith(MockitoJUnitRunner.class)
@@ -92,6 +124,9 @@ public class SearchRecipesControllerTest {
 
 		@Mock
 		private SearchRecipeService service;
+
+		@Mock
+		private LatestSearch latestSearch;
 
 		private static final List<Recipe> TWO_RECIPES = new ImmutableList.Builder<Recipe>()//
 				.add(new Recipe(random(10), random(10)))//
@@ -194,5 +229,98 @@ public class SearchRecipesControllerTest {
 			this.controller.setSearchString("   \t ");
 			assertThat(this.controller, failsValidation());
 		}
+	}
+
+	@RunWith(MockitoJUnitRunner.class)
+	public static class SearchRecipesControllerPostConstruct {
+
+		@InjectMocks
+		private SearchRecipesController controller;
+
+		@Mock
+		private LatestSearch latestSearch;
+
+		@Mock
+		private SearchRecipeService service;
+
+		private String lastSearchString;
+		private List<Recipe> expectedLastSearchResults;
+
+
+		@Before
+		public void init() {
+			this.expectedLastSearchResults = newRandomRecipeList();
+			this.lastSearchString = randomString();
+
+			when(this.latestSearch.getLatestSearch()).thenReturn(this.lastSearchString);
+			when(this.service.searchBy(this.lastSearchString)).thenReturn(this.expectedLastSearchResults);
+		}
+
+
+		@Test
+		public void postConstruct_DoesNothingToTheRecipes_IfLatestSearchIsEmpty() throws Exception {
+			when(this.latestSearch.getLatestSearch()).thenReturn("");
+
+			UnitTestUtils.callPostConstructMethod(this.controller);
+			assertThat(this.controller.getFoundRecipes(), nullValue());
+		}
+
+
+		@Test
+		public void postConstruct_DoesNothingToTheRecipes_IfLatestSearchIsNull() throws Exception {
+			when(this.latestSearch.getLatestSearch()).thenReturn(null);
+
+			UnitTestUtils.callPostConstructMethod(this.controller);
+			assertThat(this.controller.getFoundRecipes(), nullValue());
+		}
+
+
+		@Test
+		public void postConstruct_DoesNothingToTheSearchText_IfLatestSearchIsEmpty() throws Exception {
+			when(this.latestSearch.getLatestSearch()).thenReturn("");
+
+			UnitTestUtils.callPostConstructMethod(this.controller);
+			assertThat(this.controller.getSearchString(), nullValue());
+		}
+
+
+		@Test
+		public void postConstruct_DoesNothingToTheSearchText_IfLatestSearchIsNull() throws Exception {
+			when(this.latestSearch.getLatestSearch()).thenReturn(null);
+
+			UnitTestUtils.callPostConstructMethod(this.controller);
+			assertThat(this.controller.getSearchString(), nullValue());
+		}
+
+
+		@Test
+		public void postConstruct_PopulatesTheRecipes_IfLatestSearchHasAValue() throws Exception {
+			UnitTestUtils.callPostConstructMethod(this.controller);
+			assertThat(this.controller.getFoundRecipes(), equalTo(this.expectedLastSearchResults));
+		}
+
+
+		@Test
+		public void postConstruct_PopulatesTheSearchString_IfLatestSearchHasAValue() throws Exception {
+			UnitTestUtils.callPostConstructMethod(this.controller);
+			assertThat(this.controller.getSearchString(), equalTo(this.lastSearchString));
+		}
+
+
+		private String randomString() {
+			return RandomStringUtils.random(10);
+		}
+
+
+		private List<Recipe> newRandomRecipeList() {
+			final List<Recipe> recipes = new ArrayList<>();
+			final int count = RandomUtils.nextInt(10) + 1;
+
+			for (int i = 0; i < count; i++) {
+				recipes.add(new Recipe(RandomStringUtils.random(20), RandomStringUtils.random(20)));
+			}
+			return Collections.unmodifiableList(recipes);
+		}
+
 	}
 }

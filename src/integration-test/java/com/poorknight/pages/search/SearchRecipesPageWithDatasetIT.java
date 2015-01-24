@@ -27,6 +27,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 import com.poorknight.constants.ITConstants;
+import com.poorknight.controller.LatestSearch;
 import com.poorknight.controller.SearchRecipesController;
 import com.poorknight.utils.ArquillianUtils;
 
@@ -47,7 +48,7 @@ public class SearchRecipesPageWithDatasetIT {
 
 	@Deployment(testable = true)
 	public static WebArchive createDeployment() {
-		return ArquillianUtils.createRecipePersistenceEnabledPageTestWithNavigation(SearchRecipesController.class);
+		return ArquillianUtils.createRecipePersistenceEnabledPageTestWithNavigation(SearchRecipesController.class, LatestSearch.class);
 	}
 
 

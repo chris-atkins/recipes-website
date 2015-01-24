@@ -8,9 +8,11 @@ import java.util.Stack;
  * holds rules for which of these it will keep or ignore. The result should be a stack that represents the user's concept of where they have navigated
  * to (in the correct order).
  */
-public class NavigationStack extends Stack<Location> {
+public class PageNavigationStack extends Stack<Location> {
 
 	private static final long serialVersionUID = -3170782906285679620L;
+
+	private static final String EXPECTED_PREFIX = "/pages/";
 
 
 	@Override
@@ -29,6 +31,10 @@ public class NavigationStack extends Stack<Location> {
 
 
 	private boolean locationShouldBePushed(final Location newLocation) {
+		if (locationIsNotAPage(newLocation)) {
+			return false;
+		}
+
 		if (isEmpty()) {
 			return true;
 		}
@@ -43,8 +49,16 @@ public class NavigationStack extends Stack<Location> {
 	}
 
 
+	private boolean locationIsNotAPage(final Location newLocation) {
+		return !(newLocation.getPath().startsWith(EXPECTED_PREFIX));
+	}
+
+
 	private boolean locationShouldReplaceLastLocation(final Location newLocation) {
-		final Location lastLocation = peek();
+		if (isEmpty()) {
+			return false;
+		}
+		Location lastLocation = peek();
 		return (newLocation.isSimilarTo(lastLocation) && newLocation.getParameterString() != null);
 	}
 

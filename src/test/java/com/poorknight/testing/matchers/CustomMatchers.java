@@ -13,6 +13,7 @@ import com.poorknight.navigation.NavigationTracker;
 import com.poorknight.testing.matchers.classes.ClassAnnotationMatcher;
 import com.poorknight.testing.matchers.classes.EntityObjectMatcher;
 import com.poorknight.testing.matchers.classes.RequestScopedControllerMatcher;
+import com.poorknight.testing.matchers.classes.SessionScopeMatcher;
 import com.poorknight.testing.matchers.classes.SessionScopedControllerMatcher;
 import com.poorknight.testing.matchers.classes.SingletonMatcher;
 import com.poorknight.testing.matchers.classes.ViewScopedControllerMatcher;
@@ -108,6 +109,11 @@ public class CustomMatchers {
 
 	public static Matcher<Class<?>> isRequestScoped() {
 		return ClassAnnotationMatcher.isRequestScoped();
+	}
+
+
+	public static Matcher<Class<?>> isSessionScoped() {
+		return SessionScopeMatcher.isSessionScoped();
 	}
 
 

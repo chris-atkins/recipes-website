@@ -1,7 +1,6 @@
 package com.poorknight.pages.search;
 
-import static com.poorknight.utils.ArquillianUtils.buildLibraryFromPom;
-import static com.poorknight.utils.ArquillianUtils.createBasicPageTestDeployment;
+import static com.poorknight.utils.ArquillianUtils.commonsLang;
 import static org.hamcrest.Matchers.isEmptyString;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.notNullValue;
@@ -9,7 +8,7 @@ import static org.junit.Assert.assertThat;
 
 import java.net.URL;
 
-import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.drone.api.annotation.Drone;
 import org.jboss.arquillian.graphene.Graphene;
@@ -26,11 +25,9 @@ import org.openqa.selenium.support.FindBy;
 
 import com.poorknight.business.searchrecipe.SearchRecipeService;
 import com.poorknight.constants.ITConstants;
+import com.poorknight.controller.LatestSearch;
 import com.poorknight.controller.SearchRecipesController;
-import com.poorknight.domain.Recipe;
-import com.poorknight.domain.RecipeDAO;
-import com.poorknight.domain.Recipe_;
-import com.poorknight.exceptions.DaoException;
+import com.poorknight.utils.ArquillianUtils;
 
 
 @RunWith(Arquillian.class)
@@ -62,10 +59,8 @@ public class SearchRecipesPageIT {
 
 	@Deployment(testable = false)
 	public static WebArchive createDeployment() {
-		return createBasicPageTestDeployment("SearchRecipesPageIT", SearchRecipesController.class, SearchRecipeService.class, RecipeDAO.class,
-				Recipe.class, DaoException.class, CollectionUtils.class, Recipe_.class)//
-				.addAsWebInfResource("META-INF/test-persistence.xml", "classes/META-INF/persistence.xml")//
-				.addAsLibrary(buildLibraryFromPom("commons-collections", "commons-collections", "3.2.1"));
+		return ArquillianUtils.createRecipePersistenceEnabledPageTestDeployment("SearchRecipesPageIT", SearchRecipesController.class,
+				SearchRecipeService.class, LatestSearch.class, StringUtils.class).addAsLibrary(commonsLang());
 	}
 
 

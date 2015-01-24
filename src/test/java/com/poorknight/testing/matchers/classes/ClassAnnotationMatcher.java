@@ -152,4 +152,5 @@ public class ClassAnnotationMatcher extends TypeSafeDiagnosingMatcher<Class<?>> 
 				.appendText(" annotation, but does not have the expected value.\nExpected value: ").appendText(Arrays.toString(this.expectedValues))
 				.appendText("\nFound value: ").appendText(findActualValue(classToInspect).toString());
 	}
+
 }

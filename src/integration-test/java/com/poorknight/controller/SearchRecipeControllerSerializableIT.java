@@ -9,7 +9,6 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.transaction.UserTransaction;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.hamcrest.Matchers;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.container.test.api.RunAsClient;
@@ -32,8 +31,6 @@ import com.poorknight.business.searchrecipe.SearchRecipeService;
 import com.poorknight.constants.ITConstants;
 import com.poorknight.domain.Recipe;
 import com.poorknight.domain.RecipeDAO;
-import com.poorknight.domain.Recipe_;
-import com.poorknight.exceptions.DaoException;
 import com.poorknight.testing.matchers.objects.IsSerializableMatcher;
 import com.poorknight.utils.ArquillianUtils;
 
@@ -52,11 +49,8 @@ public class SearchRecipeControllerSerializableIT {
 
 	@Deployment(testable = true)
 	public static Archive<?> createDeployment() {
-		return ArquillianUtils
-				.createBasicPageTestDeployment("SearchRecipeControllerSerializableIT", SearchRecipesController.class, SearchRecipeService.class,
-						RecipeDAO.class, Recipe.class, DaoException.class, CollectionUtils.class, Recipe_.class, IsSerializableMatcher.class)//
-				.addAsWebInfResource("META-INF/test-persistence.xml", "classes/META-INF/persistence.xml")//
-				.addAsLibrary(ArquillianUtils.buildLibraryFromPom("commons-collections", "commons-collections", "3.2.1"));
+		return ArquillianUtils.createRecipePersistenceEnabledPageTestDeployment("SearchRecipeControllerSerializableIT",
+				SearchRecipesController.class, SearchRecipeService.class, LatestSearch.class, IsSerializableMatcher.class);
 	}
 
 

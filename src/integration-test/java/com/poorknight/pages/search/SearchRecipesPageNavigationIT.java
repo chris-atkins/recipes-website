@@ -27,6 +27,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 import com.poorknight.constants.ITConstants;
+import com.poorknight.controller.LatestSearch;
 import com.poorknight.controller.SearchRecipesController;
 import com.poorknight.controller.ViewRecipeController;
 import com.poorknight.utils.ArquillianUtils;
@@ -50,7 +51,8 @@ public class SearchRecipesPageNavigationIT {
 
 	@Deployment(testable = true)
 	public static WebArchive createDeployment() {
-		return ArquillianUtils.createRecipePersistenceEnabledPageTestWithNavigation(SearchRecipesController.class, ViewRecipeController.class);
+		return ArquillianUtils.createRecipePersistenceEnabledPageTestWithNavigation(SearchRecipesController.class, ViewRecipeController.class,
+				LatestSearch.class);
 	}
 
 
@@ -73,18 +75,33 @@ public class SearchRecipesPageNavigationIT {
 	@Test
 	@InSequence(2)
 	@RunAsClient
-	@Cleanup(phase = TestExecutionPhase.AFTER)
+	@Cleanup(phase = TestExecutionPhase.NONE)
 	public void navigatesToRecipeView_AndBack(@ArquillianResource final URL deploymentURL, @Drone final WebDriver browser) throws Exception {
 		initPage(deploymentURL, browser);
-		searchesToFindOneRecipe(browser);
+		searchToFindOneRecipe();
 		navigatesToViewTheCorrectRecipe_WhenViewIsClicked(browser);
 		returnsToTheSearchPage_WhenBackIsClicked(browser);
 	}
 
 
-	private void searchesToFindOneRecipe(final WebDriver browser) {
+	@Test
+	@InSequence(3)
+	@RunAsClient
+	@Cleanup(phase = TestExecutionPhase.AFTER)
+	public void retainsSearchStringAndResults_WhenNavigatingBack(@ArquillianResource final URL deploymentURL, @Drone final WebDriver browser)
+			throws Exception {
+		initPage(deploymentURL, browser);
+		searchToFindOneRecipe();
+		navigateForwardAndBack(browser);
+
+		populateScreenElements(browser);
+		assertThat(this.viewRecipeLink.size(), equalTo(1));
+		assertThat(this.searchTextfield.getAttribute("value"), equalTo(RECIPE_NAME));
+	}
+
+
+	private void searchToFindOneRecipe() {
 		searchFor(RECIPE_NAME);
-		System.out.println(browser.getPageSource());
 		assertThat(this.viewRecipeLink.size(), equalTo(1));
 	}
 
@@ -99,6 +116,12 @@ public class SearchRecipesPageNavigationIT {
 	private void returnsToTheSearchPage_WhenBackIsClicked(final WebDriver browser) {
 		Graphene.guardHttp(browser.findElement(By.id(BACK_BUTTON_ID))).click();
 		assertThat(browser.getCurrentUrl(), endsWith(ITConstants.SEARCH_RECIPES_PAGE));
+	}
+
+
+	private void navigateForwardAndBack(final WebDriver browser) {
+		Graphene.guardHttp(this.viewRecipeLink.get(0)).click();
+		Graphene.guardHttp(browser.findElement(By.id(BACK_BUTTON_ID))).click();
 	}
 
 

@@ -15,7 +15,7 @@ public class NavigationTracker implements Serializable {
 
 	private static final long serialVersionUID = -7482695445240115815L;
 
-	private final NavigationStack navStack = new NavigationStack();
+	private final PageNavigationStack navStack = new PageNavigationStack();
 
 
 	public String lastPage() {

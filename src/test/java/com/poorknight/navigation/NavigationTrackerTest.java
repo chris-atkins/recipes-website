@@ -1,7 +1,7 @@
 package com.poorknight.navigation;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.endsWith;
+import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.Matchers.startsWith;
 
@@ -15,9 +15,8 @@ import com.poorknight.testing.matchers.CustomMatchers;
 @RunWith(JUnit4.class)
 public class NavigationTrackerTest {
 
-	private static final String LOCALHOST_PREFIX = "/recipee7";
-	private static final String ALONE_REDIRECT_SUFFIX = "?faces-redirect=true";
-	private static final String OTHER_PARAMS_REDIRECT_SUFFIX = "&faces-redirect=true";
+	private static final String VALID_PATH = "/pages/number";
+	private static final String QUERY_STRING = "queryString";
 
 	private final NavigationTracker navigator = new NavigationTracker();
 
@@ -29,15 +28,15 @@ public class NavigationTrackerTest {
 
 
 	@Test
-	public void lastPageReturnsNull_IfNoNavigationHasHappened() throws Exception {
+	public void returnsNull_IfNoLocations() throws Exception {
 		final String results = this.navigator.lastPage();
 		assertThat(results, nullValue());
 	}
 
 
 	@Test
-	public void lastPageReturnsNull_IfOneNavigationHasHappened() throws Exception {
-		navigateTo("nav1", null);
+	public void returnsNull_IfOnlyOneLocation() throws Exception {
+		this.navigator.registerNavigationTo(VALID_PATH, QUERY_STRING);
 
 		final String results = this.navigator.lastPage();
 		assertThat(results, nullValue());
@@ -45,107 +44,14 @@ public class NavigationTrackerTest {
 
 
 	@Test
-	public void returnsTheLastPage_WithOnePriorPage() throws Exception {
-		navigateTo("nav1", null);
-		navigateToNextPage();
+	public void returnsPenultimateLocation_WhenLastPageIsCalled() throws Exception {
+		final String firstPath = VALID_PATH + 1;
+		this.navigator.registerNavigationTo(firstPath, QUERY_STRING);
+		this.navigator.registerNavigationTo(VALID_PATH + "2", QUERY_STRING + "2");
 
 		final String results = this.navigator.lastPage();
-		assertThat(results, startsWith("nav1"));
+		assertThat(results, startsWith(firstPath));
+		assertThat(results, containsString(QUERY_STRING));
 	}
 
-
-	@Test
-	public void returnsTheLastPage_WithQueryString() throws Exception {
-		navigateTo("nav1", "query");
-		navigateToNextPage();
-
-		final String results = this.navigator.lastPage();
-		assertThat(results, startsWith("nav1?query"));
-	}
-
-
-	@Test
-	public void stripsOffLocalhostPrefix() throws Exception {
-		navigateTo(LOCALHOST_PREFIX + "/nav1", "query");
-		navigateToNextPage();
-
-		final String results = this.navigator.lastPage();
-		assertThat(results, startsWith("/nav1?query"));
-	}
-
-
-	@Test
-	public void stripsOffLocalhostPrefixTwice() throws Exception {
-		navigateTo(LOCALHOST_PREFIX + "/nav1", "query");
-		navigateTo(LOCALHOST_PREFIX + "/nav2", "query");
-		navigateToNextPage();
-
-		final String results = this.navigator.lastPage();
-		assertThat(results, startsWith("/nav2?query"));
-	}
-
-
-	@Test
-	public void twoSameNavigationsInARowAreTreatedAsOne() throws Exception {
-		navigateTo("nav1", "query");
-		navigateTo("lastPage", "lastQuery");
-		navigateTo("lastPage", "lastQuery");
-
-		final String results = this.navigator.lastPage();
-		assertThat(results, startsWith("nav1?query"));
-	}
-
-
-	@Test
-	public void secondNavigationWithSamePageButNullQuery_IsIgnored() throws Exception {
-		navigateTo("nav1", "query");
-		navigateTo("nav1", null);
-		navigateToNextPage();
-
-		final String results = this.navigator.lastPage();
-		assertThat(results, startsWith("nav1?query"));
-	}
-
-
-	@Test
-	public void secondNavigationWithSamePageAndDifferentQuery_ReplacesTheLastOne() throws Exception {
-		navigateTo("nav1", null);
-		navigateTo("nav2", "firstQuery");
-		navigateTo("nav2", "lastQuery");
-		navigateToNextPage();
-
-		assertThat(this.navigator.lastPage(), startsWith("nav2?lastQuery"));
-		navigateTo("nav2", "lastQuery"); // simulates actually navigating to nav2 (in real life it would get a navigating to the page message again)
-		assertThat(this.navigator.lastPage(), startsWith("nav1"));  // to confirm that nav2?firstQuery has been ignored
-	}
-
-
-	@Test
-	public void urlsWithNoQueryString_UseFacesRedirect() throws Exception {
-		navigateTo("nav1", null);
-		navigateToNextPage();
-
-		final String results = this.navigator.lastPage();
-		assertThat(results, endsWith(ALONE_REDIRECT_SUFFIX));
-	}
-
-
-	@Test
-	public void urlsWithAQueryString_UseFacesRedirect() throws Exception {
-		navigateTo("nav1", "query");
-		navigateToNextPage();
-
-		final String results = this.navigator.lastPage();
-		assertThat(results, endsWith(OTHER_PARAMS_REDIRECT_SUFFIX));
-	}
-
-
-	private void navigateTo(final String path, final String queryString) {
-		this.navigator.registerNavigationTo(path, queryString);
-	}
-
-
-	private void navigateToNextPage() {
-		navigateTo("nextPage", null);
-	}
 }
