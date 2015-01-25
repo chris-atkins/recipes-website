@@ -41,7 +41,11 @@
 		</h:dataTable>
 		<h:outputText id="noResultsMessage" value="#{pageMessages.noResultsFound}" rendered="#{searchRecipesController.shouldDisplayNoResultsMessage}" />
 	</h:panelGroup>
-
+	
+	<h:panelGrid id="navigationPanelGrid" columns="2">
+		<h:commandButton id="gotoHomeButton" action="home" value="#{globalMessages.homeButtonText}" immediate="true" />
+	</h:panelGrid>
+	
 </h:form>
 </body> 
 </html>

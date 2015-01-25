@@ -43,10 +43,12 @@ public class SearchRecipesPageNavigationIT {
 	private static final String SEARCH_BUTTON_ID = "pageForm:searchButton";
 	private static final String VIEW_RECIPE_LINK_TEXT = "View";
 	private static final String BACK_BUTTON_ID = "pageForm:goBackButton";
+	private static final String HOME_BUTTON_ID = "pageForm:gotoHomeButton";
 
 	private WebElement searchTextfield;
 	private WebElement searchButton;
 	private List<WebElement> viewRecipeLink;
+	private WebElement homeButton;
 
 
 	@Deployment(testable = true)
@@ -87,7 +89,7 @@ public class SearchRecipesPageNavigationIT {
 	@Test
 	@InSequence(3)
 	@RunAsClient
-	@Cleanup(phase = TestExecutionPhase.AFTER)
+	@Cleanup(phase = TestExecutionPhase.NONE)
 	public void retainsSearchStringAndResults_WhenNavigatingBack(@ArquillianResource final URL deploymentURL, @Drone final WebDriver browser)
 			throws Exception {
 		initPage(deploymentURL, browser);
@@ -97,6 +99,19 @@ public class SearchRecipesPageNavigationIT {
 		populateScreenElements(browser);
 		assertThat(this.viewRecipeLink.size(), equalTo(1));
 		assertThat(this.searchTextfield.getAttribute("value"), equalTo(RECIPE_NAME));
+	}
+
+
+	@Test
+	@InSequence(4)
+	@RunAsClient
+	@Cleanup(phase = TestExecutionPhase.AFTER)
+	public void navigatesToHomePage_WhenHomeButtonIsPressed(@ArquillianResource final URL deploymentURL, @Drone final WebDriver browser)
+			throws Exception {
+		initPage(deploymentURL, browser);
+
+		Graphene.guardHttp(this.homeButton).click();
+		assertThat(browser.getCurrentUrl(), endsWith(ITConstants.HOME_PAGE));
 	}
 
 
@@ -146,6 +161,7 @@ public class SearchRecipesPageNavigationIT {
 		this.searchTextfield = browser.findElement(By.id(SEARCH_TEXT_ID));
 		this.searchButton = browser.findElement(By.id(SEARCH_BUTTON_ID));
 		this.viewRecipeLink = browser.findElements(By.linkText(VIEW_RECIPE_LINK_TEXT));
+		this.homeButton = browser.findElement(By.id(HOME_BUTTON_ID));
 	}
 
 }
