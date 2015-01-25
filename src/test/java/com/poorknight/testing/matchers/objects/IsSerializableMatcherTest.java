@@ -14,7 +14,7 @@ import com.poorknight.testing.matchers.utils.testclasses.NotReallySerializableCl
 @RunWith(MockitoJUnitRunner.class)
 public class IsSerializableMatcherTest {
 
-	IsSerializableMatcher matcher = IsSerializableMatcher.isSerializable();
+	IsSerializableMatcher matcher = IsSerializableMatcher.isTrulySerializable();
 
 
 	@Test

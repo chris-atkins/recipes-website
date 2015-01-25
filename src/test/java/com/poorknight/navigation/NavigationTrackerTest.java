@@ -54,4 +54,13 @@ public class NavigationTrackerTest {
 		assertThat(results, containsString(QUERY_STRING));
 	}
 
+
+	@Test
+	public void trulySerializable() throws Exception {
+		this.navigator.registerNavigationTo(VALID_PATH, QUERY_STRING);
+		this.navigator.registerNavigationTo(VALID_PATH + "1", QUERY_STRING + "1");
+		this.navigator.registerNavigationTo(VALID_PATH + "2", QUERY_STRING + "2");
+
+		assertThat(this.navigator, CustomMatchers.isTrulySerializable());
+	}
 }

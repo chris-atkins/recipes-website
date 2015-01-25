@@ -22,7 +22,7 @@ public class IsSerializableMatcher extends TypeSafeDiagnosingMatcher<Object> {
 
 
 	@Factory
-	public static IsSerializableMatcher isSerializable() {
+	public static IsSerializableMatcher isTrulySerializable() {
 		return new IsSerializableMatcher();
 	}
 

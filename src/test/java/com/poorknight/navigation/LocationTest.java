@@ -1,8 +1,11 @@
 package com.poorknight.navigation;
 
+import static com.poorknight.testing.matchers.CustomMatchers.isTrulySerializable;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
+
+import java.io.Serializable;
 
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.math.RandomUtils;
@@ -26,6 +29,20 @@ public class LocationTest {
 	public void returnsPathPlusRedirect_IfParamsAreNull() throws Exception {
 		final Location location = new Location(this.path, null);
 		assertThat(location.toUrl(), equalTo(this.path + ALONE_REDIRECT_SUFFIX));
+	}
+
+
+	@Test
+	public void implementsSerializable() throws Exception {
+		final boolean results = Serializable.class.isAssignableFrom(Location.class);
+		assertThat(results, equalTo(true));
+	}
+
+
+	@Test
+	public void trulySerializable() throws Exception {
+		final Location location = new Location(this.path, this.params);
+		assertThat(location, isTrulySerializable());
 	}
 
 

@@ -87,8 +87,8 @@ public class CustomMatchers {
 	}
 
 
-	public static Matcher<Object> isSerializable() {
-		return IsSerializableMatcher.isSerializable();
+	public static Matcher<Object> isTrulySerializable() {
+		return IsSerializableMatcher.isTrulySerializable();
 	}
 
 

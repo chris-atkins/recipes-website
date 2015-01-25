@@ -105,7 +105,7 @@ public class SearchRecipeControllerSerializableIT {
 				controller.search();
 				System.out.println(controller.toString());
 				assertThat(controller.getFoundRecipes().size(), equalTo(2));
-				assertThat(controller, IsSerializableMatcher.isSerializable());
+				assertThat(controller, IsSerializableMatcher.isTrulySerializable());
 			}
 		});
 	}

@@ -1,5 +1,7 @@
 package com.poorknight.navigation;
 
+import java.io.Serializable;
+
 import lombok.Data;
 
 
@@ -8,7 +10,9 @@ import lombok.Data;
  * regenerate the location with the query string into a url that the system can navigate to.
  */
 @Data
-public class Location {
+public class Location implements Serializable {
+
+	private static final long serialVersionUID = -7550707059550243672L;
 
 	final private String path;
 	final private String parameterString;

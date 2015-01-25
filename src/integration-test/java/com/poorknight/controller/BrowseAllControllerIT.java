@@ -108,7 +108,7 @@ public class BrowseAllControllerIT {
 						BrowseAllController.class);
 
 				assertThat(controller.getAllRecipes().size(), equalTo(2));
-				assertThat(controller, IsSerializableMatcher.isSerializable());
+				assertThat(controller, IsSerializableMatcher.isTrulySerializable());
 			}
 		});
 	}
