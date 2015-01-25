@@ -24,10 +24,18 @@ public class NavigationTracker implements Serializable {
 
 
 	void registerNavigationTo(final String path, final String parameterString) {
-		System.out.println("\n\n\n******************************************************************\nRegister Navigation Event: " + path + " | "
-				+ parameterString);
+		if (!path.contains("/home/index.jsf")) {
+			System.out
+					.println("********************************************************************************************************\nRegister Navigation Event: "
+							+ path + " | " + parameterString);
+		}
+
 		this.navStack.push(new Location(path, parameterString));
-		System.out.println("\nNew Navigation Stack: " + this.navStack + "\n******************************************************************\n\n\n");
+
+		if (!path.contains("/home/index.jsf")) {
+			System.out.println("New Navigation Stack: " + this.navStack);
+
+		}
 	}
 
 
