@@ -319,7 +319,6 @@
 			<!-- <properties> <maven.compiler.executable>${env.OPENSHIFT_WILDFLY_DIR}usr/lib/jvm/jdk1.8.0_05/bin/javac</maven.compiler.executable> 
 				</properties> TO REACTIVATE JAVA 8 - UNCOMMENT THIS AND RENAME MARKER FILE LOCATED IN 'C:\Users\Chris\git\recipeconnection\.openshift\marker' 
 				FROM 'java7' to 'java8' (and change the eclipse settings -->
-
 			<build>
 				<plugins>
 					<plugin>
@@ -333,7 +332,6 @@
 					</plugin>
 				</plugins>
 			</build>
-
 			<!-- THIS IS USED IN CONJUNCTION WITH THE JACOCO PLUGIN FOR (TEST COVERAGE IN) JENKINS, BUT IT FAILS DUE TO OPENSHIFT 
 				SUCKING <plugin> <groupId>org.jacoco</groupId> <artifactId>jacoco-maven-plugin</artifactId> <version>${jacoco-maven-plugin.version}</version> 
 				<executions> <execution> <goals> <goal>prepare-agent</goal> </goals> </execution> <execution> <id>report</id> <phase>prepare-package</phase> 
@@ -366,7 +364,6 @@
 		<profile>
 			<!-- Used to deploy to localhost - only unit tests, no Integration Tests. -->
 			<id>deploy-local</id>
-
 			<build>
 				<finalName>recipee7</finalName>
 				<plugins>
@@ -481,7 +478,6 @@
 					<artifactId>shrinkwrap-resolver-impl-maven</artifactId>
 					<scope>test</scope>
 				</dependency>
-
 			</dependencies>
 
 			<build>
@@ -588,11 +584,9 @@
 								</resource> </resources> </configuration> </execution> -->
 						</executions>
 					</plugin>
-
 				</plugins>
 			</build>
 		</profile>
-
 	</profiles>
 </project>
 
@@ -618,4 +612,3 @@
 	FROM 'java7' to 'java8' (and change the eclipse settings > <dependencies> < enables CDI for arquillian during testing phase 
 	- but not persistence > <dependency> <groupId>org.jboss.arquillian.container</groupId> <artifactId>arquillian-weld-ee-embedded-1.1</artifactId> 
 	<version>${arquillian-weld-ee-embedded-1.1.version}</version> <scope>test</scope> </dependency> </dependencies> </profile> -->
-
