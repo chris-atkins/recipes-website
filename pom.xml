@@ -63,7 +63,7 @@
 		<maven-checkstyle-plugin.version>2.12.1</maven-checkstyle-plugin.version>
 		<build-helper-maven-plugin.version>1.9.1</build-helper-maven-plugin.version>
 
-		<!-- path to jdk on local machine - not sure what the behavior will be in any other environment -->
+		<!-- path to jdk on local machine - not sure what the behavior will be in any other environment - probably nothing good-->
 
 		<jdk.path>C:\Program Files\Java\jdk1.7.0_67\lib\jconsole.jar</jdk.path>
 		<jboss.home>C:\jboss\wildfly-8.1.0.Final</jboss.home>
@@ -167,22 +167,26 @@
 			<artifactId>validation-api</artifactId>
 			<scope>provided</scope>
 		</dependency>
+		
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-validator</artifactId>
 			<scope>provided</scope>
 		</dependency>
+		
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-validator-cdi</artifactId>
 			<version>${hibernate-validator-cdi.version}</version>
 			<scope>provided</scope>
 		</dependency>
+		
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-jpamodelgen</artifactId>
 			<scope>provided</scope>
 		</dependency>
+		
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-validator-annotation-processor</artifactId>
@@ -279,11 +283,15 @@
 		<plugins>
 
 			<plugin>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>${maven-surefire-plugin.version}</version>
+			</plugin>
+			
+			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>build-helper-maven-plugin</artifactId>
-				<version>${build-helper-maven-plugin.version}</version>
+				<version>${build-helper-maven-plugin.version}</version>	
 				<executions>
-
 					<!-- Add a new source directory to our build, to pick up the JPA generated files (like Recipe_ )-->
 					<execution>
 						<id>add-source</id>
@@ -297,22 +305,13 @@
 							</sources>
 						</configuration>
 					</execution>
-
 				</executions>
 			</plugin>
-
-			<plugin>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<version>${maven-surefire-plugin.version}</version>
-			</plugin>
-
+			
 		</plugins>
 	</build>
 
 	<profiles>
-	
-	
-
 
 		<profile>
 			<!-- Used for testing on jenkins - only unit tests, no Integration Tests-->
@@ -339,7 +338,6 @@
 				SUCKING <plugin> <groupId>org.jacoco</groupId> <artifactId>jacoco-maven-plugin</artifactId> <version>${jacoco-maven-plugin.version}</version> 
 				<executions> <execution> <goals> <goal>prepare-agent</goal> </goals> </execution> <execution> <id>report</id> <phase>prepare-package</phase> 
 				<goals> <goal>report</goal> </goals> </execution> </executions> </plugin> -->
-
 		</profile>
 
 		<profile>
@@ -365,7 +363,6 @@
 			</build>
 		</profile>
 
-
 		<profile>
 			<!-- Used to deploy to localhost - only unit tests, no Integration Tests. -->
 			<id>deploy-local</id>
@@ -373,13 +370,6 @@
 			<build>
 				<finalName>recipee7</finalName>
 				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-surefire-plugin</artifactId>
-						<version>${maven-surefire-plugin.version}</version>
-						<!-- <configuration> <excludes> - Need to skip any persistence tests here - no persistence container is available for 
-							this profile - <exclude>**/RecipeDAOIT.java</exclude> </excludes> </configuration> -->
-					</plugin>
 
 					<plugin>
 						<artifactId>maven-war-plugin</artifactId>
@@ -406,7 +396,6 @@
 
 				</plugins>
 			</build>
-
 		</profile>
 
 		<profile>
@@ -415,6 +404,7 @@
 				<activeByDefault>true</activeByDefault>
 			</activation>
 			<dependencies>
+			
 				<!-- In memory database for testing persistence -->
 				<dependency>
 					<groupId>com.h2database</groupId>
@@ -429,18 +419,12 @@
 					<artifactId>wildfly-arquillian-container-embedded</artifactId>
 					<version>8.1.0.Final</version>
 				</dependency>
+				
 				<dependency>
 					<groupId>org.wildfly</groupId>
 					<artifactId>wildfly-embedded</artifactId>
 					<version>8.1.0.Final</version>
 				</dependency>
-
-				<!-- <dependency> <groupId>org.jboss.xnio</groupId> <artifactId>xnio-api</artifactId> <version>3.2.2.Final</version> 
-					</dependency> <dependency> <groupId>org.jboss.xnio</groupId> <artifactId>xnio-nio</artifactId> <version>3.2.2.Final</version> 
-					</dependency> <dependency> <groupId>io.undertow</groupId> <artifactId>undertow-core</artifactId> <version>1.0.15.Final</version> 
-					</dependency> <dependency> <groupId>org.jboss.weld</groupId> <artifactId>weld-spi</artifactId> <version>2.1.Final</version> 
-					</dependency> -->
-
 
 				<dependency>
 					<groupId>sun.jdk</groupId>
@@ -449,9 +433,6 @@
 					<scope>system</scope>
 					<systemPath>${jdk.path}</systemPath>
 				</dependency>
-
-				<!-- <dependency> <groupId>org.jboss.arquillian.extension</groupId> <artifactId>arquillian-persistence-integration-tests</artifactId> 
-					<version>${arquillian-persistence-integration-tests.version}</version> <scope>test</scope> </dependency> -->
 
 				<dependency>
 					<groupId>org.jboss.arquillian.extension</groupId>
@@ -473,15 +454,12 @@
 					<scope>test</scope>
 				</dependency>
 
-				<!-- <dependency> <groupId>org.slf4j</groupId> <artifactId>slf4j-simple</artifactId> <scope>test</scope> </dependency> -->
-
 				<dependency>
 					<groupId>org.slf4j</groupId>
 					<artifactId>slf4j-log4j12</artifactId>
 					<version>1.7.2</version>
 					<scope>test</scope>
 				</dependency>
-
 
 				<dependency>
 					<groupId>org.jboss.arquillian.graphene</groupId>
@@ -490,9 +468,6 @@
 					<type>pom</type>
 					<scope>test</scope>
 				</dependency>
-
-				<!-- <dependency> <groupId>org.jboss.arquillian.extension</groupId> <artifactId>arquillian-warp</artifactId> <version>${arquillian-warp.version}</version> 
-					<type>pom</type> <scope>test</scope> </dependency> -->
 
 				<dependency>
 					<groupId>org.jboss.arquillian.extension</groupId>
