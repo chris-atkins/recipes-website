@@ -16,7 +16,6 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
 import org.apache.commons.lang.math.RandomUtils;
-import org.codehaus.plexus.util.ReflectionUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -32,6 +31,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import com.poorknight.exceptions.DaoException;
 import com.poorknight.testing.matchers.CustomMatchers;
 import com.poorknight.testing.matchers.methods.MethodTransactionAnnotationMatcher.TransactionType;
+import com.poorknight.utils.ReflectionUtils;
 
 
 @RunWith(MockitoJUnitRunner.class)
@@ -152,7 +152,7 @@ public class RecipeDAOTest {
 
 
 	private void injectRandomRecipeId(final Recipe testRecipe) throws Exception {
-		ReflectionUtils.setVariableValueInObject(testRecipe, "recipeId", RandomUtils.nextLong());
+		ReflectionUtils.setFieldInClass(testRecipe, "recipeId", RandomUtils.nextLong());
 	}
 
 

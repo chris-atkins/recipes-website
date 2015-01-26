@@ -1,7 +1,7 @@
 package com.poorknight.controller;
 
 import static com.poorknight.testing.matchers.CustomMatchers.hasAReadOnlyField;
-import static org.apache.commons.lang3.RandomStringUtils.random;
+import static org.apache.commons.lang.RandomStringUtils.random;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.when;
