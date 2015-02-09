@@ -322,7 +322,7 @@
 					</execution>
 				</executions>
 				<configuration>
-					<serverPort>15001</serverPort>
+					<serverPort>25355</serverPort>
 					<jsSrcDir>src/main/webapp/js/app</jsSrcDir>
 					<jsTestSrcDir>src/test/webapp/js/specs</jsTestSrcDir>
 					<preloadSources>
