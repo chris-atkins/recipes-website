@@ -282,6 +282,32 @@
 	</dependencies>
 
 	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>com.github.searls</groupId>
+					<artifactId>jasmine-maven-plugin</artifactId>
+					<version>${jasmine-maven-plugin.version}</version>
+					<executions>
+						<execution>
+							<goals>
+								<goal>test</goal>
+							</goals>
+						</execution>
+					</executions>
+					<configuration>
+						<jsSrcDir>src/main/webapp/js/app</jsSrcDir>
+						<jsTestSrcDir>src/test/webapp/js/specs</jsTestSrcDir>
+						<preloadSources>
+							<source>src/main/webapp/js/external/jquery-1.11.2.min.js</source>
+							<source>src/test/webapp/js/jasmine/dependencies/jasmine-fixture.js</source>
+							<source>src/test/webapp/js/jasmine/dependencies/jasmine-jquery.js</source>
+						</preloadSources>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+
 		<plugins>
 
 			<plugin>
@@ -310,28 +336,6 @@
 				</executions>
 			</plugin>
 
-			<plugin>
-				<groupId>com.github.searls</groupId>
-				<artifactId>jasmine-maven-plugin</artifactId>
-				<version>${jasmine-maven-plugin.version}</version>
-				<executions>
-					<execution>
-						<goals>
-							<goal>test</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<serverPort>25355</serverPort>
-					<jsSrcDir>src/main/webapp/js/app</jsSrcDir>
-					<jsTestSrcDir>src/test/webapp/js/specs</jsTestSrcDir>
-					<preloadSources>
-						<source>src/main/webapp/js/external/jquery-1.11.2.min.js</source>
-						<source>src/test/webapp/js/jasmine/dependencies/jasmine-fixture.js</source>
-					</preloadSources>
-				</configuration>
-			</plugin>
-
 		</plugins>
 	</build>
 
@@ -353,6 +357,37 @@
 							<reuseForks>true</reuseForks>
 							<redirectTestOutputToFile>false</redirectTestOutputToFile>
 						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+			<!-- THIS IS USED IN CONJUNCTION WITH THE JACOCO PLUGIN FOR (TEST COVERAGE IN) JENKINS, BUT IT FAILS 
+				DUE TO OPENSHIFT SUCKING <plugin> <groupId>org.jacoco</groupId> <artifactId>jacoco-maven-plugin</artifactId> 
+				<version>${jacoco-maven-plugin.version}</version> <executions> <execution> <goals> <goal>prepare-agent</goal> 
+				</goals> </execution> <execution> <id>report</id> <phase>prepare-package</phase> <goals> <goal>report</goal> 
+				</goals> </execution> </executions> </plugin> -->
+		</profile>
+
+		<profile>
+			<!-- Used for testing on jenkins - only unit tests, no Integration Tests -->
+			<id>eclipse-tests</id>
+			<!-- <properties> <maven.compiler.executable>${env.OPENSHIFT_WILDFLY_DIR}usr/lib/jvm/jdk1.8.0_05/bin/javac</maven.compiler.executable> 
+				</properties> TO REACTIVATE JAVA 8 - UNCOMMENT THIS AND RENAME MARKER FILE LOCATED IN 'C:\Users\Chris\git\recipeconnection\.openshift\marker' 
+				FROM 'java7' to 'java8' (and change the eclipse settings -->
+			<build>
+				<plugins>
+					<plugin>
+						<artifactId>maven-surefire-plugin</artifactId>
+						<version>${maven-surefire-plugin.version}</version>
+						<configuration>
+							<forkCount>1</forkCount>
+							<reuseForks>true</reuseForks>
+							<redirectTestOutputToFile>false</redirectTestOutputToFile>
+						</configuration>
+					</plugin>
+
+					<plugin>
+						<groupId>com.github.searls</groupId>
+						<artifactId>jasmine-maven-plugin</artifactId>
 					</plugin>
 				</plugins>
 			</build>
@@ -414,6 +449,11 @@
 								</goals>
 							</execution>
 						</executions>
+					</plugin>
+
+					<plugin>
+						<groupId>com.github.searls</groupId>
+						<artifactId>jasmine-maven-plugin</artifactId>
 					</plugin>
 
 				</plugins>
@@ -609,6 +649,12 @@
 								<directory>src/integration-test/resources</directory> </resource> </resources> </configuration> </execution> -->
 						</executions>
 					</plugin>
+
+					<plugin>
+						<groupId>com.github.searls</groupId>
+						<artifactId>jasmine-maven-plugin</artifactId>
+					</plugin>
+					
 				</plugins>
 			</build>
 		</profile>
