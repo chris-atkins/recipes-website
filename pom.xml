@@ -322,10 +322,12 @@
 					</execution>
 				</executions>
 				<configuration>
+					<serverPort>15001</serverPort>
 					<jsSrcDir>src/main/webapp/js/app</jsSrcDir>
 					<jsTestSrcDir>src/test/webapp/js/specs</jsTestSrcDir>
 					<preloadSources>
 						<source>src/main/webapp/js/external/jquery-1.11.2.min.js</source>
+						<source>src/test/webapp/js/jasmine/dependencies/jasmine-fixture.js</source>
 					</preloadSources>
 				</configuration>
 			</plugin>
