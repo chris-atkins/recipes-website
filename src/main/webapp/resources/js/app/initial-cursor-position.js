@@ -4,7 +4,7 @@ var initialCursorPositionNS = {};
 	ns.init = function() {
 		var wantingFocus = $('.start-with-focus');
 		if (wantingFocus) {
-			wantingFocus[0].focus();
+			$(wantingFocus[0]).focus();
 		}
 	};
 

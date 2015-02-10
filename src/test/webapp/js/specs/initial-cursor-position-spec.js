@@ -21,6 +21,7 @@ describe("The initial-cursor-position.js... ", function() {
 		
 		it("the first element has focus when the page is loaded.", function() {
 			expect($('#id1')).toBeFocused();
+			expect($('#id2')).not.toBeFocused();
 		});
 	});
 });
