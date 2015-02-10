@@ -5,6 +5,8 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"> 
 
 <f:loadBundle basename="messages.byPage.search.messages" var="pageMessages"/>
+<h:outputScript library="js" name="external/jquery-1.11.2.min.js" target="body" />
+<h:outputScript library="js" name="app/initial-cursor-position.js" target="body" />
 
 <h:head>
 	<title>
@@ -12,13 +14,13 @@
 	</title>
 </h:head> 
 
-<body> 
+<h:body> 
 <h:form id="pageForm">
 
 	<h2><h:outputText id="pageTitle" value="#{pageMessages.pageTitle}" /></h2>
 	
 	<h:panelGrid id="searchHolder" columns="2">
-		<h:inputText id="searchInput" value="#{searchRecipesController.searchString}" />
+		<h:inputText id="searchInput" value="#{searchRecipesController.searchString}" styleClass="start-with-focus"/>
 		<h:commandButton id="searchButton" value="#{globalMessages.searchRecipesButtonText}" >
 			<f:ajax listener="#{searchRecipesController.search()}" execute="searchInput"  render="searchResultsHolder searchInputMessage"/>
 		</h:commandButton>
@@ -47,5 +49,5 @@
 	</h:panelGrid>
 	
 </h:form>
-</body> 
+</h:body> 
 </html>
