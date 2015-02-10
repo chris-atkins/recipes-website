@@ -30,12 +30,18 @@ import com.poorknight.testing.matchers.methods.MethodTransactionAnnotationMatche
 import com.poorknight.testing.matchers.methods.TransactionalMethodMatcher;
 import com.poorknight.testing.matchers.objects.BeanValidationMatcher;
 import com.poorknight.testing.matchers.objects.IsSerializableMatcher;
+import com.poorknight.testing.matchers.strings.SubstringMatcher;
 
 
 /**
  * A facade for easy access to all custom matchers in this project.
  */
 public class CustomMatchers {
+
+	public static Matcher<String> hasExactlyOneOccurrenceOfSubstring(String substring) {
+		return SubstringMatcher.hasExactlyOneOccurrenceOfSubstring(substring);
+	}
+
 
 	public static Matcher<Class<?>> hasCorrectTransactionLevelOnMethod(final String methodName, final TransactionType transactionType) {
 		return MethodTransactionAnnotationMatcher.hasCorrectTransactionLevelOnMethod(methodName, transactionType);

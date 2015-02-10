@@ -1,8 +1,8 @@
 package com.poorknight.pages.search;
 
+import static com.poorknight.testing.matchers.CustomMatchers.hasExactlyOneOccurrenceOfSubstring;
 import static com.poorknight.utils.ArquillianUtils.commonsLang;
 import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.isEmptyString;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.notNullValue;
@@ -88,7 +88,7 @@ public class SearchRecipesPageIT {
 	@Test
 	public void onlyOneElement_StartsWithFocus() throws Exception {
 		String pageSource = this.browser.getPageSource();
-		assertThat(pageSource.lastIndexOf("start-with-focus"), equalTo(pageSource.indexOf("start-with-focus")));
+		assertThat(pageSource, hasExactlyOneOccurrenceOfSubstring("start-with-focus"));
 	}
 
 
