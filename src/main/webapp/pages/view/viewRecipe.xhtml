@@ -29,7 +29,7 @@
 
 	<h:panelGrid id="navigationPanelGrid" columns="2">
 		<h:commandButton id="gotoHomeButton" action="home" value="#{globalMessages.homeButtonText}" immediate="true" />
-		<h:commandButton id="goBackButton" action="#{navigationTracker.lastPage()}" value="#{globalMessages.backButtonText}" immediate="true" />
+		<h:commandButton id="goBackButton" action="#{navigationTracker.lastPage()}" value="#{globalMessages.backButtonText}" rendered="#{navigationTracker.hasPreviousPage()}" immediate="true" />
 	</h:panelGrid>
 	
 </h:form>	

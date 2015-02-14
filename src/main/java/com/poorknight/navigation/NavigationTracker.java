@@ -19,17 +19,17 @@ public class NavigationTracker implements Serializable {
 
 
 	public String lastPage() {
-		return lastPageExists() ? popLastPage() : null;
+		return hasPreviousPage() ? popLastPage() : null;
+	}
+
+
+	public Boolean hasPreviousPage() {
+		return this.navStack.size() > 1;
 	}
 
 
 	void registerNavigationTo(final String path, final String parameterString) {
 		this.navStack.push(new Location(path, parameterString));
-	}
-
-
-	private boolean lastPageExists() {
-		return this.navStack.size() > 1;
 	}
 
 

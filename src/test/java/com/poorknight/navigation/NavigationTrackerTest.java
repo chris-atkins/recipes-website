@@ -2,6 +2,7 @@ package com.poorknight.navigation;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.Matchers.startsWith;
 
@@ -62,5 +63,27 @@ public class NavigationTrackerTest {
 		this.navigator.registerNavigationTo(VALID_PATH + "2", QUERY_STRING + "2");
 
 		assertThat(this.navigator, CustomMatchers.isTrulySerializable());
+	}
+
+
+	@Test
+	public void hasPreviousPagesReturnsFalse_WithNoNavigations() throws Exception {
+		assertThat(navigator.hasPreviousPage(), is(false));
+	}
+
+
+	@Test
+	public void hasPreviousPagesReturnsFalse_WithOnlyOneNavigation() throws Exception {
+		this.navigator.registerNavigationTo(VALID_PATH, QUERY_STRING);
+		assertThat(navigator.hasPreviousPage(), is(false));
+	}
+
+
+	@Test
+	public void hasPreviousPagesReturnsTrue_WithTwoDistinctNavigations() throws Exception {
+		this.navigator.registerNavigationTo(VALID_PATH, QUERY_STRING);
+		this.navigator.registerNavigationTo(VALID_PATH + "1", QUERY_STRING + "1");
+
+		assertThat(navigator.hasPreviousPage(), is(true));
 	}
 }
