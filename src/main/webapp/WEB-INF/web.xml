@@ -40,5 +40,8 @@
 		<url-pattern>*.jsf</url-pattern>
 	</servlet-mapping>
 
+<!-- 	allows session replication - see https://blog.openshift.com/how-to-host-your-java-ee-application-with-auto-scaling/
+	<distributable/> -->
+	
 </web-app>
 
