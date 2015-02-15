@@ -14,11 +14,14 @@ import javax.servlet.http.HttpSessionListener;
 public class MonitoringListener implements HttpSessionAttributeListener, ServletContextAttributeListener, HttpSessionListener,
 		HttpSessionActivationListener {
 
+	private boolean shouldLog = false;
+
+
 	@Override
 	public void attributeAdded(ServletContextAttributeEvent event) {
 		String attributeName = event.getName();
 		String attributeValue = "" + event.getValue();
-		System.out.println("ServletContext attributeAdded: " + attributeName + " | " + attributeValue);
+		log("ServletContext attributeAdded: " + attributeName + " | " + attributeValue);
 	}
 
 
@@ -26,7 +29,7 @@ public class MonitoringListener implements HttpSessionAttributeListener, Servlet
 	public void attributeRemoved(ServletContextAttributeEvent event) {
 		String attributeName = event.getName();
 		String attributeValue = "" + event.getValue();
-		System.out.println("ServletContext attributeRemoved: " + attributeName + " | " + attributeValue);
+		log("ServletContext attributeRemoved: " + attributeName + " | " + attributeValue);
 	}
 
 
@@ -34,7 +37,7 @@ public class MonitoringListener implements HttpSessionAttributeListener, Servlet
 	public void attributeReplaced(ServletContextAttributeEvent event) {
 		String attributeName = event.getName();
 		String attributeValue = "" + event.getValue();
-		System.out.println("ServletContext attributeReplaced: " + attributeName + " | " + attributeValue);
+		log("ServletContext attributeReplaced: " + attributeName + " | " + attributeValue);
 	}
 
 
@@ -43,7 +46,7 @@ public class MonitoringListener implements HttpSessionAttributeListener, Servlet
 		String attributeName = event.getName();
 		String attributeValue = "" + event.getValue();
 		String sessionId = event.getSession().getId();
-		System.out.println("HttpSessionBinding(" + sessionId + ") attributeAdded: " + attributeName + " | " + attributeValue);
+		log("HttpSessionBinding(" + sessionId + ") attributeAdded: " + attributeName + " | " + attributeValue);
 	}
 
 
@@ -52,7 +55,7 @@ public class MonitoringListener implements HttpSessionAttributeListener, Servlet
 		String attributeName = event.getName();
 		String attributeValue = "" + event.getValue();
 		String sessionId = event.getSession().getId();
-		System.out.println("HttpSessionBinding(" + sessionId + ") attributeRemoved: " + attributeName + " | " + attributeValue);
+		log("HttpSessionBinding(" + sessionId + ") attributeRemoved: " + attributeName + " | " + attributeValue);
 	}
 
 
@@ -61,34 +64,41 @@ public class MonitoringListener implements HttpSessionAttributeListener, Servlet
 		String attributeName = event.getName();
 		String attributeValue = "" + event.getValue();
 		String sessionId = event.getSession().getId();
-		System.out.println("HttpSessionBinding(" + sessionId + ") attributeReplaced: " + attributeName + " | " + attributeValue);
+		log("HttpSessionBinding(" + sessionId + ") attributeReplaced: " + attributeName + " | " + attributeValue);
 	}
 
 
 	@Override
 	public void sessionCreated(HttpSessionEvent event) {
 		String sessionId = event.getSession().getId();
-		System.out.println("Session created: " + sessionId);
+		log("Session created: " + sessionId);
 	}
 
 
 	@Override
 	public void sessionDestroyed(HttpSessionEvent event) {
 		String sessionId = event.getSession().getId();
-		System.out.println("SESSION DESTROYED: " + sessionId);
+		log("SESSION DESTROYED: " + sessionId);
 	}
 
 
 	@Override
 	public void sessionWillPassivate(HttpSessionEvent event) {
 		String sessionId = event.getSession().getId();
-		System.out.println("Session passivating: " + sessionId);
+		log("Session passivating: " + sessionId);
 	}
 
 
 	@Override
 	public void sessionDidActivate(HttpSessionEvent event) {
 		String sessionId = event.getSession().getId();
-		System.out.println("Session activating: " + sessionId);
+		log("Session activating: " + sessionId);
+	}
+
+
+	private void log(String logStatement) {
+		if (shouldLog) {
+			System.out.println(logStatement);
+		}
 	}
 }
