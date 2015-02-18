@@ -2,7 +2,6 @@ package com.poorknight.listeners.monitoring;
 
 import javax.servlet.ServletContextAttributeEvent;
 import javax.servlet.ServletContextAttributeListener;
-import javax.servlet.annotation.WebListener;
 import javax.servlet.http.HttpSessionActivationListener;
 import javax.servlet.http.HttpSessionAttributeListener;
 import javax.servlet.http.HttpSessionBindingEvent;
@@ -10,12 +9,9 @@ import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
 
 
-@WebListener
+//@WebListener
 public class MonitoringListener implements HttpSessionAttributeListener, ServletContextAttributeListener, HttpSessionListener,
 		HttpSessionActivationListener {
-
-	private boolean shouldLog = false;
-
 
 	@Override
 	public void attributeAdded(ServletContextAttributeEvent event) {
@@ -97,8 +93,6 @@ public class MonitoringListener implements HttpSessionAttributeListener, Servlet
 
 
 	private void log(String logStatement) {
-		if (shouldLog) {
-			System.out.println(logStatement);
-		}
+		System.out.println(logStatement);
 	}
 }
