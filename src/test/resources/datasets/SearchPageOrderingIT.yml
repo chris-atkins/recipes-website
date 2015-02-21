@@ -1,0 +1,35 @@
+C01_RECIPE: 
+  - C01_RECIPE_NAME: "(6)Chicken Chicken Chicken"
+    C01_RECIPE_CONTENT: "hi"
+    C01_SEARCHABLE_TEXT: "(6)chicken chicken chickenhi"
+    C01_LAST_UPDATED_ON: "2014-11-07 23:31:22"
+    
+  - C01_RECIPE_NAME: "(1)Chicken basil"
+    C01_RECIPE_CONTENT: "bAsil chicken"
+    C01_SEARCHABLE_TEXT: "(1)chicken basilbasil chicken"
+    C01_LAST_UPDATED_ON: "2014-11-07 23:31:25"
+    
+  - C01_RECIPE_NAME: "(2)Chicken basil"
+    C01_RECIPE_CONTENT: "hi"
+    C01_SEARCHABLE_TEXT: "(2)chicken basilhi"
+    C01_LAST_UPDATED_ON: "2014-11-07 23:31:23"
+    
+  - C01_RECIPE_NAME: "(3)Chicken"
+    C01_RECIPE_CONTENT: "basil"
+    C01_SEARCHABLE_TEXT: "(3)chickenbasil"
+    C01_LAST_UPDATED_ON: "2014-11-07 23:31:28"
+    
+  - C01_RECIPE_NAME: "(5)Chicken"
+    C01_RECIPE_CONTENT: "chicken chicken"
+    C01_SEARCHABLE_TEXT: "(5)chickenchicken chicken"
+    C01_LAST_UPDATED_ON: "2014-11-07 23:31:26"
+    
+  - C01_RECIPE_NAME: "(4)chicken"
+    C01_RECIPE_CONTENT: "CHICKEN"
+    C01_SEARCHABLE_TEXT: "(4)chickenchicken"
+    C01_LAST_UPDATED_ON: "2014-11-07 23:31:25"
+    
+  - C01_RECIPE_NAME: "(7)hi"
+    C01_RECIPE_CONTENT: "CHICKEN"
+    C01_SEARCHABLE_TEXT: "(7)hichicken"
+    C01_LAST_UPDATED_ON: "2014-11-07 23:31:23"

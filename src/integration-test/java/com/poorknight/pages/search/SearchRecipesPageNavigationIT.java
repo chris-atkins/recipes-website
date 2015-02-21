@@ -1,5 +1,10 @@
 package com.poorknight.pages.search;
 
+import static com.poorknight.pages.search.SearchPageITConstants.BACK_BUTTON_ID;
+import static com.poorknight.pages.search.SearchPageITConstants.HOME_BUTTON_ID;
+import static com.poorknight.pages.search.SearchPageITConstants.SEARCH_BUTTON_ID;
+import static com.poorknight.pages.search.SearchPageITConstants.SEARCH_TEXT_ID;
+import static com.poorknight.pages.search.SearchPageITConstants.VIEW_RECIPE_LINK_TEXT;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.endsWith;
@@ -38,12 +43,6 @@ import com.poorknight.utils.ArquillianUtils;
 public class SearchRecipesPageNavigationIT {
 
 	private static final String RECIPE_NAME = "Recipe1";
-
-	private static final String SEARCH_TEXT_ID = "pageForm:searchInput";
-	private static final String SEARCH_BUTTON_ID = "pageForm:searchButton";
-	private static final String VIEW_RECIPE_LINK_TEXT = "View";
-	private static final String BACK_BUTTON_ID = "pageForm:goBackButton";
-	private static final String HOME_BUTTON_ID = "pageForm:gotoHomeButton";
 
 	private WebElement searchTextfield;
 	private WebElement searchButton;

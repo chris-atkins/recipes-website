@@ -1,5 +1,9 @@
 package com.poorknight.pages.search;
 
+import static com.poorknight.pages.search.SearchPageITConstants.ERROR_MESSAGE_ID;
+import static com.poorknight.pages.search.SearchPageITConstants.NO_RESULTS_MESSAGE_ID;
+import static com.poorknight.pages.search.SearchPageITConstants.SEARCH_BUTTON_ID;
+import static com.poorknight.pages.search.SearchPageITConstants.SEARCH_TEXT_ID;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.isEmptyString;
 import static org.hamcrest.Matchers.not;
@@ -35,11 +39,6 @@ import com.poorknight.utils.ArquillianUtils;
 @RunWith(Arquillian.class)
 @PersistenceTest
 public class SearchRecipesPageWithDatasetIT {
-
-	private static final String SEARCH_BUTTON_ID = "pageForm:searchButton";
-	private static final String SEARCH_TEXT_ID = "pageForm:searchInput";
-	private static final String ERROR_MESSAGE_ID = "pageForm:searchInputMessage";
-	private static final String NO_RESULTS_MESSAGE_ID = "pageForm:noResultsMessage";
 
 	private WebElement searchText;
 	private WebElement searchButton;
