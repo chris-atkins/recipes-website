@@ -74,53 +74,53 @@ public class SearchPageOrderingIT {
 	@InSequence(2)
 	@RunAsClient
 	@Cleanup(phase = TestExecutionPhase.AFTER)
-	public void searchResultsOrderedCorrectly(@ArquillianResource URL deploymentURL, @Drone WebDriver browser) throws Exception {
-		List<String> expectedRecipeTitles = buildExpectedRecipeTitles();
+	public void searchResultsOrderedCorrectly(@ArquillianResource final URL deploymentURL, @Drone final WebDriver browser) throws Exception {
+		final List<String> expectedRecipeTitles = buildExpectedRecipeTitles();
 
 		initPage(deploymentURL, browser);
 		performSearch();
 
-		List<String> actualRecipeTitles = findRecipeTitlesFromScreen();
+		final List<String> actualRecipeTitles = findRecipeTitlesFromScreen();
 
 		assertThat(actualRecipeTitles, equalTo(expectedRecipeTitles));
 	}
 
 
 	private List<String> findRecipeTitlesFromScreen() {
-		List<String> recipeTitles = new LinkedList<>();
-		for (WebElement recipeLink : this.recipeLinks) {
-			String title = findRecipeTitleFromLink(recipeLink);
+		final List<String> recipeTitles = new LinkedList<>();
+		for (final WebElement recipeLink : this.recipeLinks) {
+			final String title = findRecipeTitleFromLink(recipeLink);
 			recipeTitles.add(title);
 		}
 		return recipeTitles;
 	}
 
 
-	private String findRecipeTitleFromLink(WebElement recipeLink) {
+	private String findRecipeTitleFromLink(final WebElement recipeLink) {
 		return recipeLink.findElement(By.xpath("../../*[1]")).getText(); // parent/parent/firstChild
 	}
 
 
 	private void performSearch() {
-		searchText.clear();
-		searchText.sendKeys(SEARCH_TEXT);
-		Graphene.guardAjax(searchButton).click();
+		this.searchText.clear();
+		this.searchText.sendKeys(SEARCH_TEXT);
+		Graphene.guardAjax(this.searchButton).click();
 	}
 
 
-	private void initPage(URL deploymentURL, WebDriver browser) {
+	private void initPage(final URL deploymentURL, final WebDriver browser) {
 		navigateToSearchPage(browser, deploymentURL);
 		populateScreenElements(browser);
 	}
 
 
-	private void navigateToSearchPage(WebDriver browser, URL deploymentURL) {
-		String searchPageURL = deploymentURL.toExternalForm() + ITConstants.SEARCH_RECIPES_PAGE;
+	private void navigateToSearchPage(final WebDriver browser, final URL deploymentURL) {
+		final String searchPageURL = deploymentURL.toExternalForm() + ITConstants.SEARCH_RECIPES_PAGE;
 		browser.navigate().to(searchPageURL);
 	}
 
 
-	private void populateScreenElements(WebDriver browser) {
+	private void populateScreenElements(final WebDriver browser) {
 		this.searchText = browser.findElement(By.id(SEARCH_TEXT_ID));
 		this.searchButton = browser.findElement(By.id(SEARCH_BUTTON_ID));
 		this.recipeLinks = browser.findElements(By.linkText(VIEW_RECIPE_LINK_TEXT));

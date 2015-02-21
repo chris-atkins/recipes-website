@@ -86,9 +86,25 @@ public class SearchRecipeServiceTest {
 
 
 		@Test
+		public void callsDaoWithCorrectArguments_WithRepeatedStrings() throws Exception {
+			final String searchString = "hi hi hi";
+			this.service.searchBy(searchString);
+			verify(this.dao).findRecipesContainingAnyOf("hi");
+		}
+
+
+		@Test
+		public void callsDaoWithCorrectArguments_WithRepeatedDifferentCaseStrings() throws Exception {
+			final String searchString = "hi HI Hi";
+			this.service.searchBy(searchString);
+			verify(this.dao).findRecipesContainingAnyOf("hi");
+		}
+
+
+		@Test
 		public void returnsTheDaoResults() throws Exception {
 			final List<Recipe> expectedResults = new ImmutableList.Builder<Recipe>().add(randomRecipe()).add(randomRecipe()).build();
-			final String searchString = "searchString";
+			final String searchString = "searchstring";
 
 			when(this.dao.findRecipesContainingAnyOf(searchString)).thenReturn(expectedResults);
 
@@ -97,7 +113,6 @@ public class SearchRecipeServiceTest {
 			assertThat(results, contains(expectedResults.toArray()));
 			assertThat(results.size(), equalTo(expectedResults.size()));
 		}
-
 	}
 
 	@RunWith(MockitoJUnitRunner.class)

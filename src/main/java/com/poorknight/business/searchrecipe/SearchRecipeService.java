@@ -1,7 +1,8 @@
 package com.poorknight.business.searchrecipe;
 
-import java.util.LinkedList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -10,6 +11,9 @@ import com.poorknight.domain.Recipe;
 import com.poorknight.domain.RecipeDAO;
 
 
+/**
+ * Responsible for searching for recipes based on a search string. Returned recipes are ordered.
+ */
 @RequestScoped
 public class SearchRecipeService {
 
@@ -35,7 +39,7 @@ public class SearchRecipeService {
 
 
 	private String[] cleanArrayOfBadInput(final String[] searchArray) {
-		final List<String> cleanedResults = new LinkedList<>();
+		final Set<String> cleanedResults = new LinkedHashSet<>();
 
 		for (final String stringToClean : searchArray) {
 
@@ -49,7 +53,7 @@ public class SearchRecipeService {
 
 
 	private String cleanString(final String stringToClean) {
-		return stringToClean.trim();
+		return stringToClean.trim().toLowerCase();
 	}
 
 
