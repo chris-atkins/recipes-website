@@ -2,6 +2,7 @@ package com.poorknight.pages.search;
 
 import static com.poorknight.pages.search.SearchPageITConstants.SEARCH_BUTTON_ID;
 import static com.poorknight.pages.search.SearchPageITConstants.SEARCH_TEXT_ID;
+import static com.poorknight.pages.search.SearchPageITConstants.VIEW_RECIPE_LINK_TEXT;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
@@ -74,37 +75,36 @@ public class SearchPageOrderingIT {
 	@RunAsClient
 	@Cleanup(phase = TestExecutionPhase.AFTER)
 	public void searchResultsOrderedCorrectly(@ArquillianResource URL deploymentURL, @Drone WebDriver browser) throws Exception {
+		List<String> expectedRecipeTitles = buildExpectedRecipeTitles();
+
 		initPage(deploymentURL, browser);
 		performSearch();
 
-		System.out.println(browser.getPageSource());
-
-		List<String> expectedRecipeTitles = buildExpectedRecipeTitles();
-		List<String> actualRecipeTitles = buildActualRecipeTitles();
+		List<String> actualRecipeTitles = findRecipeTitlesFromScreen();
 
 		assertThat(actualRecipeTitles, equalTo(expectedRecipeTitles));
 	}
 
 
-	private List<String> buildExpectedRecipeTitles() {
-		return new ImmutableList.Builder<String>()//
-				.add(EXPECTED_1)//
-				.add(EXPECTED_2)//
-				.add(EXPECTED_3)//
-				.add(EXPECTED_4)//
-				.add(EXPECTED_5)//
-				.add(EXPECTED_6)//
-				.add(EXPECTED_7).build();
-	}
-
-
-	private List<String> buildActualRecipeTitles() {
+	private List<String> findRecipeTitlesFromScreen() {
 		List<String> recipeTitles = new LinkedList<>();
 		for (WebElement recipeLink : this.recipeLinks) {
-			String title = recipeLink.findElement(By.xpath("../../*[1]")).getText(); // parent/parent/firstChild
+			String title = findRecipeTitleFromLink(recipeLink);
 			recipeTitles.add(title);
 		}
 		return recipeTitles;
+	}
+
+
+	private String findRecipeTitleFromLink(WebElement recipeLink) {
+		return recipeLink.findElement(By.xpath("../../*[1]")).getText(); // parent/parent/firstChild
+	}
+
+
+	private void performSearch() {
+		searchText.clear();
+		searchText.sendKeys(SEARCH_TEXT);
+		Graphene.guardAjax(searchButton).click();
 	}
 
 
@@ -123,13 +123,18 @@ public class SearchPageOrderingIT {
 	private void populateScreenElements(WebDriver browser) {
 		this.searchText = browser.findElement(By.id(SEARCH_TEXT_ID));
 		this.searchButton = browser.findElement(By.id(SEARCH_BUTTON_ID));
-		this.recipeLinks = browser.findElements(By.linkText(SearchPageITConstants.VIEW_RECIPE_LINK_TEXT));
+		this.recipeLinks = browser.findElements(By.linkText(VIEW_RECIPE_LINK_TEXT));
 	}
 
 
-	private void performSearch() {
-		searchText.clear();
-		searchText.sendKeys(SEARCH_TEXT);
-		Graphene.guardAjax(searchButton).click();
+	private List<String> buildExpectedRecipeTitles() {
+		return new ImmutableList.Builder<String>()//
+				.add(EXPECTED_1)//
+				.add(EXPECTED_2)//
+				.add(EXPECTED_3)//
+				.add(EXPECTED_4)//
+				.add(EXPECTED_5)//
+				.add(EXPECTED_6)//
+				.add(EXPECTED_7).build();
 	}
 }
