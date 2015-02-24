@@ -20,6 +20,9 @@ public class SearchRecipeService {
 	@Inject
 	private RecipeDAO dao;
 
+	@Inject
+	private RecipeSorter sorter;
+
 
 	public List<Recipe> findAllRecipes() {
 		return this.dao.queryAllRecipes();
@@ -29,7 +32,8 @@ public class SearchRecipeService {
 	public List<Recipe> searchBy(final String searchString) {
 		String[] searchArray = breakSearchStringOnSpaces(searchString);
 		searchArray = cleanArrayOfBadInput(searchArray);
-		return this.dao.findRecipesContainingAnyOf(searchArray);
+		final List<Recipe> searchResults = this.dao.findRecipesContainingAnyOf(searchArray);
+		return this.sorter.sortBySearchString(searchArray, searchResults);
 	}
 
 

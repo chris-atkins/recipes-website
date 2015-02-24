@@ -3,13 +3,17 @@ package com.poorknight.business.searchrecipe;
 import static com.poorknight.testing.matchers.CustomMatchers.isRequestScoped;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.equalTo;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.lang.RandomStringUtils;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.experimental.runners.Enclosed;
 import org.junit.runner.RunWith;
@@ -38,11 +42,46 @@ public class SearchRecipeServiceTest {
 	@RunWith(MockitoJUnitRunner.class)
 	public static class SearchRecipeService_SearchBy {
 
+		private final String searchString = "searchstring";
+		private final String[] searchStringAsArray = new String[] { this.searchString };
+		private List<Recipe> daoResults;
+		private List<Recipe> sortResults;
+
 		@InjectMocks
 		private SearchRecipeService service;
 
 		@Mock
 		private RecipeDAO dao;
+
+		@Mock
+		private RecipeSorter recipeSorter;
+
+
+		@Before
+		public void setupMocks() {
+			this.daoResults = new ImmutableList.Builder<Recipe>().add(randomRecipe()).add(randomRecipe()).build();
+			this.sortResults = new ArrayList<>(this.daoResults);
+			Collections.shuffle(this.sortResults);
+
+			when(this.dao.findRecipesContainingAnyOf(this.searchString)).thenReturn(this.daoResults);
+			when(this.recipeSorter.sortBySearchString(this.searchStringAsArray, this.daoResults)).thenReturn(this.sortResults);
+		}
+
+
+		@Test
+		public void returnsTheDaoResults() throws Exception {
+			final List<Recipe> results = this.service.searchBy(this.searchString);
+			assertThat(results, containsInAnyOrder(this.daoResults.toArray()));
+			assertThat(results.size(), equalTo(this.daoResults.size()));
+		}
+
+
+		@Test
+		public void sortsTheResults_ByDelegatingToSorter() throws Exception {
+			final List<Recipe> results = this.service.searchBy(this.searchString);
+			verify(this.recipeSorter).sortBySearchString(this.searchStringAsArray, this.daoResults);
+			assertThat(results, equalTo(this.sortResults));
+		}
 
 
 		@Test
@@ -98,20 +137,6 @@ public class SearchRecipeServiceTest {
 			final String searchString = "hi HI Hi";
 			this.service.searchBy(searchString);
 			verify(this.dao).findRecipesContainingAnyOf("hi");
-		}
-
-
-		@Test
-		public void returnsTheDaoResults() throws Exception {
-			final List<Recipe> expectedResults = new ImmutableList.Builder<Recipe>().add(randomRecipe()).add(randomRecipe()).build();
-			final String searchString = "searchstring";
-
-			when(this.dao.findRecipesContainingAnyOf(searchString)).thenReturn(expectedResults);
-
-			final List<Recipe> results = this.service.searchBy(searchString);
-
-			assertThat(results, contains(expectedResults.toArray()));
-			assertThat(results.size(), equalTo(expectedResults.size()));
 		}
 	}
 

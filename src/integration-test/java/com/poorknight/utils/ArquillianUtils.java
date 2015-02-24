@@ -3,6 +3,7 @@ package com.poorknight.utils;
 import java.io.File;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.ArrayUtils;
 import org.jboss.shrinkwrap.api.Filters;
 import org.jboss.shrinkwrap.api.GenericArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -14,7 +15,10 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 import com.poorknight.business.saverecipe.SaveRecipeService;
+import com.poorknight.business.searchrecipe.RecipeSorter;
 import com.poorknight.business.searchrecipe.SearchRecipeService;
+import com.poorknight.business.searchrecipe.SimpleRecipeSorter;
+import com.poorknight.controller.LatestSearch;
 import com.poorknight.domain.Recipe;
 import com.poorknight.domain.RecipeDAO;
 import com.poorknight.domain.Recipe_;
@@ -22,8 +26,8 @@ import com.poorknight.exceptions.DaoException;
 import com.poorknight.listeners.servlet.HttpRequestListener;
 import com.poorknight.navigation.Location;
 import com.poorknight.navigation.NavigationRequestListener;
-import com.poorknight.navigation.PageNavigationStack;
 import com.poorknight.navigation.NavigationTracker;
+import com.poorknight.navigation.PageNavigationStack;
 
 
 public class ArquillianUtils {
@@ -64,30 +68,34 @@ public class ArquillianUtils {
 
 
 	public static WebArchive createRecipePersistenceEnabledPageTestWithNavigation(final Class<?>... classes) {
-		return createPageTestDeploymentWithBackNavigation(classes)
-				.addClasses(SearchRecipeService.class, SaveRecipeService.class, RecipeDAO.class, Recipe.class, DaoException.class,
-						CollectionUtils.class, Recipe_.class, WebDriver.class, SearchContext.class, WebElement.class)//
+		return createPageTestDeploymentWithBackNavigation(classes)//
+				.addClasses(getRecipeWithArquillianPersistenceClasses())//
 				.addAsWebInfResource("META-INF/test-persistence.xml", "classes/META-INF/persistence.xml")//
 				.addAsLibrary(commonsCollections());
-	}
-
-
-	private static File commonsCollections() {
-		return buildLibraryFromPom("commons-collections", "commons-collections", "3.2.1");
-	}
-
-
-	public static File commonsLang() {
-		return buildLibraryFromPom("commons-lang", "commons-lang", "2.6");
 	}
 
 
 	public static WebArchive createRecipePersistenceEnabledPageTestDeployment(final String webArchiveName, final Class<?>... classes) {
-		return createBasicPageTestDeployment(webArchiveName, classes)
-				.addClasses(SearchRecipeService.class, SaveRecipeService.class, RecipeDAO.class, Recipe.class, DaoException.class,
-						CollectionUtils.class, Recipe_.class, WebDriver.class, SearchContext.class, WebElement.class)//
+		return createBasicPageTestDeployment(webArchiveName, classes)//
+				.addClasses(getRecipeWithArquillianPersistenceClasses())//
 				.addAsWebInfResource("META-INF/test-persistence.xml", "classes/META-INF/persistence.xml")//
 				.addAsLibrary(commonsCollections());
+	}
+
+
+	public static Class<?>[] getRecipeWithArquillianPersistenceClasses() {
+		return (Class<?>[]) ArrayUtils.addAll(getRecipePersistenceClasses(), getArquillianPersistenceClasses());
+	}
+
+
+	public static Class<?>[] getRecipePersistenceClasses() {
+		return new Class<?>[] { SearchRecipeService.class, SaveRecipeService.class, RecipeDAO.class, Recipe.class, DaoException.class,
+				CollectionUtils.class, Recipe_.class, LatestSearch.class, RecipeSorter.class, SimpleRecipeSorter.class };
+	}
+
+
+	public static Class<?>[] getArquillianPersistenceClasses() {
+		return new Class<?>[] { SearchContext.class, WebElement.class, WebDriver.class };
 	}
 
 
@@ -98,6 +106,16 @@ public class ArquillianUtils {
 
 	private static String buildArchiveName(final String webArchiveName) {
 		return webArchiveName + ".war";
+	}
+
+
+	private static File commonsCollections() {
+		return buildLibraryFromPom("commons-collections", "commons-collections", "3.2.1");
+	}
+
+
+	public static File commonsLang() {
+		return buildLibraryFromPom("commons-lang", "commons-lang", "2.6");
 	}
 
 }

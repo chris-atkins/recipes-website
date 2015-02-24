@@ -30,7 +30,6 @@ import org.openqa.selenium.WebElement;
 
 import com.google.common.collect.ImmutableList;
 import com.poorknight.constants.ITConstants;
-import com.poorknight.controller.LatestSearch;
 import com.poorknight.controller.SearchRecipesController;
 import com.poorknight.utils.ArquillianUtils;
 
@@ -55,8 +54,7 @@ public class SearchPageOrderingIT {
 
 	@Deployment(testable = true)
 	public static WebArchive createDeployment() {
-		return ArquillianUtils.createRecipePersistenceEnabledPageTestDeployment("SearchPageOrderingIT", SearchRecipesController.class,
-				LatestSearch.class);
+		return ArquillianUtils.createRecipePersistenceEnabledPageTestDeployment("SearchPageOrderingIT", SearchRecipesController.class);
 	}
 
 
