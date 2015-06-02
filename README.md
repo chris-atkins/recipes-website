@@ -6,8 +6,8 @@ This was a project I used when I wanted to get better with a few different techn
  
  I have since been distracted by a node/angular project and have not spent much time on it, but hope to get back to it one day. :)
 
-Trello Board found <a href="https://trello.com/b/YCb5FI7J/recipe-project">here</a>.
-Website found <a hfref="http:www.myrecipeconnection.com">here</a> (it is really rough and simple still)
+Trello Board found <a href="https://trello.com/b/YCb5FI7J/recipe-project">here</a>.<br/>
+Website found <a hfref="http://www.myrecipeconnection.com/">here</a> (it is really rough and simple still)
 
 
 The OpenShift `jbossas` cartridge documentation can be found at:
