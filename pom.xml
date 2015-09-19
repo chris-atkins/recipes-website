@@ -403,7 +403,6 @@
 			<!-- <properties> <maven.compiler.executable>${env.OPENSHIFT_WILDFLY_DIR}usr/lib/jvm/jdk1.8.0_05/bin/javac</maven.compiler.executable> 
 				</properties> TO REACTIVATE JAVA 8 - UNCOMMENT THIS AND RENAME MARKER FILE LOCATED IN 'C:\Users\Chris\git\recipeconnection\.openshift\marker' 
 				FROM 'java7' to 'java8' (and change the eclipse settings -->
-
 		</profile>
 
 		<profile>
