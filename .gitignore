@@ -2,3 +2,8 @@
 /bin/
 /jbosswildfly.iml
 /log.txt
+/.idea/
+/.settings/
+/.tern-project
+/.project
+/.classpath

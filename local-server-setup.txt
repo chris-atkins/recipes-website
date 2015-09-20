@@ -1,0 +1,4 @@
+in order to add mysql to jboss:
+create a new folder: /usr/local/Cellar/wildfly-as/9.0.1.Final/libexec/modules/system/layers/base/com/mysql/main
+download mysql connector jar and add the module.xml to it 
+
