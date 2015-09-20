@@ -511,7 +511,7 @@
 					<artifactId>jconsole</artifactId>
 					<version>jdk</version>
 					<scope>system</scope>
-					<systemPath>${jdk.path}</systemPath>
+					<systemPath>${jdk.path}/lib/jconsole.jar</systemPath>
 				</dependency>
 
 				<dependency>

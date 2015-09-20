@@ -10,8 +10,8 @@
     <container qualifier="embedded-wildfly-tests" default="true">
     	<!-- <protocol type="Servlet 3.0" /> -->
         <configuration>
-            <property name="jbossHome">C:\jboss\wildfly-8.1.0.Final</property>
-            <property name="modulePath">C:\jboss\wildfly-8.1.0.Final\modules</property>
+            <property name="jbossHome">/usr/local/opt/wildfly-as/libexec</property>
+            <property name="modulePath">/usr/local/opt/wildfly-as/libexec/modules</property>
         </configuration>
     </container>
     
