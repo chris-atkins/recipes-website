@@ -1,0 +1,9 @@
+To install jboss on mac:
+
+follow instructions found here:
+https://javavolker.wordpress.com/2014/02/15/installing-wildfly-on-mac-os-x/
+
+
+When following the brew instructions everything is correct except 
+this: PATH=${PATH}:${JBOSS_HOME}/bin
+should be this: set PATH $PATH /usr/local/opt/wildfly-as/libexec/bin/
