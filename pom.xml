@@ -403,6 +403,16 @@
 			<!-- <properties> <maven.compiler.executable>${env.OPENSHIFT_WILDFLY_DIR}usr/lib/jvm/jdk1.8.0_05/bin/javac</maven.compiler.executable> 
 				</properties> TO REACTIVATE JAVA 8 - UNCOMMENT THIS AND RENAME MARKER FILE LOCATED IN 'C:\Users\Chris\git\recipeconnection\.openshift\marker' 
 				FROM 'java7' to 'java8' (and change the eclipse settings -->
+				
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>com.github.searls</groupId>
+						<artifactId>jasmine-maven-plugin</artifactId>
+					</plugin>
+				</plugins>
+			</build>
+				
 		</profile>
 
 		<profile>
@@ -499,7 +509,12 @@
 					<artifactId>wildfly-arquillian-container-embedded</artifactId>
 					<version>8.1.0.Final</version>
 				</dependency>
-
+<!-- <dependency>
+  <groupId>org.wildfly.arquillian</groupId>
+  <artifactId>wildfly-arquillian-container-embedded</artifactId>
+  <version>1.0.1.Final</version>
+  <scope>test</scope>
+</dependency> -->
 				<dependency>
 					<groupId>org.wildfly</groupId>
 					<artifactId>wildfly-embedded</artifactId>
