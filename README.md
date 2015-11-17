@@ -1,3 +1,5 @@
+<a href='http://45.55.61.213:8080/job/1.1%20-%20Build%20-%20recipe-service/'><img src='http://45.55.61.213:8080/job/1.1%20-%20Build%20-%20recipe-service/badge/icon'></a>
+
 This was a project I used when I wanted to get better with a few different technologies/practices:
 <ul>
  <li>Java EE7</li>

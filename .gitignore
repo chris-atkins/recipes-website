@@ -7,3 +7,4 @@
 /.tern-project
 /.project
 /.classpath
+/docker-config/recipe.war
