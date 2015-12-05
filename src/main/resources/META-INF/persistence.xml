@@ -23,6 +23,15 @@
 		</properties>
 		
 		
+<!-- 		<provider>org.hibernate.ejb.HibernatePersistence</provider>
+		<jta-data-source>java:jboss/datasources/ExampleDS</jta-data-source>
+		<mapping-file>META-INF/listeners.xml</mapping-file>
+		<exclude-unlisted-classes>false</exclude-unlisted-classes>
+		<properties>
+			<property name="hibernate.hbm2ddl.auto" value="create-drop" />
+			<property name="javax.persistence.jdbc.url" value="jdbc:h2:mem:test;DB_CLOSE_DELAY=-1" />
+		</properties> -->
+		
 	</persistence-unit>
 
 </persistence>
