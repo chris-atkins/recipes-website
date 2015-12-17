@@ -1,32 +1,13 @@
 package com.poorknight.endpoints;
 
+import static com.poorknight.testing.matchers.CustomMatchers.createsTransactionBoundaryOnMethod;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.lang.annotation.Annotation;
-import java.net.URI;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.Set;
-
 import javax.ws.rs.NotFoundException;
-import javax.ws.rs.core.Application;
-import javax.ws.rs.core.CacheControl;
-import javax.ws.rs.core.EntityTag;
-import javax.ws.rs.core.Link;
-import javax.ws.rs.core.Link.Builder;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.MultivaluedMap;
-import javax.ws.rs.core.NewCookie;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.ResponseBuilder;
-import javax.ws.rs.core.UriBuilder;
-import javax.ws.rs.core.Variant;
-import javax.ws.rs.core.Variant.VariantListBuilder;
-import javax.ws.rs.ext.RuntimeDelegate;
 
 import org.apache.commons.lang.math.RandomUtils;
 import org.junit.Test;
@@ -61,7 +42,7 @@ public class RecipeEndpointTest {
 
 	@Test
 	public void postRecipe_SavesAndReturnsResults() throws Exception {
-		Recipe response = recipeEndpoint.postRecipe(recipe);
+		final Recipe response = recipeEndpoint.postRecipe(recipe);
 
 		verify(recipeService).saveNewRecipe(recipe);
 		assertThat(response, equalTo(recipe));
@@ -69,10 +50,10 @@ public class RecipeEndpointTest {
 
 	@Test
 	public void getRecipe_getsRecipeByPassedLong() throws Exception {
-		long recipeId = RandomUtils.nextLong();
+		final long recipeId = RandomUtils.nextLong();
 		when(recipeDao.queryRecipeById(recipeId)).thenReturn(recipe);
 
-		Recipe response = recipeEndpoint.getRecipe(recipeId);
+		final Recipe response = recipeEndpoint.getRecipe(recipeId);
 
 		assertThat(response, equalTo(recipe));
 	}
@@ -81,7 +62,20 @@ public class RecipeEndpointTest {
 	public void getRecipe_throwsNotFoundException_WhenNoRecipeIsFound() throws Exception {
 		UnitTestSetupUtils.mockContainerToHandleWebServiceExceptions();
 		when(recipeDao.queryRecipeById(-1L)).thenReturn(null);
-		
+
 		recipeEndpoint.getRecipe(-1L);
+	}
+
+	@Test
+	public void delete_IsTransactional() throws Exception {
+		assertThat(RecipeEndpoint.class, createsTransactionBoundaryOnMethod("deleteRecipe"));
+	}
+
+	@Test
+	public void delete_deletesFromDao() throws Exception {
+		final Long recipeId = RandomUtils.nextLong();
+		recipeEndpoint.deleteRecipe(recipeId);
+
+		verify(recipeDao).deleteRecipe(recipeId);
 	}
 }

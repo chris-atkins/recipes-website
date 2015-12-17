@@ -6,6 +6,7 @@ import static javax.ejb.TransactionAttributeType.SUPPORTS;
 import java.util.List;
 
 import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.enterprise.context.RequestScoped;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -18,7 +19,6 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import com.poorknight.exceptions.DaoException;
 
-
 /**
  * Responsible for CRUD operations on the Recipe class.
  */
@@ -28,7 +28,6 @@ public class RecipeDAO {
 	@PersistenceContext(unitName = "JPADB")
 	EntityManager em;
 
-
 	@TransactionAttribute(REQUIRED)
 	public void saveNewRecipe(final Recipe recipe) {
 		throwExceptionIfGeneratedKeyAlreadyExists(recipe);
@@ -36,18 +35,15 @@ public class RecipeDAO {
 		this.em.persist(recipe);
 	}
 
-
 	private String generateSearchableRecipe(final String name, final String content) {
 		return name.toLowerCase() + content.toLowerCase();
 	}
-
 
 	private void throwExceptionIfGeneratedKeyAlreadyExists(final Recipe recipe) {
 		if (recipe.getRecipeId() != null) {
 			throw new DaoException("Cannot save a Recipe that already has a recipeId.  Maybe an update operation is more appropriate.");
 		}
 	}
-
 
 	@TransactionAttribute(SUPPORTS)
 	public List<Recipe> queryAllRecipes() {
@@ -58,12 +54,10 @@ public class RecipeDAO {
 		return this.em.createQuery(query).getResultList();
 	}
 
-
 	@TransactionAttribute(SUPPORTS)
 	public Recipe queryRecipeById(final Long recipeId) {
 		return this.em.find(Recipe.class, recipeId);
 	}
-
 
 	@TransactionAttribute(REQUIRED)
 	public Recipe updateRecipeContents(final Long idOfRecipeToChange, final String newContents) {
@@ -75,6 +69,10 @@ public class RecipeDAO {
 		return recipe;
 	}
 
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public void deleteRecipe(final Long recipeId) {
+		em.remove(em.find(Recipe.class, recipeId));
+	}
 
 	/**
 	 * @deprecated use queryRecipeById() instead
@@ -90,7 +88,6 @@ public class RecipeDAO {
 		return this.em.createQuery(query).getSingleResult();
 	}
 
-
 	@TransactionAttribute(SUPPORTS)
 	public List<Recipe> findRecipesContainingAnyOf(@NotEmpty final String... searchStrings) {
 		final CriteriaBuilder cb = this.em.getCriteriaBuilder();
@@ -102,12 +99,11 @@ public class RecipeDAO {
 		return this.em.createQuery(query).getResultList();
 	}
 
-
 	private Predicate anyOfTheSearchStringsMatch(final CriteriaBuilder cb, final Root<Recipe> recipe, final String[] searchStrings) {
 		final Predicate[] likeExpressions = buildLikeExpressions(cb, recipe, searchStrings);
-		return cb.or(likeExpressions);  // 'or's together all of the like expressions
+		return cb.or(likeExpressions); // 'or's together all of the like
+										// expressions
 	}
-
 
 	private Predicate[] buildLikeExpressions(final CriteriaBuilder cb, final Root<Recipe> recipe, final String[] searchStrings) {
 		final Predicate[] likeExpressions = new Predicate[searchStrings.length];
@@ -117,11 +113,9 @@ public class RecipeDAO {
 		return likeExpressions;
 	}
 
-
 	private Predicate likeExpression(final CriteriaBuilder cb, final Root<Recipe> recipe, final String searchString) {
 		return cb.like(recipe.get(Recipe_.searchableRecipeText), createLikeString(searchString));
 	}
-
 
 	private String createLikeString(final String searchString) {
 		return "%" + searchString.toLowerCase() + "%";

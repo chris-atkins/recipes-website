@@ -29,7 +29,6 @@ import org.junit.runner.RunWith;
 
 import com.poorknight.exceptions.DaoException;
 
-
 @RunWith(Arquillian.class)
 public class RecipeDAOIT {
 
@@ -43,22 +42,19 @@ public class RecipeDAOIT {
 	private RecipeDAO dao;
 
 	@PersistenceContext
-	private EntityManager em;  // used for cleanup between tests
+	private EntityManager em; // used for cleanup between tests
 
 	@Inject
-	private UserTransaction transaction;  // used for cleanup between tests
+	private UserTransaction transaction; // used for cleanup between tests
 
 	@Rule
 	public ExpectedException thrown = ExpectedException.none();
 
-
 	@Deployment
 	public static Archive<?> createDeployment() {
-		return ShrinkWrap.create(JavaArchive.class, "test.jar").addClass(RecipeDAO.class).addClass(DaoException.class).addClass(Recipe.class)
-				.addClass(Recipe_.class).addAsManifestResource("META-INF/test-persistence.xml", "persistence.xml")
-				.addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
+		return ShrinkWrap.create(JavaArchive.class, "test.jar").addClass(RecipeDAO.class).addClass(DaoException.class).addClass(Recipe.class).addClass(Recipe_.class)
+				.addAsManifestResource("META-INF/test-persistence.xml", "persistence.xml").addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
 	}
-
 
 	@Before
 	public void cleanupRecipeTableAndStartTransaction() throws Exception {
@@ -70,12 +66,10 @@ public class RecipeDAOIT {
 		this.transaction.begin();
 	}
 
-
 	@After
 	public void closeTransaction() throws Exception {
 		this.transaction.commit();
 	}
-
 
 	@Test
 	public void testSaveNewAndQueryAllWorks() {
@@ -85,16 +79,15 @@ public class RecipeDAOIT {
 		// insert a recipe and make sure query returns 1 recipe
 		final Recipe recipe = new Recipe("testName", "testDesc");
 		this.dao.saveNewRecipe(recipe);
-		assertTrue(recipe.getRecipeId() != 0);  // the id was populated from the DB
+		assertTrue(recipe.getRecipeId() != 0); // the id was populated from the DB
 
 		// make sure fields of inserted recipe are correct
 		assertEquals(1, this.dao.queryAllRecipes().size());
 		final Recipe savedRecipe = this.dao.queryAllRecipes().get(0);
 		assertEquals("testName", savedRecipe.getRecipeName());
 		assertEquals("testDesc", savedRecipe.getRecipeContent());
-		assertTrue(savedRecipe.getRecipeId() != 0);  // the id was populated from the DB
+		assertTrue(savedRecipe.getRecipeId() != 0); // the id was populated from the DB
 	}
-
 
 	@Test
 	public void saveRecipe_GeneratesAndSavesTheSearchableText() {
@@ -105,7 +98,6 @@ public class RecipeDAOIT {
 
 		assertThat(savedRecipe.getSearchableRecipeText(), equalTo("testnametestdesc"));
 	}
-
 
 	@Test
 	public void updateRecipeContents_AlsoUpdatesTheSearchableText() {
@@ -120,13 +112,12 @@ public class RecipeDAOIT {
 		assertThat(updatedRecipe.getSearchableRecipeText(), equalTo("testnameohai me!!"));
 	}
 
-
 	@Test
 	public void testSimpleUpdateRecipeContents() {
 		final Recipe recipe = buildAndSaveNewRecipe("testName", "testContents");
 		final Recipe alteredRecipe = this.dao.updateRecipeContents(recipe.getRecipeId(), "newContents");
 
-		assertEquals(1, this.dao.queryAllRecipes().size()); // still only one recipe in DB
+		assertEquals(1, this.dao.queryAllRecipes().size());
 
 		final Recipe queriedRecipe = this.dao.queryAllRecipes().get(0);
 		assertThat(queriedRecipe, is(alteredRecipe));
@@ -135,13 +126,11 @@ public class RecipeDAOIT {
 		assertThat(queriedRecipe.getRecipeContent(), is("newContents"));
 	}
 
-
 	private Recipe buildAndSaveNewRecipe(final String name, final String contents) {
 		final Recipe recipe = new Recipe(name, contents);
 		this.dao.saveNewRecipe(recipe);
 		return recipe;
 	}
-
 
 	@Test
 	public void findRecipesContainingAnyOf_findsSingleMatchInName() throws Exception {
@@ -155,7 +144,6 @@ public class RecipeDAOIT {
 		assertThat(recipe.getRecipeContent(), equalTo(CHICKEN_CONTENT));
 	}
 
-
 	@Test
 	public void findRecipesContainingAnyOf_findsSingleMatchInName_IgnoringCase() throws Exception {
 		setUpDatabaseForFindRecipesTests();
@@ -167,7 +155,6 @@ public class RecipeDAOIT {
 		assertThat(recipe.getRecipeName(), equalTo(CHICKEN_NAME));
 		assertThat(recipe.getRecipeContent(), equalTo(CHICKEN_CONTENT));
 	}
-
 
 	@Test
 	public void findRecipesContainingAnyOf_findsSingleMatchInContents_IgnoringCase() throws Exception {
@@ -181,7 +168,6 @@ public class RecipeDAOIT {
 		assertThat(recipe.getRecipeContent(), equalTo(CHICKEN_CONTENT));
 	}
 
-
 	@Test
 	public void findRecipesContainingAnyOf_findsMatchesIfEitherParamMatches_FromNameOrContent() throws Exception {
 		setUpDatabaseForFindRecipesTests();
@@ -191,13 +177,11 @@ public class RecipeDAOIT {
 		assertThat(results.size(), equalTo(2));
 	}
 
-
 	@Test
 	public void findRecipesContainingAnyOf_failsValidationWithNullParam() throws Exception {
 		this.thrown.expect(ConstraintViolationException.class);
 		this.dao.findRecipesContainingAnyOf(null);
 	}
-
 
 	@Test
 	public void findRecipesContainingAnyOf_failsValidationWithEmptyParam() throws Exception {
@@ -205,6 +189,16 @@ public class RecipeDAOIT {
 		this.dao.findRecipesContainingAnyOf();
 	}
 
+	@Test
+	public void deleteDeletesCorrectly() throws Exception {
+		final Recipe recipe = new Recipe("TEST", "123");
+		dao.saveNewRecipe(recipe);
+		assertThat(dao.queryAllRecipes().size(), equalTo(1));
+
+		dao.deleteRecipe(recipe.getRecipeId());
+
+		assertThat(dao.queryAllRecipes().size(), equalTo(0));
+	}
 
 	private void setUpDatabaseForFindRecipesTests() {
 		final Recipe chickenRecipe = new Recipe(CHICKEN_NAME, CHICKEN_CONTENT);

@@ -33,7 +33,6 @@ import com.poorknight.testing.matchers.CustomMatchers;
 import com.poorknight.testing.matchers.methods.MethodTransactionAnnotationMatcher.TransactionType;
 import com.poorknight.utils.ReflectionUtils;
 
-
 @RunWith(MockitoJUnitRunner.class)
 public class RecipeDAOTest {
 
@@ -60,48 +59,25 @@ public class RecipeDAOTest {
 	@Captor
 	private ArgumentCaptor<Recipe> recipeCaptor;
 
-
 	@Before
 	public void init() {
 		MockitoAnnotations.initMocks(this);
 	}
-
 
 	@Test
 	public void requestScoped() {
 		assertThat(RecipeDAO.class, CustomMatchers.isRequestScoped());
 	}
 
-
-	@Test
-	public void correctTransactionLevel_ForSaveNewRecipe() {
-		assertThat(RecipeDAO.class, hasCorrectTransactionLevelOnMethod("saveNewRecipe", TransactionType.INSERT));
-	}
-
-
-	@Test
-	public void correctTransactionLevel_ForQueryAllRecipes() {
-		assertThat(RecipeDAO.class, hasCorrectTransactionLevelOnMethod("queryAllRecipes", TransactionType.QUERY));
-	}
-
-
-	@Test
-	public void correctTransactionLevel_ForQueryRecipeById() {
-		assertThat(RecipeDAO.class, hasCorrectTransactionLevelOnMethod("queryRecipeById", TransactionType.QUERY));
-	}
-
-
-	@Test
-	public void correctTransactionLevel_ForUpdateRecipeContents() {
-		assertThat(RecipeDAO.class, hasCorrectTransactionLevelOnMethod("updateRecipeContents", TransactionType.UPDATE));
-	}
-
-
 	@Test
 	public void correctTransactionLevel_ForFindRecipesContainingAnyOf() throws Exception {
 		assertThat(RecipeDAO.class, hasCorrectTransactionLevelOnMethod("findRecipesContainingAnyOf", TransactionType.QUERY));
 	}
 
+	@Test
+	public void correctTransactionLevel_ForSaveNewRecipe() {
+		assertThat(RecipeDAO.class, hasCorrectTransactionLevelOnMethod("saveNewRecipe", TransactionType.INSERT));
+	}
 
 	@Test
 	public void entityManagerCalledWithTheSameObjectOnSave() {
@@ -110,9 +86,13 @@ public class RecipeDAOTest {
 		verify(this.em).persist(recipe);
 	}
 
+	@Test
+	public void correctTransactionLevel_ForQueryAllRecipes() {
+		assertThat(RecipeDAO.class, hasCorrectTransactionLevelOnMethod("queryAllRecipes", TransactionType.QUERY));
+	}
 
 	@Test
-	public void testQuerySetup_ForQueryAllRecipes() {
+	public void queryAllRecipes_BuildsCorrectQuery() {
 
 		final CriteriaBuilder criteriaBuilder = mock(CriteriaBuilder.class);
 		when(this.em.getCriteriaBuilder()).thenReturn(criteriaBuilder);
@@ -130,6 +110,10 @@ public class RecipeDAOTest {
 		verify(this.typedQuery).getResultList();
 	}
 
+	@Test
+	public void correctTransactionLevel_ForQueryRecipeById() {
+		assertThat(RecipeDAO.class, hasCorrectTransactionLevelOnMethod("queryRecipeById", TransactionType.QUERY));
+	}
 
 	@Test
 	public void queryRecipeByID_UsesFindByPKOnEntityManager() {
@@ -141,7 +125,6 @@ public class RecipeDAOTest {
 		verifyNoMoreInteractions(this.em);
 	}
 
-
 	@Test(expected = DaoException.class)
 	public void exceptionOnSaveWhenIdAlreadyExists() throws Exception {
 		final Recipe testRecipe = new Recipe("testName", "testContent");
@@ -150,11 +133,9 @@ public class RecipeDAOTest {
 		this.recipeDAO.saveNewRecipe(testRecipe);
 	}
 
-
 	private void injectRandomRecipeId(final Recipe testRecipe) throws Exception {
 		ReflectionUtils.setFieldInClass(testRecipe, "recipeId", RandomUtils.nextLong());
 	}
-
 
 	@Test
 	public void saveIsNotAttempted_IfRecipeIdAlreadyExists() throws Exception {
@@ -166,7 +147,6 @@ public class RecipeDAOTest {
 		verifyZeroInteractions(this.em);
 	}
 
-
 	private void callSaveWhileSwallowingAnyExceptions(final Recipe testRecipe) {
 		try {
 			this.recipeDAO.saveNewRecipe(testRecipe);
@@ -175,6 +155,10 @@ public class RecipeDAOTest {
 		}
 	}
 
+	@Test
+	public void correctTransactionLevel_ForUpdateRecipeContents() {
+		assertThat(RecipeDAO.class, hasCorrectTransactionLevelOnMethod("updateRecipeContents", TransactionType.UPDATE));
+	}
 
 	@Test
 	public void testUpdateRecipeContents() {
@@ -194,14 +178,12 @@ public class RecipeDAOTest {
 		verifyNoMoreInteractions(this.em, mockRecipe);
 	}
 
-
 	private Recipe setUpMockRecipe() {
 		final Recipe mock = mock(Recipe.class);
 		when(mock.getRecipeName()).thenReturn(MIXED_CASE_RECIPE_NAME);
 		when(mock.getRecipeContent()).thenReturn(MIXED_CASE_RECIPE_CONTENT);
 		return mock;
 	}
-
 
 	@Test
 	public void saveSetsTheSearchableTextFieldCorrectly() throws Exception {
@@ -213,7 +195,6 @@ public class RecipeDAOTest {
 		assertThat(this.recipeCaptor.getValue().getSearchableRecipeText(), equalTo(EXPECTED_SEARCHABLE_TEXT));
 	}
 
-
 	@Test
 	public void updateUpdatesTheSearchableTextFieldCorrectly() throws Exception {
 		final Long recipeId = RandomUtils.nextLong();
@@ -223,5 +204,21 @@ public class RecipeDAOTest {
 		final Recipe result = this.recipeDAO.updateRecipeContents(recipeId, MIXED_CASE_RECIPE_CONTENT);
 
 		assertThat(result.getSearchableRecipeText(), equalTo(EXPECTED_SEARCHABLE_TEXT));
+	}
+
+	@Test
+	public void deleteHasCorrectTransactionLevel() throws Exception {
+		assertThat(RecipeDAO.class, hasCorrectTransactionLevelOnMethod("deleteRecipe", TransactionType.DELETE));
+	}
+
+	@Test
+	public void deleteDeletesCorrectly() throws Exception {
+		final Long recipeId = RandomUtils.nextLong();
+		final Recipe testRecipe = new Recipe("name", "content");
+		when(em.find(Recipe.class, recipeId)).thenReturn(testRecipe);
+
+		recipeDAO.deleteRecipe(recipeId);
+
+		verify(em).remove(testRecipe);
 	}
 }

@@ -1,6 +1,8 @@
 package com.poorknight.endpoints;
 
 import javax.inject.Inject;
+import javax.transaction.Transactional;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.NotFoundException;
 import javax.ws.rs.POST;
@@ -24,7 +26,7 @@ public class RecipeEndpoint {
 
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
-	public Recipe postRecipe(Recipe recipe) {
+	public Recipe postRecipe(final Recipe recipe) {
 		saveRecipeService.saveNewRecipe(recipe);
 		return recipe;
 	}
@@ -32,11 +34,18 @@ public class RecipeEndpoint {
 	@GET
 	@Path("{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Recipe getRecipe(@PathParam("id") Long recipeId) {
-		Recipe recipe = recipeDAO.queryRecipeById(recipeId);
+	public Recipe getRecipe(@PathParam("id") final Long recipeId) {
+		final Recipe recipe = recipeDAO.queryRecipeById(recipeId);
 		if (recipe == null) {
 			throw new NotFoundException();
 		}
 		return recipe;
+	}
+
+	@DELETE
+	@Path("{id}")
+	@Transactional
+	public void deleteRecipe(@PathParam("id") final Long recipeId) {
+		recipeDAO.deleteRecipe(recipeId);
 	}
 }
