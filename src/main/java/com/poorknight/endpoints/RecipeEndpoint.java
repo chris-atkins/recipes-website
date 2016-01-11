@@ -34,6 +34,7 @@ public class RecipeEndpoint {
 	}
 
 	@POST
+	@Path("/")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Recipe postRecipe(final Recipe recipe) {
 		saveRecipeService.saveNewRecipe(recipe);
@@ -41,7 +42,7 @@ public class RecipeEndpoint {
 	}
 
 	@GET
-	@Path("{id}")
+	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Recipe getRecipe(@PathParam("id") final Long recipeId) {
 		final Recipe recipe = recipeDAO.queryRecipeById(recipeId);
@@ -52,7 +53,7 @@ public class RecipeEndpoint {
 	}
 
 	@DELETE
-	@Path("{id}")
+	@Path("/{id}")
 	@Transactional
 	public void deleteRecipe(@PathParam("id") final Long recipeId) {
 		recipeDAO.deleteRecipe(recipeId);
