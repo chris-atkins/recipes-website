@@ -3,8 +3,11 @@ package com.poorknight.endpoints;
 import static com.poorknight.testing.matchers.CustomMatchers.createsTransactionBoundaryOnMethod;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+
+import java.util.List;
 
 import javax.ws.rs.NotFoundException;
 import javax.ws.rs.core.Response;
@@ -17,6 +20,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import com.google.common.collect.ImmutableList;
 import com.poorknight.business.saverecipe.SaveRecipeService;
 import com.poorknight.domain.Recipe;
 import com.poorknight.domain.RecipeDAO;
@@ -77,5 +81,14 @@ public class RecipeEndpointTest {
 		recipeEndpoint.deleteRecipe(recipeId);
 
 		verify(recipeDao).deleteRecipe(recipeId);
+	}
+
+	@Test
+	public void getAllRecipes_GetsAllFromDao() throws Exception {
+		final List<Recipe> recipes = new ImmutableList.Builder<Recipe>().add(mock(Recipe.class)).add(mock(Recipe.class)).build();
+		when(recipeDao.queryAllRecipes()).thenReturn(recipes);
+
+		final List<Recipe> response = recipeEndpoint.getAllRecipes();
+		assertThat(response, equalTo(recipes));
 	}
 }

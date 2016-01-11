@@ -1,5 +1,7 @@
 package com.poorknight.endpoints;
 
+import java.util.List;
+
 import javax.inject.Inject;
 import javax.transaction.Transactional;
 import javax.ws.rs.DELETE;
@@ -23,6 +25,13 @@ public class RecipeEndpoint {
 
 	@Inject
 	private RecipeDAO recipeDAO;
+
+	@GET
+	@Path("/")
+	@Produces(MediaType.APPLICATION_JSON)
+	public List<Recipe> getAllRecipes() {
+		return recipeDAO.queryAllRecipes();
+	}
 
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
