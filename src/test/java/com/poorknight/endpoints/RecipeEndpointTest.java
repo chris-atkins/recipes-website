@@ -12,6 +12,7 @@ import java.util.List;
 import javax.ws.rs.NotFoundException;
 import javax.ws.rs.core.Response;
 
+import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.math.RandomUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,6 +23,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import com.google.common.collect.ImmutableList;
 import com.poorknight.business.saverecipe.SaveRecipeService;
+import com.poorknight.business.searchrecipe.SearchRecipeService;
 import com.poorknight.domain.Recipe;
 import com.poorknight.domain.RecipeDAO;
 import com.poorknight.utils.UnitTestSetupUtils;
@@ -43,6 +45,9 @@ public class RecipeEndpointTest {
 
 	@Mock(answer = Answers.RETURNS_DEEP_STUBS)
 	private Response mockResponseFromResponseBuilder;
+
+	@Mock
+	private SearchRecipeService searchRecipeService;
 
 	@Test
 	public void postRecipe_SavesAndReturnsResults() throws Exception {
@@ -84,11 +89,21 @@ public class RecipeEndpointTest {
 	}
 
 	@Test
-	public void getAllRecipes_GetsAllFromDao() throws Exception {
+	public void getRecipes_WithNullParam_GetsAllFromSearchService() throws Exception {
 		final List<Recipe> recipes = new ImmutableList.Builder<Recipe>().add(mock(Recipe.class)).add(mock(Recipe.class)).build();
-		when(recipeDao.queryAllRecipes()).thenReturn(recipes);
+		when(searchRecipeService.findAllRecipes()).thenReturn(recipes);
 
-		final List<Recipe> response = recipeEndpoint.getAllRecipes();
+		final List<Recipe> response = recipeEndpoint.getRecipes(null);
+		assertThat(response, equalTo(recipes));
+	}
+
+	@Test
+	public void getRecipes_WithSearchStringParam_UsesSearchService() throws Exception {
+		final String searchString = RandomStringUtils.random(25);
+		final List<Recipe> recipes = new ImmutableList.Builder<Recipe>().add(mock(Recipe.class)).add(mock(Recipe.class)).build();
+		when(searchRecipeService.searchBy(searchString)).thenReturn(recipes);
+
+		final List<Recipe> response = recipeEndpoint.getRecipes(searchString);
 		assertThat(response, equalTo(recipes));
 	}
 }

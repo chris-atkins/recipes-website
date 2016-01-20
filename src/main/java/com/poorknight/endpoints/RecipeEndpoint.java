@@ -11,9 +11,11 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import com.poorknight.business.saverecipe.SaveRecipeService;
+import com.poorknight.business.searchrecipe.SearchRecipeService;
 import com.poorknight.domain.Recipe;
 import com.poorknight.domain.RecipeDAO;
 
@@ -24,13 +26,20 @@ public class RecipeEndpoint {
 	private SaveRecipeService saveRecipeService;
 
 	@Inject
+	private SearchRecipeService searchRecipeService;
+
+	@Inject
 	private RecipeDAO recipeDAO;
 
 	@GET
 	@Path("/")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Recipe> getAllRecipes() {
-		return recipeDAO.queryAllRecipes();
+	public List<Recipe> getRecipes(@QueryParam("searchString") final String searchString) {
+		if (searchString == null) {
+			return searchRecipeService.findAllRecipes();
+		}
+
+		return searchRecipeService.searchBy(searchString);
 	}
 
 	@POST
