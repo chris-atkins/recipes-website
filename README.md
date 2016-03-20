@@ -1,4 +1,4 @@
-<a href='http://45.55.61.213:8080/job/1.1-Build.recipe-service/'><img src='http://45.55.61.213:8080/job/1.1-Build.recipe-service/badge/icon'></a>
+<a href='http://45.55.61.213:8080/job/R1.1-Recipe.Build.Service/'><img src='http://45.55.61.213:8080/job/R1.1-Recipe.Build.Service/badge/icon'></a>
 
 A small project that keeps track of recipes.  Just something to do for practice.
 
